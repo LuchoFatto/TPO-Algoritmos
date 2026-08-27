@@ -39,3 +39,9 @@ def menu_farmacia():
 #Turnos
 def pedir_turno():
     pass
+
+
+
+#Login y permisos
+def mostrar_menu_segun_rol():
+    pass
