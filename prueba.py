@@ -18,3 +18,7 @@ def abrir_menu_gestion():
     pass
 
 
+
+#Turnos
+def pedir_turno():
+    pass
