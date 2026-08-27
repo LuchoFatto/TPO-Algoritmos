@@ -2,6 +2,8 @@
 def alta_usuario():
     pass
 
+def modificar_usuario():
+    pass
 
 def eliminar_usuario():
     pass
@@ -19,6 +21,8 @@ def buscar_usuarios():
 def alta_medico():
     pass
 
+def modificar_medico():
+    pass
 
 def eliminar_medico():
     pass
