@@ -16,7 +16,6 @@ def verificar_estado_pagos():
 def buscar_usuarios():
     pass
 
-
 # Afiliados / médicos
 def alta_medico():
     pass
