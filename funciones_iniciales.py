@@ -4,8 +4,18 @@ def cargar_datos_iniciales():
     return usuarios
 
 # Usuarios
-def alta_usuario():
-    pass
+def alta_usuario(Lista_usuario):
+    cuit = input("Ingrese CUIT/DNI: ")
+    nombre = input("Ingrese nombre y apellido: ")
+    email = input("Ingrese email: ")
+    telefono = input("Ingrese telefono: ")
+
+    nuevo_usuario = [cuit,nombre,email,telefono]
+
+    Lista_usuario.append(nuevo_usuario)
+
+    print("'usuario cargado correctamente'")
+  
 
 def modificar_usuario():
     pass
