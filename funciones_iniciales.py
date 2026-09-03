@@ -1,3 +1,8 @@
+#Datos iniciales
+def cargar_datos_iniciales():
+    usuarios = []
+    return usuarios
+
 # Usuarios
 def alta_usuario():
     pass
