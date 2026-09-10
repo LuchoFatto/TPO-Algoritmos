@@ -1,10 +1,7 @@
-from funciones_iniciales import alta_usuario
+from menus import mostar_menu_principal
 
 def main():
-    usuarios = []
-
-    alta_usuario(usuarios)
-
-    print(usuarios)
+    
+    mostar_menu_principal()
 
 main()
