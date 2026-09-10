@@ -1,6 +1,9 @@
 # Usuarios
 def alta_usuario():
     pass
+    pass
+    #mas de uno
+    print("12131231")
 
 def modificar_usuario():
     pass
@@ -8,10 +11,8 @@ def modificar_usuario():
 def eliminar_usuario():
     pass
 
-
 def verificar_estado_pagos():
     pass
-
 
 def buscar_usuarios():
     pass
