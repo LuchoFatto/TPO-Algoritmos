@@ -16,7 +16,7 @@ def mostar_menu_principal():
         opcion = input("Selecciones una opcion: ")
 
         if opcion == "1":
-            print("Ingreso como afiliado")
+            mostrar_menu_afiliados()
         elif opcion == "2":
             print("Ingreso como medico")
         elif opcion == "3":
@@ -32,7 +32,7 @@ def mostar_menu_principal():
 def mostrar_menu_afiliados():
     opcion = ""
 
-    while opcion != 5:
+    while opcion != "5":
         print()
         print("===================================")
         print("    MENU DE AFILIADOS    ")
