@@ -32,16 +32,17 @@ def mostrar_menu_principal():
 def mostrar_menu_afiliados():
     opcion = ""
 
-    while opcion != "5":
+    while opcion != "6":
         print()
         print("===================================")
-        print("    MENU DE AFILIADOS    ")
+        print("        MENU DE AFILIADOS")
         print("===================================")
         print("1. Ver perfil.")
         print("2. Ver cartilla.") #detalla que servicios de salud cubre el plan...
-        print("3. Cambiar plan.")
+        print("3. Seleccionar / Cambiar plan.")
         print("4. Turnos.")
-        print("5. Volver.")
+        print("5. Darse de baja")
+        print("6. Volver.")
 
         opcion = input("Ingrese una opcion: ")
 
@@ -50,10 +51,12 @@ def mostrar_menu_afiliados():
         elif opcion == "2":
             print("Ver mi cartilla")
         elif opcion == "3":
-            print("Cambiar plan")
+            print("Seleccionar / Cambiar plan")
         elif opcion == "4":
             print("Ver mis Turnos")
         elif opcion == "5":
+            print("Darse de baja")
+        elif opcion == "6":
             print("Volviste al menu principal...")
         else:
             print("Opcion invalida")
