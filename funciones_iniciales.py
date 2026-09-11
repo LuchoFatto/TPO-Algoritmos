@@ -1,9 +1,11 @@
+#from base_datos import usuarios
 # Usuarios
-def alta_usuario():
-    pass
-    pass
-    #mas de uno
-    print("12131231")
+def alta_usuario(usuarios):
+    usuario_nombre = input("Ingrese su nombre: ")
+    usuario_apellido = input("Ingrese su apellido: ")
+    usuario_email = input("Ingrese su email: ")
+    usuario_rol = input("Ingrese su rol: ")
+    usuarios.append({"nombre":usuario_nombre, "apellido":usuario_apellido, "email":usuario_email, "rol":usuario_rol})
 
 def modificar_usuario():
     pass
@@ -26,7 +28,6 @@ def modificar_medico():
 
 def eliminar_medico():
     pass
-
 
 # Farmacias
 def cargar_farmacia():
