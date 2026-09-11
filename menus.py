@@ -61,3 +61,32 @@ def mostrar_menu_afiliados():
         else:
             print("Opcion invalida")
 
+def mostrar_menu_medico():
+    opcion = ""
+
+    while opcion != "4":
+        print()
+        print("===================================")
+        print("          MENU DE MEDICO")
+        print("===================================")
+        print("1. Darse de baja")
+        print("2. Ver agenda de turnos - DESHABILITADO")
+        print("3. Ver pacientes asignados - DESHABILITADO")
+        print("4. Volver")
+
+        opcion = input("Ingrese una opcion: ")
+
+        if opcion == "1":
+            print("Solicitud de baja")
+
+        elif opcion == "2":
+            print("Funcion deshabilitada para la entrega del 40%")
+
+        elif opcion == "3":
+            print("Funcion deshabilitada para la entrega del 40%")
+
+        elif opcion == "4":
+            print("Volviendo al menu principal...")
+
+        else:
+            print("Opcion invalida")
