@@ -116,4 +116,44 @@ def mostrar_menu_farmacia():
         else:
             print("Opcion invalida")
 
+def mostrar_menu_admin():
+    opcion = ""
 
+    while opcion != "7":
+        print()
+        print("===================================")
+        print("        MENU GESTION / ADMIN")
+        print("===================================")
+        print("1. Dar de alta usuario")
+        print("2. Dar de baja usuario")
+        print("3. Ver lista de afiliados")
+        print("4. Ver lista de medicos")
+        print("5. Ver lista de farmacias")
+        print("6. Ver historial - DESHABILITADO")
+        print("7. Volver")
+
+        opcion = input("Ingrese una opcion: ")
+
+        if opcion == "1":
+            print("Alta de usuario")
+
+        elif opcion == "2":
+            print("Baja de usuario")
+
+        elif opcion == "3":
+            print("Lista de afiliados")
+
+        elif opcion == "4":
+            print("Lista de medicos")
+
+        elif opcion == "5":
+            print("Lista de farmacias")
+
+        elif opcion == "6":
+            print("Funcion deshabilitada para la entrega del 40%")
+
+        elif opcion == "7":
+            print("Volviendo al menu principal...")
+
+        else:
+            print("Opcion invalida")
