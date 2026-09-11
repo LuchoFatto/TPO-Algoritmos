@@ -1,4 +1,4 @@
-def mostar_menu_principal():
+def mostrar_menu_principal():
     opcion = ""
 
     while opcion != "5":
