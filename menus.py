@@ -18,15 +18,11 @@ def mostrar_menu_principal():
         if opcion == "1":
             mostrar_menu_afiliados()
         elif opcion == "2":
-            print("Ingreso como medico")
+            mostrar_menu_medico()
         elif opcion == "3":
-            print("Ingreso como farmacia")
+            mostrar_menu_farmacia()
         elif opcion == "4":
-            print("Ingreso como Admin/ Gestion")
-        elif opcion == "5":
-            print("Saliste!")
-        else:
-            print("Opcion invalida. ")
+            mostrar_menu_admin()
 
 
 def mostrar_menu_afiliados():
