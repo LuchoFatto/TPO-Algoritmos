@@ -35,7 +35,7 @@ def mostrar_menu_afiliados():
     while opcion != "6":
         print()
         print("===================================")
-        print("        MENU DE AFILIADOS")
+        print("       MENU DE AFILIADOS")
         print("===================================")
         print("1. Ver perfil.")
         print("2. Ver cartilla.") #detalla que servicios de salud cubre el plan...
@@ -90,3 +90,30 @@ def mostrar_menu_medico():
 
         else:
             print("Opcion invalida")
+
+
+
+def mostrar_menu_farmacia():
+    opcion = ""
+
+    while opcion != "2":
+
+        print()
+        print("===================================")
+        print("         MENU DE FARMACIA")
+        print("===================================")
+        print("1. Consultar estado de afiliado")
+        print("2. Volver")
+
+        opcion = input("Ingrese una opcion: ")
+
+        if opcion == "1":
+            print("Consulta de afiliado")
+
+        elif opcion == "2":
+            print("Volviendo al menu principal...")
+
+        else:
+            print("Opcion invalida")
+
+
