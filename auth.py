@@ -26,7 +26,7 @@ def validar_cuit(cuit):
         boolean: Si el CUIT cumple con el formato establecido.
     """
 
-    patron_limpiar = re.compile(r"[-\s]")
+    patron_limpiar = re.compile(r"[\.\-\s]")
 
     cuit_limpio = re.sub(patron_limpiar, "", cuit)
 

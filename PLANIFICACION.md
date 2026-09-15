@@ -32,10 +32,10 @@ Para evitar dependencias entre integrantes, todos los módulos trabajarán sobre
 
 ### Rama: `integrante`
 
-- **Archivos asignados:** `validaciones.py` | `auth.py`
+- **Archivos asignados:** `auth.py` | `auth.py`
 - **Lógica independiente:** Trabaja con validación de cadenas, expresiones regulares y control de intentos.
 - **Tareas específicas:**
-    - **`validaciones.py`:**
+    - **`auth.py`:**
         - `validar_cuit(cuit)`: Verifica formato numérico y longitud obligatoria.
         - `validar_email(email)`: Valida estructura mediante expresiones regulares.
         - `leer_opcion(mensaje, min_val, max_val)`: Lectura controlada de opciones numéricas por teclado para evitar caídas de la terminal.
