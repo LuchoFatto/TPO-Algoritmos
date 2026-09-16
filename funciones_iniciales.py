@@ -19,13 +19,9 @@ def buscar_usuarios():
 # Afiliados / médicos
 def alta_medico(usuarios):
 
-    medico_nombre = validaciones.bucle_medico("Ingrese su nombre: ", "SOLO LETRAS - Ingrese su nombre: ", validaciones.validador_solo_letras)
+    medico_nombre = validaciones.bucle_medico("Ingrese su nombre: ", "SOLO LETRAS - Ingrese su nombre: ", validaciones.validador_solo_letras) #verifica solo letras sin limite de caracteres
 
-    medico_apellido = input("Ingrese su apellido: ")
-    flag_apellido = validaciones.validador_solo_letras(medico_apellido)
-    while flag_apellido == False:
-        medico_apellido = input("SOLO LETRAS - Ingrese su apellido: ")
-        flag_apellido = validaciones.validador_solo_letras(medico_apellido)
+    medico_apellido = validaciones.bucle_medico("ingrse su apellido: ", "SOLO LETRAS - Ingrese su apellido: ", validaciones.validador_solo_letras)
 
     medico_matricula = input("Ingrese su NRO de matricula: ")
     flag_matricula = validaciones.validador_solo_numeros(medico_matricula)
@@ -33,11 +29,11 @@ def alta_medico(usuarios):
         medico_matricula = input("SOLO NUMEROS SIN GUIONES - Ingrese su NRO de matricula: ")
         flag_matricula = validaciones.validador_solo_numeros(medico_matricula)
     
-    medico_email = input("Ingrese su mail: ")
-    flag_email = validaciones.validar_mail(medico_email)
+    medico_email = input("Ingrese su email: ")
+    flag_email = validaciones.validar_email(medico_email)
     while flag_email == False:
-        medico_email = input("Ingrese su mail correctamente: ")
-        flag_email = validaciones.validar_mail(medico_email)
+        medico_email = input("ERROR - Ingrese su email correctamente: ")
+        flag_email = validaciones.validar_email(medico_email)
 
     usuarios.append({"nombre":medico_nombre, "apellido":medico_apellido, "matricula":medico_matricula, "email":medico_email})
 
@@ -49,11 +45,11 @@ def modificar_medico(usuarios):
             opcion = input("que desea modificar: 1) mail - 2) contraseña")    
             if opcion == "1":
                 user["email"] = input("Ingrese el nuevo Email del Medico/a: ")#agregar validacion de email y letras
-                flag_email = validaciones.validar_mail(user["email"])
+                flag_email = validaciones.validar_email(user["email"])
                 while flag_email == False:
-                    medico_email = input("Ingrese su mail correctamente: ")
-                    flag_email = validaciones.validar_mail(medico_email)
-                print("salio")
+                    user["email"] = input("Ingrese su mail correctamente: ")
+                    flag_email = validaciones.validar_email(user["email"])
+                
     
 def eliminar_medico(usuarios):
     matricula_medico_eliminar = input("Para eliminar un medico ingrese el numero de matricula: ")
@@ -62,8 +58,9 @@ def eliminar_medico(usuarios):
             confirmacion = input("Confirmacion: desea eliminar? SI/NO") #hay que agregar que preguntar para confirmar
             if confirmacion == "SI": 
                 usuarios.remove(user)
+            else:
+                pass #se vuelve al menu donde se eligio eliminar medico
             
-
 # Farmacias
 def cargar_farmacia(farmacias):
 
@@ -120,3 +117,14 @@ def pedir_turno():
 # Login y permisos
 def mostrar_menu_segun_rol():
     pass
+
+
+"""
+funciones reempalzadas:
+
+    medico_apellido = input("Ingrese su apellido: ")
+    flag_apellido = validaciones.validador_solo_letras(medico_apellido)
+    while flag_apellido == False:
+        medico_apellido = input("SOLO LETRAS - Ingrese su apellido: ")
+        flag_apellido = validaciones.validador_solo_letras(medico_apellido)
+"""

@@ -1,8 +1,8 @@
 import re
+
 def validador_solo_letras(texto):
     for caracter in texto:
         codigo = ord(caracter)
-        # A-Z: 65-90 | a-z: 97-122
         if (codigo < 64) or (90 < codigo < 97) or (codigo > 122):
             return False
     return True
@@ -13,6 +13,26 @@ def validador_solo_numeros(numero):
         if (codigo < 48 or codigo > 57):
             return False   
     return True
+
+def validar_email(email):
+    patron_email = re.compile(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
+    return bool(re.match(patron_email, email))
+
+def validar_direccion(direccion):
+    patron_direccion = re.compile(r"^[a-zA-Z0-9À-ÿñÑ.°]+(?:\s+[a-zA-Z0-9À-ÿñÑ.°]+)*\s+\d+\s*[a-zA-Z]?$", re.IGNORECASE)
+    return bool(re.match(patron_direccion, direccion))
+
+def bucle_medico(mensaje, mensaje_error, funcion_validadora):
+    dato = input(mensaje)
+    flag = funcion_validadora(dato)
+    while flag == False:
+        dato = input(mensaje_error)
+        flag = funcion_validadora(dato)
+    return dato
+
+
+"""
+func viejas
 
 def validar_mail(texto):
     flag_texto = validador_solo_letras(texto)
@@ -26,16 +46,4 @@ def validar_mail(texto):
     else:
         return False
 
-def validar_direccion(direccion):
-
-    patron_direccion = re.compile(r"^[a-zA-Z0-9À-ÿñÑ.°]+(?:\s+[a-zA-Z0-9À-ÿñÑ.°]+)*\s+\d+\s*[a-zA-Z]?$", re.IGNORECASE)
-
-    return bool(re.match(patron_direccion, direccion))
-
-def bucle_medico(mensaje, mensaje_error, funcion_validadora):
-    dato = input(mensaje)
-    flag = funcion_validadora(dato)
-    while flag == False:
-        dato = input(mensaje_error)
-        flag = funcion_validadora(dato)
-    return dato
+"""

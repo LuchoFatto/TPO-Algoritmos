@@ -1,3 +1,9 @@
+
+
+
+
+
+#NO SE USA SOLO A MODO DE FUTURO USO PARA ARCHIVOS
 """
 - `[0]` **CUIT / DNI** (`str`): Identificador único (ej: `"20123456789"`).
 - `[1]` **Nombre y Apellido** (`str`): Nombre del usuario.
