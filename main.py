@@ -1,20 +1,20 @@
-import funciones_iniciales 
+import funciones_iniciales
+from usuarios import users
+from usuarios import farmacias
 
-usuarios = [
-    {
-        "nombre": "Nicolas",
-        "apellido": "Martinez",
-        "email": "nicolasmartinez@gmail.com",
-        "rol": "afiliado"
-    }, 
-    {
-        "nombre": "Marco",
-        "apellido": "Gomez",
-        "email": "marco@gmail.com",
-        "rol": "medico"
-    }
-]
 
-funciones_iniciales.alta_usuario(usuarios)
+#funciones_iniciales.alta_medico(users)
 
-print(usuarios)
+print(farmacias),
+
+#funciones_iniciales.modificar_medico(users)
+
+#print(users)
+
+#funciones_iniciales.eliminar_medico(users)
+
+funciones_iniciales.cargar_farmacia(farmacias)
+
+print(farmacias)
+
+

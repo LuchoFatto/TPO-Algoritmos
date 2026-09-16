@@ -1,11 +1,8 @@
-#from base_datos import usuarios
+import validaciones
+
 # Usuarios
 def alta_usuario(usuarios):
-    usuario_nombre = input("Ingrese su nombre: ")
-    usuario_apellido = input("Ingrese su apellido: ")
-    usuario_email = input("Ingrese su email: ")
-    usuario_rol = input("Ingrese su rol: ")
-    usuarios.append({"nombre":usuario_nombre, "apellido":usuario_apellido, "email":usuario_email, "rol":usuario_rol})
+    pass
 
 def modificar_usuario():
     pass
@@ -20,19 +17,75 @@ def buscar_usuarios():
     pass
 
 # Afiliados / médicos
-def alta_medico():
-    pass
+def alta_medico(usuarios):
 
-def modificar_medico():
-    pass
+    medico_nombre = validaciones.bucle_medico("Ingrese su nombre: ", "SOLO LETRAS - Ingrese su nombre: ", validaciones.validador_solo_letras)
 
-def eliminar_medico():
-    pass
+    medico_apellido = input("Ingrese su apellido: ")
+    flag_apellido = validaciones.validador_solo_letras(medico_apellido)
+    while flag_apellido == False:
+        medico_apellido = input("SOLO LETRAS - Ingrese su apellido: ")
+        flag_apellido = validaciones.validador_solo_letras(medico_apellido)
+
+    medico_matricula = input("Ingrese su NRO de matricula: ")
+    flag_matricula = validaciones.validador_solo_numeros(medico_matricula)
+    while flag_matricula == False:
+        medico_matricula = input("SOLO NUMEROS SIN GUIONES - Ingrese su NRO de matricula: ")
+        flag_matricula = validaciones.validador_solo_numeros(medico_matricula)
+    
+    medico_email = input("Ingrese su mail: ")
+    flag_email = validaciones.validar_mail(medico_email)
+    while flag_email == False:
+        medico_email = input("Ingrese su mail correctamente: ")
+        flag_email = validaciones.validar_mail(medico_email)
+
+    usuarios.append({"nombre":medico_nombre, "apellido":medico_apellido, "matricula":medico_matricula, "email":medico_email})
+
+def modificar_medico(usuarios):
+    matricula_medico_eliminar = input("Para modificar un medico ingrese el numero de matricula: ")
+    flag = None
+    for user in usuarios:
+        if user["rol"] == "medico" and user["matricula"] == str(matricula_medico_eliminar):
+            opcion = input("que desea modificar: 1) mail - 2) contraseña")    
+            if opcion == "1":
+                user["email"] = input("Ingrese el nuevo Email del Medico/a: ")#agregar validacion de email y letras
+                flag_email = validaciones.validar_mail(user["email"])
+                while flag_email == False:
+                    medico_email = input("Ingrese su mail correctamente: ")
+                    flag_email = validaciones.validar_mail(medico_email)
+                print("salio")
+    
+def eliminar_medico(usuarios):
+    matricula_medico_eliminar = input("Para eliminar un medico ingrese el numero de matricula: ")
+    for user in usuarios:
+        if user["rol"] == "medico" and user["matricula"] == str(matricula_medico_eliminar):
+            confirmacion = input("Confirmacion: desea eliminar? SI/NO") #hay que agregar que preguntar para confirmar
+            if confirmacion == "SI": 
+                usuarios.remove(user)
+            
 
 # Farmacias
-def cargar_farmacia():
-    pass
+def cargar_farmacia(farmacias):
 
+    id_farmacia = input("ingrese el nombre de la farmacia: ")
+    flag_id_farmacia = validaciones.validador_solo_letras(id_farmacia)
+    while flag_id_farmacia == False:
+        id_farmacia = input("ingrese el nombre de la farmacia: ")
+        flag_id_farmacia = validaciones.validador_solo_letras(id_farmacia)
+    
+    direccion_farmacia = input("Ingrese la direccion: ")
+    flag = validaciones.validar_direccion(direccion_farmacia)
+    while flag == False:
+        direccion_farmacia = input("Ingrese la direccion correctamente: ")
+        flag = validaciones.validar_direccion(direccion_farmacia)
+        
+    numero_farmacia = input("indique nro de telefono: ")
+    flag_numero_farmacia = validaciones.validador_solo_numeros(numero_farmacia)
+    while flag_numero_farmacia == False:
+        numero_farmacia = input("indique nro de telefono: ")
+        flag_numero_farmacia = validaciones.validador_solo_numeros(numero_farmacia)
+
+    farmacias.append({"id": id_farmacia, "direccion": direccion_farmacia, "numero": numero_farmacia})
 
 def eliminar_farmacia():
     pass
