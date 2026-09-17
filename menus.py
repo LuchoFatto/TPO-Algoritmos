@@ -1,3 +1,5 @@
+import usuarios
+
 def mostrar_menu_principal():
     opcion = ""
 
@@ -67,7 +69,7 @@ def mostrar_menu_afiliados():
         opcion = input("Ingrese una opcion: ")
 
         if opcion == "1":
-            print("MI PERFIL")
+            usuarios.ver_mi_perfil_user(cuit) #Ingresar cuit de usuario loggeado
         elif opcion == "2":
             print("Ver mi cartilla")
         elif opcion == "3":
@@ -75,7 +77,7 @@ def mostrar_menu_afiliados():
         elif opcion == "4":
             print("Ver mis Turnos")
         elif opcion == "5":
-            print("Darse de baja")
+            usuarios.baja_usuario(cuit)  #Ingresar cuit de usuario loggeado
         elif opcion == "6":
             print("Volviste al menu principal...")
         else:
