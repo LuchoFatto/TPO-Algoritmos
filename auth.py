@@ -23,14 +23,14 @@ def validar_cuit(cuit):
         cuit (string): CUIT ingresado por usuario.
 
     Returns:
-        boolean: Si el CUIT cumple con el formato establecido.
+        boolean: Si el CUIT cumple con el formato establecido y no contenga letras.
     """
 
     patron_limpiar = re.compile(r"[-\s]")
 
     cuit_limpio = re.sub(patron_limpiar, "", cuit)
 
-    return len(cuit_limpio) == 11
+    return len(cuit_limpio) == 11 and cuit_limpio.isdigit()
 
 
 def validar_numero_telefono(num_telefono):
@@ -58,10 +58,10 @@ def validar_contrasenia(contrasenia):
         contrasenia (string): Contrasenia ingresada por el usuario.
 
     Returns:
-        boolean: Si la contrasenia cumple con el formato establecido.
+        boolean: Si la contrasenia cumple con el formato establecido (Mayus, Min, Simbolo y Numero).
     """
 
-    patron_contrasenia = re.compile(r"^(?=.*[A-Z])(?=.*\d).{8,}$")
+    patron_contrasenia = re.compile(r"^(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$")
 
     return bool(re.match(patron_contrasenia, contrasenia))
 
