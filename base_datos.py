@@ -71,3 +71,9 @@ Medicos = []
 
 #lista de todos las farmacias
 Farmacias = []
+
+#adminisitrador
+Admin = {
+    'Usuario' : 'adminadmin',
+    'Contraseña' : 'admin123'
+}
