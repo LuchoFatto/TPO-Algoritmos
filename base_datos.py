@@ -67,10 +67,40 @@ lista_usuarios = [
 ]
 
 #lista de todos los medicos
-Medicos = []
+Medicos = [
+    {
+        "nombre": "Nicolas", 
+        "apellido": "Martinez", 
+        "email": "nicolasmartinez@gmail.com", 
+        "rol": "medico",
+        "matricula": "213123",
+        "contraseña": "tateti",
+        "telefono": "1162453589"
+    },
+    {
+        "nombre": "Tomas", 
+        "apellido": "Martinez", 
+        "email": "nicolasmartinez@gmail.com", 
+        "rol": "medico",
+        "matricula": "123456",
+        "contraseña": "tateti",
+        "telefono": "1162453589"
+    }
+]
 
 #lista de todos las farmacias
-Farmacias = []
+Farmacias = [
+    {
+        "id": "farmacity", 
+        "direccion": "alvear 1234", 
+        "beneficiaria": "1"
+    },
+    {
+        "id": "farmaplus", 
+        "direccion": "mitre 4213", 
+        "beneficiaria": "0"
+    }
+]
 
 #adminisitrador
 Admin = {
