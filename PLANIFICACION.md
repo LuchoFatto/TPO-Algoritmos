@@ -48,7 +48,7 @@ Para evitar dependencias entre integrantes, todos los módulos trabajarán sobre
 
 ---
 
-### Rama: `integrante`
+### Rama: `Franco`
 
 - **Archivos asignados:** `usuarios.py`
 - **Lógica independiente:** CRUD y manipulación de filas de la matriz con listas y funciones lambda/filter.
