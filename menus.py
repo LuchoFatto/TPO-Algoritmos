@@ -1,7 +1,7 @@
 def mostrar_menu_principal():
     opcion = ""
 
-    while opcion !=3:
+    while opcion !="3":
         print ()
         print("===================================")
         print("   SISTEMA DE GESTION OBRA SOCIALL")
@@ -12,12 +12,12 @@ def mostrar_menu_principal():
 
         opcion = input("Seleccione una opción: ")
 
-        if opcion == 1:
+        if opcion == "1":
             mostrar_menu_login()
-        elif opcion == 2:
+        elif opcion == "2":
             print("registro del nuevo usuario")
             # Acá pondriamos el alta del user
-        elif opcion == 3:
+        elif opcion == "3":
             print("Saliste")
         else:
             print("Opción invalida...")
