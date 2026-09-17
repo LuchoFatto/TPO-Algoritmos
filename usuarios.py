@@ -28,7 +28,7 @@ def verificar_decision(elemento):
 
     Returns:
         boolean: False si esta de acuerdo con lo escrito, True si no
-    """    
+    """
     Flag = True
     while Flag:
         print('-=-'*10)
@@ -56,7 +56,7 @@ def pedir_nombre(pedir):
 
     Returns:
         str: Nombre,Apellido, Etc. validado
-    """    
+    """
     Flag = True
     while Flag:
         nombre = input(f'Ingrese el {pedir}\n>> ')
@@ -72,8 +72,8 @@ def pedir_cuit():
     """Ingreso, Validacion y verificacion de CUIT de Usuario
 
     Returns:
-        int: CUIT Validado y no repetido ingresado por el Usuario 
-    """    
+        int: CUIT Validado y no repetido ingresado por el Usuario
+    """
     Flag = True
     while Flag:
         cuit = input('Ingrese el CUIT\n>> ')
@@ -98,7 +98,7 @@ def pedir_telefono():
 
     Returns:
         int: Telefono Validado
-    """    
+    """
     Flag = True
     while Flag:
         telefono = input('Ingrese el Telefono (Sin el 15 ni 0)\n>> ')
@@ -116,7 +116,7 @@ def pedir_email():
 
     Returns:
         str: Email validado de Usuario
-    """    
+    """
     Flag = True
     while Flag:
         email = input('Ingrese el Email\n>> ')
@@ -133,7 +133,7 @@ def pedir_password():
 
     Returns:
         str: Contraseña Validad de Usuario
-    """    
+    """
     Flag = True
     while Flag:
         password = input('Ingrese su contraseña (Debe tener al menos 8 elementos, uno especial y un numero)\n>> ')
@@ -145,13 +145,13 @@ def pedir_password():
             Flag = verificar_decision(password)
     return password
 
-def pedir_plan(): 
+def pedir_plan():
     """Eleccion de Plan en base a la tupla 'Planes'
 
     Returns:
         tuple: Con cualquier plan Retorna (Plan elegido, None, None); si eligio familiar dueño (Familiar Dueño, [], None); si elijo
             familiar hijo (Familiar Hijo, None, Cuit de Dueño)
-    """    
+    """
     print('Elija un Plan de Pago')
     Flag = True
     while Flag:
@@ -168,10 +168,10 @@ def pedir_plan():
             print('\n\n')
         else:
             Flag = False
- 
+
     plan = Planes[eleccion-1][0]
     familia,CUIT_principal = None,None
- 
+
     if plan == 'Familiar':
         Flag = True
         while Flag:
@@ -209,13 +209,13 @@ def pedir_plan():
                             else:
                                 print('Ingrese un CUIT valido')
                                 print('\n')
-                        else:   
+                        else:
                             Valido = False
                     input('Presione Enter para volver')
                     print('\n')
                 else:
                     print('No hay usuarios afiliados aun, elija ser dueño')
-                
+
             else:
                 print('Ingrese uno de los valores indicados')
                 print('Revise los datos, si esta todo correcto ingrese 1, sino ingrese 0 y vuelva a intentar')
@@ -229,10 +229,10 @@ def pedir_plan():
 def alta_usuario():
     """
         Creacion de Usuario, Verificacion de Datos Ingresados y posibilidad de reincio de ingreso
-    """    
+    """
 
     Reinicio = True
-    
+
     while Reinicio:
         print('-'*50)
         #Ingreso de Nombre de Usuario
