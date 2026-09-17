@@ -49,18 +49,36 @@ def modificar_medico(usuarios):
                 while flag_email == False:
                     user["email"] = input("Ingrese su mail correctamente: ")
                     flag_email = validaciones.validar_email(user["email"])
-                
+ 
     
 def eliminar_medico(usuarios):
-    matricula_medico_eliminar = input("Para eliminar un medico ingrese el numero de matricula: ")
+    matricula_medico_eliminar = input("Para darse de baja ingrese el numero de matricula: ")
     for user in usuarios:
         if user["rol"] == "medico" and user["matricula"] == str(matricula_medico_eliminar):
-            confirmacion = input("Confirmacion: desea eliminar? SI/NO") #hay que agregar que preguntar para confirmar
+            confirmacion = input("Confirmacion, desea eliminar? SI/NO:  ") #hay que agregar que preguntar para confirmar
             if confirmacion == "SI": 
                 usuarios.remove(user)
             else:
                 pass #se vuelve al menu donde se eligio eliminar medico
-            
+            #hay que añadir que si entra a la lista de medicos y no hay nadie con el rol medico que te diga no hay medicos para eliminar
+
+def imprimir_lista_medicos(usuarios):
+    for user in usuarios:
+            if user["rol"] == "medico":
+                print("\nNombre: {0}".format(user["nombre"],))
+                print("Apellido: {0}".format(user["apellido"]))
+                print("Email: {0}".format(user["email"]))
+                print("Rol: {0}".format(user["rol"]))
+                print("Matricula: {0}".format(user["matricula"]))
+                print("Contraseña: {0}".format(user["contraseña"]))
+                print("Telefono: {0}".format(user["telefono"]))
+
+def imprimir_lista_farmacias(farmacias):
+    for farmacia in farmacias:
+            print("\nID Farmacia: {0}".format(farmacia["id"],))
+            print("Direccion: {0}".format(farmacia["direccion"]))
+            print("Beneficiaria: {0}".format(farmacia["beneficiaria"]))
+
 # Farmacias
 def cargar_farmacia(farmacias):
 
@@ -84,8 +102,17 @@ def cargar_farmacia(farmacias):
 
     farmacias.append({"id": id_farmacia, "direccion": direccion_farmacia, "numero": numero_farmacia})
 
-def eliminar_farmacia():
-    pass
+def eliminar_farmacia(farmacias):
+    id_farmacia_eliminar = input("Para eliminar la farmacia ingrese su ID: ")
+    for farmacia in farmacias:
+        if farmacia["id"] == str(id_farmacia_eliminar):
+            farmacias.remove(farmacia)
+            #confirmacion = input("Confirmacion: desea eliminar? SI/NO") #hay que agregar que preguntar para confirmar
+            #if confirmacion == "SI": 
+            #    usuarios.remove(user)
+            #else:
+            #    pass #se vuelve al menu donde se eligio eliminar medico
+
 
 
 # Menus
