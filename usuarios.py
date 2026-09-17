@@ -348,7 +348,7 @@ def modificar_usuario_admin():
                 Flag = False
     modificar = lista_usuarios.pop(indice)
     #incompleto, se continua para el 100%
-    
+
 
 def modificar_user(dic):
     print('Que desea modificar?')
@@ -358,12 +358,23 @@ def modificar_user(dic):
         print(f'[{contador}] {key} : {item}')
     #incompleto, se continua para el 100%
 
+def ver_mi_perfil_user(cuit):
+    _, user = buscar_usuarios(cuit)
+    print('Este es tu usuario')
+    imprimir_usuario(user)
 
+def baja_usuario(cuit):
+    if not verificar_decision('Darse de Baja'):
+        eliminar_usuario(cuit)
+    else:
+        print('Volviendo al menu anterior')
 
-
-def baja_usuario():
-    pass
-
-
-def menu_alta_usuario():
-    pass
+def eliminar_usuario(cuit):
+    indice, usuario = buscar_usuarios(cuit)
+    if usuario:
+        lista_usuarios.pop(indice)
+        print('Usuario Eliminado')
+        input('Presione Enter para volver')
+    else:
+        print('El usuario ingresado no existe')
+        input('Presione Enter para volver')
