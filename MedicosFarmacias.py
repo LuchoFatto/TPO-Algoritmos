@@ -21,7 +21,7 @@ def alta_medico(usuarios):
         medico_email = input("ERROR - Ingrese su email correctamente: ")
         flag_email = validaciones.validar_email(medico_email)
 
-    usuarios.append({"nombre":medico_nombre, "apellido":medico_apellido, "matricula":medico_matricula, "email":medico_email})
+    usuarios.append({"nombre":medico_nombre, "apellido":medico_apellido, "email":medico_email, "rol":"medico", "matricula":medico_matricula})
 
 def modificar_medico(usuarios):
     matricula_medico_eliminar = input("Para modificar un medico ingrese el numero de matricula: ")
@@ -56,8 +56,8 @@ def imprimir_lista_medicos(usuarios):
                 print("Email: {0}".format(user["email"]))
                 print("Rol: {0}".format(user["rol"]))
                 print("Matricula: {0}".format(user["matricula"]))
-                print("Contraseña: {0}".format(user["contraseña"]))
-                print("Telefono: {0}".format(user["telefono"]))
+                #print("Contraseña: {0}".format(user["contraseña"]))
+                #print("Telefono: {0}".format(user["telefono"]))
 
 def imprimir_lista_farmacias(farmacias):
     for farmacia in farmacias:

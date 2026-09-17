@@ -74,17 +74,17 @@ Medicos = [
         "email": "nicolasmartinez@gmail.com", 
         "rol": "medico",
         "matricula": "213123",
-        "contraseña": "tateti",
-        "telefono": "1162453589"
+        #"contraseña": "tateti",
+        #"telefono": "1162453589"
     },
     {
         "nombre": "Tomas", 
-        "apellido": "Martinez", 
-        "email": "nicolasmartinez@gmail.com", 
+        "apellido": "Gonzales", 
+        "email": "ngonza@gmail.com", 
         "rol": "medico",
         "matricula": "123456",
-        "contraseña": "tateti",
-        "telefono": "1162453589"
+        #"contraseña": "asfalto",
+        #"telefono": "1162452078"
     }
 ]
 

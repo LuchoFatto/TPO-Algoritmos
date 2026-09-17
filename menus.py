@@ -94,19 +94,19 @@ def mostrar_menu_medico():
         print("===================================")
         print("          MENU DE MEDICO")
         print("===================================")
-        print("1. Darse de baja")
-        print("2. Ver agenda de turnos - DESHABILITADO")
+        print("1. Darse de alta")
+        print("2. Darse de baja")
         print("3. Ver pacientes asignados - DESHABILITADO")
         print("4. Volver")
 
         opcion = input("Ingrese una opcion: ")
 
         if opcion == "1":
-            print("Solicitud de baja")
-
+            print("Darse de alta")
+            MedicosFarmacias.alta_medico(base_datos.Medicos)
         elif opcion == "2":
-            print("Funcion deshabilitada para la entrega del 40%")
-
+            print("Solicitud de baja")
+            MedicosFarmacias.eliminar_medico(base_datos.Medicos)
         elif opcion == "3":
             print("Funcion deshabilitada para la entrega del 40%")
 
