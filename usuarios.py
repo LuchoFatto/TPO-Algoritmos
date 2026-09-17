@@ -14,11 +14,11 @@ lista_usuarios = []
 def imprimir_usuario(dic):
     for key,valor in dic.items():
         print('-'*30)
-        print(f'{key} : {valor}')
+        print(f'| {key} : {valor} |')
     print('-'*30)
 
 def limpiar_nro(nro):
-    return re.sub(r'[\.\-\s]', "", nro)
+    return int(re.sub(r'[\.\-\s]', "", nro))
 
 def verificar_decision(elemento):
     """Modo de verificar si la decision del usuario fue correcta
@@ -82,7 +82,7 @@ def pedir_cuit():
             input('Ingrese Enter para reintentar')
             print('\n\n')
         else:
-            cuit = int(limpiar_nro(cuit))
+            cuit = limpiar_nro(cuit)
             for i in lista_usuarios:
                 if i['CUIT'] == cuit:
                     print('El CUIT ingresado ya existe')
@@ -272,7 +272,8 @@ def alta_usuario():
             'Email': Email,
             'Plan': Plan,
             'Password': Password,
-            'Historial': []
+            'Historial': [],
+            'Deudor' : True
         }
 
         if familia != None:
@@ -290,12 +291,14 @@ def alta_usuario():
             if Check == '2':
                 return
             if Check == '0':
-                if familia == None:
+                if cuit_principal != None:
                     for i in lista_usuarios:
                         if i['CUIT'] == cuit_principal:
                             i['Familia'].append(diccionario_usuario['CUIT'])
+                            break
                 lista_usuarios.append(diccionario_usuario)
                 print('Usuario ingresado con exito')
+                print('Comuniquese con un encargado de la empresa para cancelar su deuda, al nro 11-22334455')
                 input('Presione Enter para volver al menu anterior')
                 print('\n')
                 Flag,Reinicio = False,False
@@ -312,12 +315,50 @@ def alta_usuario():
 
 
 
-def buscar_usuarios():
-    pass
+def buscar_usuarios(cuit):
+    for indice, usuario in enumerate(lista_usuarios):
+        if usuario['CUIT'] == cuit:
+            return indice, usuario
+    return None, None
+
+def ver_lista_usuarios():
+    for i in lista_usuarios:
+        imprimir_usuario(i)
 
 
-def modificar_usuario():
-    pass
+def modificar_usuario_admin():
+    if lista_usuarios == []:
+        print('La lista de usuarios se encuentra vacia')
+        return
+    Flag = True
+    while Flag:
+        print('Indique el CUIT del usuario que desee modificar o ingrese 0 para volver')
+        cuit = input('>> ')
+        if cuit == '0':
+            return
+        if auth.validar_cuit(cuit):
+            cuit = limpiar_nro(cuit)
+            print('Este es el usuario que desea modificar?')
+            indice, usuario = buscar_usuarios(cuit)
+            if usuario:
+                imprimir_usuario(usuario)
+            else:
+                print('Usuario no encontrado intente nuevamente')
+            if not verificar_decision(cuit):
+                Flag = False
+    modificar = lista_usuarios.pop(indice)
+    #incompleto, se continua para el 100%
+    
+
+def modificar_user(dic):
+    print('Que desea modificar?')
+    contador = 0
+    for key,item in dic.items():
+        contador += 1
+        print(f'[{contador}] {key} : {item}')
+    #incompleto, se continua para el 100%
+
+
 
 
 def baja_usuario():
@@ -326,6 +367,3 @@ def baja_usuario():
 
 def menu_alta_usuario():
     pass
-
-
-alta_usuario()
