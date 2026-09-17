@@ -70,7 +70,7 @@ def mostrar_menu_afiliados():
         print("6. Volver.")
 
         opcion = input("Ingrese una opcion: ")
-
+        cuit = 20444555666 #VARIABLE PARA EVITAR ERRORES Y PROBAR, CAMBIAR POR EL CUIT DEL USER QUE INICIO SESION
         if opcion == "1":
             usuarios.ver_mi_perfil_user(cuit) #Ingresar cuit de usuario loggeado
         elif opcion == "2":
