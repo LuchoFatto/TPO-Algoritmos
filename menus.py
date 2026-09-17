@@ -1,4 +1,7 @@
 import usuarios
+import admin
+import base_datos
+import MedicosFarmacias
 
 def mostrar_menu_principal():
     opcion = ""
@@ -60,9 +63,9 @@ def mostrar_menu_afiliados():
         print("       MENU DE AFILIADOS")
         print("===================================")
         print("1. Ver perfil.")
-        print("2. Ver cartilla.") #detalla que servicios de salud cubre el plan...
-        print("3. Seleccionar / Cambiar plan.")
-        print("4. Turnos.")
+        print("2. Ver cobertura.") #detalla que servicios de salud cubre el plan...
+        print("3. Seleccionar / Cambiar plan. DESHABILITADO")
+        print("4. Turnos. DESHABILITADO")
         print("5. Darse de baja")
         print("6. Volver.")
 
@@ -71,7 +74,7 @@ def mostrar_menu_afiliados():
         if opcion == "1":
             usuarios.ver_mi_perfil_user(cuit) #Ingresar cuit de usuario loggeado
         elif opcion == "2":
-            print("Ver mi cartilla")
+            usuarios.ver_cartilla(cuit)
         elif opcion == "3":
             print("Seleccionar / Cambiar plan")
         elif opcion == "4":
@@ -157,19 +160,19 @@ def mostrar_menu_admin():
         opcion = input("Ingrese una opcion: ")
 
         if opcion == "1":
-            print("Alta de usuario")
+            usuarios.alta_usuario()
 
         elif opcion == "2":
-            print("Baja de usuario")
+            admin.baja_usuario()
 
         elif opcion == "3":
-            print("Lista de afiliados")
+            usuarios.ver_lista_usuarios()
 
         elif opcion == "4":
-            print("Lista de medicos")
+            MedicosFarmacias.imprimir_lista_medicos(base_datos.Medicos)
 
         elif opcion == "5":
-            print("Lista de farmacias")
+            MedicosFarmacias.imprimir_lista_farmacias(base_datos.Farmacias)
 
         elif opcion == "6":
             print("Funcion deshabilitada para la entrega del 40%")

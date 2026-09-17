@@ -16,17 +16,11 @@
 - `[8]` **Plan / Especialidad** (`str`): `"Basico"`, `"Plus"`, `"Familiar"` o especialidad médica.
 """
 
-usuarios = [
-    {
-        "nombre": "Nicolas",
-        "apellido": "Martinez",
-        "email": "nicolasmartinez@gmail.com",
-        "rol": "afiliado"
-    }, 
-    {
-        "nombre": "Marco",
-        "apellido": "Gomez",
-        "email": "marco@gmail.com",
-        "rol": "admin"
-    }
-]
+#Lista de todos los usuarios
+lista_usuarios = []
+
+#lista de todos los medicos
+Medicos = []
+
+#lista de todos las farmacias
+Farmacias = []
