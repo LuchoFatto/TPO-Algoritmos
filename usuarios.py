@@ -358,7 +358,7 @@ def modificar_user(dic):
         print(f'[{contador}] {key} : {item}')
     #incompleto, se continua para el 100%
 
-def ver_mi_perfil_user(cuit):
+def ver_mi_perfil_user(cuit): #asumo que el cuit existe
     _, user = buscar_usuarios(cuit)
     print('Este es tu usuario')
     imprimir_usuario(user)
