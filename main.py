@@ -26,6 +26,6 @@ def main():
 
     usuarios = []
     mostrar_menu_principal()
-    
-    
+
+
 main()

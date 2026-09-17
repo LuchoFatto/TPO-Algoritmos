@@ -1,8 +1,21 @@
-import validaciones
+#Datos iniciales
+def cargar_datos_iniciales():
+    usuarios = []
+    return usuarios
 
 # Usuarios
-def alta_usuario(usuarios):
-    pass
+def alta_usuario(Lista_usuario):
+    cuit = input("Ingrese CUIT/DNI: ")
+    nombre = input("Ingrese nombre y apellido: ")
+    email = input("Ingrese email: ")
+    telefono = input("Ingrese telefono: ")
+
+    nuevo_usuario = [cuit,nombre,email,telefono]
+
+    Lista_usuario.append(nuevo_usuario)
+
+    print("'usuario cargado correctamente'")
+
 
 def modificar_usuario():
     pass
@@ -28,7 +41,7 @@ def alta_medico(usuarios):
     while flag_matricula == False:
         medico_matricula = input("SOLO NUMEROS SIN GUIONES - Ingrese su NRO de matricula: ")
         flag_matricula = validaciones.validador_solo_numeros(medico_matricula)
-    
+
     medico_email = input("Ingrese su email: ")
     flag_email = validaciones.validar_email(medico_email)
     while flag_email == False:
@@ -42,21 +55,21 @@ def modificar_medico(usuarios):
     flag = None
     for user in usuarios:
         if user["rol"] == "medico" and user["matricula"] == str(matricula_medico_eliminar):
-            opcion = input("que desea modificar: 1) mail - 2) contraseña")    
+            opcion = input("que desea modificar: 1) mail - 2) contraseña")
             if opcion == "1":
                 user["email"] = input("Ingrese el nuevo Email del Medico/a: ")#agregar validacion de email y letras
                 flag_email = validaciones.validar_email(user["email"])
                 while flag_email == False:
                     user["email"] = input("Ingrese su mail correctamente: ")
                     flag_email = validaciones.validar_email(user["email"])
- 
-    
+
+
 def eliminar_medico(usuarios):
     matricula_medico_eliminar = input("Para darse de baja ingrese el numero de matricula: ")
     for user in usuarios:
         if user["rol"] == "medico" and user["matricula"] == str(matricula_medico_eliminar):
             confirmacion = input("Confirmacion, desea eliminar? SI/NO:  ") #hay que agregar que preguntar para confirmar
-            if confirmacion == "SI": 
+            if confirmacion == "SI":
                 usuarios.remove(user)
             else:
                 pass #se vuelve al menu donde se eligio eliminar medico
@@ -87,13 +100,13 @@ def cargar_farmacia(farmacias):
     while flag_id_farmacia == False:
         id_farmacia = input("ingrese el nombre de la farmacia: ")
         flag_id_farmacia = validaciones.validador_solo_letras(id_farmacia)
-    
+
     direccion_farmacia = input("Ingrese la direccion: ")
     flag = validaciones.validar_direccion(direccion_farmacia)
     while flag == False:
         direccion_farmacia = input("Ingrese la direccion correctamente: ")
         flag = validaciones.validar_direccion(direccion_farmacia)
-        
+
     numero_farmacia = input("indique nro de telefono: ")
     flag_numero_farmacia = validaciones.validador_solo_numeros(numero_farmacia)
     while flag_numero_farmacia == False:
@@ -108,7 +121,7 @@ def eliminar_farmacia(farmacias):
         if farmacia["id"] == str(id_farmacia_eliminar):
             farmacias.remove(farmacia)
             #confirmacion = input("Confirmacion: desea eliminar? SI/NO") #hay que agregar que preguntar para confirmar
-            #if confirmacion == "SI": 
+            #if confirmacion == "SI":
             #    usuarios.remove(user)
             #else:
             #    pass #se vuelve al menu donde se eligio eliminar medico
@@ -144,14 +157,3 @@ def pedir_turno():
 # Login y permisos
 def mostrar_menu_segun_rol():
     pass
-
-
-"""
-funciones reempalzadas:
-
-    medico_apellido = input("Ingrese su apellido: ")
-    flag_apellido = validaciones.validador_solo_letras(medico_apellido)
-    while flag_apellido == False:
-        medico_apellido = input("SOLO LETRAS - Ingrese su apellido: ")
-        flag_apellido = validaciones.validador_solo_letras(medico_apellido)
-"""

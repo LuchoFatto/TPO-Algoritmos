@@ -1,15 +1,35 @@
-import funciones_iniciales
-from usuarios import users
-from usuarios import farmacias
-
 def mostrar_menu_principal():
+    opcion = ""
+
+    while opcion !="3":
+        print ()
+        print("===================================")
+        print("   SISTEMA DE GESTION OBRA SOCIALL")
+        print("===================================")
+        print("1. Iniciar sesion")
+        print("2. Registrarse")
+        print("3. Salir")
+
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1":
+            mostrar_menu_login()
+        elif opcion == "2":
+            print("registro del nuevo usuario")
+            # Acá pondriamos el alta del user
+        elif opcion == "3":
+            print("Saliste")
+        else:
+            print("Opción invalida...")
+
+def mostrar_menu_login():
     opcion = ""
 
     while opcion != "5":
 
         print()
         print("===================================")
-        print("    SISTEMA DE GESTION OBRA SOCIAL")
+        print("         INICIAR SESIÓN")
         print("===================================")
         print("1. Ingresa como afiliado")
         print("2. Ingresa como medico")
@@ -78,7 +98,6 @@ def mostrar_menu_medico():
 
         if opcion == "1":
             print("Solicitud de baja")
-            funciones_iniciales.eliminar_medico(users) #ACA MODIFIQUE
 
         elif opcion == "2":
             print("Funcion deshabilitada para la entrega del 40%")
@@ -146,11 +165,9 @@ def mostrar_menu_admin():
 
         elif opcion == "4":
             print("Lista de medicos")
-            funciones_iniciales.imprimir_lista_medicos(users) #ACA MODIFIQUE
 
         elif opcion == "5":
             print("Lista de farmacias")
-            funciones_iniciales.imprimir_lista_farmacias(farmacias) #ACA MODIFIQUE
 
         elif opcion == "6":
             print("Funcion deshabilitada para la entrega del 40%")
