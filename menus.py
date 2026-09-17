@@ -20,10 +20,7 @@ def mostrar_menu_principal():
         opcion = input("Seleccione una opción: ")
 
         if opcion == "1":
-            usuario = auth.iniciar_sesion(base_datos.lista_usuarios)
-
-            if usuario != None:
-                mostrar_menu_afiliados(usuario["CUIT"])
+            mostrar_menu_login()
 
         elif opcion == "2":
             usuarios.alta_usuario()
@@ -53,13 +50,24 @@ def mostrar_menu_login():
         opcion = input("Selecciones una opcion: ")
 
         if opcion == "1":
-            mostrar_menu_afiliados()
+            usuario = auth.iniciar_sesion(base_datos.lista_usuarios)
+            
+            if usuario != None:
+                mostrar_menu_afiliados(usuario["CUIT"])
+
         elif opcion == "2":
-            mostrar_menu_medico()
+            print('Deshabilitado')
+            input('Presione Enter par volver')
+            """mostrar_menu_medico()"""
         elif opcion == "3":
-            mostrar_menu_farmacia()
+            print('Deshabilitado')
+            input('Presione Enter par volver')
+            """mostrar_menu_farmacia()"""
         elif opcion == "4":
-            mostrar_menu_admin()
+            if auth.iniciar_sesion_admin():
+                mostrar_menu_admin()
+            else:
+                return
 
 
 def mostrar_menu_afiliados(cuit):

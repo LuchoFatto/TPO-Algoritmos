@@ -17,6 +17,7 @@ def imprimir_usuario(dic):
     print('-'*30)
 
 def limpiar_nro(nro):
+    nro = str(nro)
     return int(re.sub(r'[\.\-\s]', "", nro))
 
 def verificar_decision(elemento):

@@ -1,4 +1,5 @@
 import re
+import base_datos
 
 
 def validar_email(email):
@@ -136,3 +137,30 @@ def iniciar_sesion(lista_usuarios):
 
     print("Se agotaron los intentos")
     return None
+
+
+def iniciar_sesion_admin():
+
+    print()
+    print("===================================")
+    print("          INICIAR SESION")
+    print("===================================")
+
+    user = input("Ingrese su USER de ADMIN: ")
+
+
+    if base_datos.Admin["Usuario"] == user:
+        intentos = 3
+        while intentos > 0:
+            password = input("Ingrese su contraseña: ")
+            if base_datos.Admin["Contraseña"] == password:
+                return True
+            else:
+                intentos -= 1
+                print("Contraseña incorrecta")
+                print("Intentos restantes:", intentos)
+                print("Se agotaron los intentos")
+                return None
+    else:
+        print("Usuario incorrecto")
+        return False
