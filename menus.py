@@ -4,11 +4,12 @@ import base_datos
 import MedicosFarmacias
 import auth
 
+
 def mostrar_menu_principal():
     opcion = ""
 
-    while opcion !="3":
-        print ()
+    while opcion != "3":
+        print()
         print("===================================")
         print("   SISTEMA DE GESTION OBRA SOCIALL")
         print("===================================")
@@ -19,7 +20,7 @@ def mostrar_menu_principal():
         opcion = input("Seleccione una opción: ")
 
         if opcion == "1":
-            usuario = auth.iniciar_sesion(usuarios.lista_usuarios)
+            usuario = auth.iniciar_sesion(base_datos.lista_usuarios)
 
             if usuario != None:
                 mostrar_menu_afiliados(usuario["CUIT"])
@@ -32,6 +33,7 @@ def mostrar_menu_principal():
             print("Saliste")
         else:
             print("Opción invalida...")
+
 
 def mostrar_menu_login():
     opcion = ""
@@ -69,16 +71,16 @@ def mostrar_menu_afiliados(cuit):
         print("       MENU DE AFILIADOS")
         print("===================================")
         print("1. Ver perfil.")
-        print("2. Ver cobertura.") #detalla que servicios de salud cubre el plan...
+        print("2. Ver cobertura.")  # detalla que servicios de salud cubre el plan...
         print("3. Seleccionar / Cambiar plan. DESHABILITADO")
         print("4. Turnos. DESHABILITADO")
         print("5. Darse de baja")
         print("6. Volver.")
 
         opcion = input("Ingrese una opcion: ")
-        cuit = 20444555666 #VARIABLE PARA EVITAR ERRORES Y PROBAR, CAMBIAR POR EL CUIT DEL USER QUE INICIO SESION
+        cuit = 20444555666  # VARIABLE PARA EVITAR ERRORES Y PROBAR, CAMBIAR POR EL CUIT DEL USER QUE INICIO SESION
         if opcion == "1":
-            usuarios.ver_mi_perfil_user(cuit) #Ingresar cuit de usuario loggeado
+            usuarios.ver_mi_perfil_user(cuit)  # Ingresar cuit de usuario loggeado
         elif opcion == "2":
             usuarios.ver_cartilla(cuit)
         elif opcion == "3":
@@ -86,11 +88,12 @@ def mostrar_menu_afiliados(cuit):
         elif opcion == "4":
             print("Ver mis Turnos")
         elif opcion == "5":
-            usuarios.baja_usuario(cuit)  #Ingresar cuit de usuario loggeado
+            usuarios.baja_usuario(cuit)  # Ingresar cuit de usuario loggeado
         elif opcion == "6":
             print("Volviste al menu principal...")
         else:
             print("Opcion invalida")
+
 
 def mostrar_menu_medico():
     opcion = ""
@@ -123,7 +126,6 @@ def mostrar_menu_medico():
             print("Opcion invalida")
 
 
-
 def mostrar_menu_farmacia():
     opcion = ""
 
@@ -146,6 +148,7 @@ def mostrar_menu_farmacia():
 
         else:
             print("Opcion invalida")
+
 
 def mostrar_menu_admin():
     opcion = ""
