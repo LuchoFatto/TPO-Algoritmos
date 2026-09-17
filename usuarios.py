@@ -329,7 +329,7 @@ def eliminar_usuario(cuit):
 
 def buscar_usuarios(cuit):
     for indice, usuario in enumerate(base_datos.lista_usuarios):
-        if usuario['CUIT'] == int(cuit):
+        if usuario['CUIT'] == limpiar_nro(cuit):
             return indice, usuario
     return None, None
 

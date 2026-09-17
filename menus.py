@@ -144,18 +144,19 @@ def mostrar_menu_farmacia():
 def mostrar_menu_admin():
     opcion = ""
 
-    while opcion != "7":
+    while opcion != "8":
         print()
         print("===================================")
         print("        MENU GESTION / ADMIN")
         print("===================================")
         print("1. Dar de alta usuario")
         print("2. Dar de baja usuario")
-        print("3. Ver lista de afiliados")
-        print("4. Ver lista de medicos")
-        print("5. Ver lista de farmacias")
-        print("6. Ver historial - DESHABILITADO")
-        print("7. Volver")
+        print("3. Manejar usuarios deudores")
+        print("4. Ver lista de afiliados")
+        print("5. Ver lista de medicos")
+        print("6. Ver lista de farmacias")
+        print("7. Ver historial - DESHABILITADO")
+        print("8. Volver")
 
         opcion = input("Ingrese una opcion: ")
 
@@ -166,18 +167,21 @@ def mostrar_menu_admin():
             admin.baja_usuario()
 
         elif opcion == "3":
-            usuarios.ver_lista_usuarios()
+            admin.deudores()
 
         elif opcion == "4":
-            MedicosFarmacias.imprimir_lista_medicos(base_datos.Medicos)
+            usuarios.ver_lista_usuarios()
 
         elif opcion == "5":
-            MedicosFarmacias.imprimir_lista_farmacias(base_datos.Farmacias)
+            MedicosFarmacias.imprimir_lista_medicos(base_datos.Medicos)
 
         elif opcion == "6":
-            print("Funcion deshabilitada para la entrega del 40%")
+            MedicosFarmacias.imprimir_lista_farmacias(base_datos.Farmacias)
 
         elif opcion == "7":
+            print("Funcion deshabilitada para la entrega del 40%")
+
+        elif opcion == "8":
             print("Volviendo al menu principal...")
 
         else:

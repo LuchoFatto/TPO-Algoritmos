@@ -1,7 +1,3 @@
-import funciones_iniciales
-from usuarios import users
-from usuarios import farmacias
-
 from menus import mostrar_menu_principal
 
 #print(users),
@@ -24,7 +20,6 @@ from menus import mostrar_menu_principal
 
 def main():
 
-    usuarios = []
     mostrar_menu_principal()
 
 
