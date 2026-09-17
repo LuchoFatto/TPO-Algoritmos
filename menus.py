@@ -1,4 +1,5 @@
 import usuarios
+import auth
 
 def mostrar_menu_principal():
     opcion = ""
@@ -15,10 +16,15 @@ def mostrar_menu_principal():
         opcion = input("Seleccione una opción: ")
 
         if opcion == "1":
-            mostrar_menu_login()
+            usuario = auth.iniciar_sesion(usuarios.lista_usuarios)
+
+            if usuario != None:
+                mostrar_menu_afiliados(usuario["CUIT"])
+
         elif opcion == "2":
-            print("registro del nuevo usuario")
-            # Acá pondriamos el alta del user
+            usuarios.alta_usuario()
+        # Acá pondriamos el alta del user
+
         elif opcion == "3":
             print("Saliste")
         else:
@@ -51,7 +57,7 @@ def mostrar_menu_login():
             mostrar_menu_admin()
 
 
-def mostrar_menu_afiliados():
+def mostrar_menu_afiliados(cuit):
     opcion = ""
 
     while opcion != "6":
