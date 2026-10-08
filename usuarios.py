@@ -4,7 +4,7 @@ import base_datos
 
 #Todos los planes disponibles y sus descripciones (Nombre, Precio Mensual, Descripcion)
 Planes = (('Basico',5000,"Covertura del 40%"),('Plus',10000,"Covertura del 65%"),('Familiar',12000,"Covertura del 50% y posibilidad de añadir hasta 2 hijos y 1 conyuge"))
-
+#cambiar a mayuscula
 
 
 
