@@ -81,6 +81,9 @@ def validacion_letras(texto):
 
     return bool(re.match(patron_letras, texto))
 
+def limpiar_nro(nro):
+    nro = str(nro)
+    return int(re.sub(r'[\.\-\s]', "", nro))
 
 def iniciar_sesion(lista_usuarios):
 

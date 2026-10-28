@@ -1,30 +1,45 @@
 import re
 import auth
 import base_datos
+import time
+import os
 
 #Todos los planes disponibles y sus descripciones (Nombre, Precio Mensual, Descripcion)
-Planes = (('Basico',5000,"Covertura del 40%"),('Plus',10000,"Covertura del 65%"),('Familiar',12000,"Covertura del 50% y posibilidad de añadir hasta 2 hijos y 1 conyuge"))
-#cambiar a mayuscula
+PLANES = (
+        ('Basico',5000,"Covertura del 40%"),
+        ('Plus',10000,"Covertura del 65%"),
+        ('Familiar',12000,"Covertura del 50% y posibilidad de añadir hasta 2 hijos y 1 conyuge")
+)
 
 
 
 
 #funciones auxiliares
-def imprimir_usuario(dic):
+def imprimir_usuario(dic:dict):
+    """Imprime el diccionario ingresado de usuario bonito
+
+    Args:
+        dic (dict): usuario a imprimir
+    """    
     for key,valor in dic.items():
         print('-'*30)
         print(f'| {key} : {valor} |')
+        esperar(0.2)
     print('-'*30)
 
-def limpiar_nro(nro):
-    nro = str(nro)
-    return int(re.sub(r'[\.\-\s]', "", nro))
+def esperar(num = 0.3):
+    """Esperar para imprimir proxima linea
+
+    Args:
+        num (float, optional): Tiempo a esperar. Defaults to 0.3.
+    """    
+    time.sleep(num)
 
 def verificar_decision(elemento):
     """Modo de verificar si la decision del usuario fue correcta
 
     Args:
-        elemento any: Solo utilizado para mostrar en texto lo que escribio el usuario
+        elemento->any: Solo utilizado para mostrar en texto lo que escribio el usuario
 
     Returns:
         boolean: False si esta de acuerdo con lo escrito, True si no
@@ -33,195 +48,216 @@ def verificar_decision(elemento):
     while Flag:
         print('-=-'*10)
         print(f'Usted ha ingresado {elemento}')
+        esperar()
         print(f'Si esta bien ingresado ingrese "1"')
+        esperar()
         print(f'Si desea reingresar ingrese "2"')
+        esperar()
         dec = input('>> ')
-        print('-=-'*10)
-        if dec == '1':
-            return False
-        elif dec == '2':
-            return True
-        else:
-            print('Ingrese una opcion adecuada')
-            input('Presione Enter para reintentar')
-            print('\n\n')
+        match dec:
+            case '1':
+                return False
+            case '2':
+                return True
+            case _:
+                print('Ingrese una opcion adecuada')
+                input('Presione Enter para reintentar')
+                os.system('cls')
 
 
 #funciones para modificar o crear elementos de Usuario
-def pedir_nombre(pedir):
-    """Ingresar, Validar y Verificar un Nombre, Apellido, etc. Ingresado por el Usuario
+def pedido_datos(mensaje:str, funcion_auth, mensaje_error:str, transformar = False, es_cuit = False):
+    """Funcion Generalizada para carga de datos de usuario
 
     Args:
-        pedir (str): Que se le pide al usuario que ingrese
+        mensaje (str): Mensaje a mostrar
+        funcion_auth (funcion): Funcion autenticadora
+        mensaje_error (str): Mensaje de error a mostrar si falla la funcion
+        transformar (bool, optional): Si debe ejecutar "limpiar_nro" o no. Defaults to False.
+        es_cuit (bool, optional): Si debe verificar si el cuit existe en la DB. Defaults to False.
 
     Returns:
-        str: Nombre,Apellido, Etc. validado
-    """
+        str | int: Devuelve el valor pedido validado y verificado
+    """    
     Flag = True
-    while Flag:
-        nombre = input(f'Ingrese el {pedir}\n>> ')
-        if not auth.validacion_letras(nombre):
-            print('Ingrese exclusivamente letras')
-            input('Ingrese Enter para reintentar')
-            print('\n\n')
-        else:
-            Flag = verificar_decision(nombre)
-    return nombre
 
-def pedir_cuit():
-    """Ingreso, Validacion y verificacion de CUIT de Usuario
-
-    Returns:
-        int: CUIT Validado y no repetido ingresado por el Usuario
-    """
-    Flag = True
     while Flag:
-        cuit = input('Ingrese el CUIT\n>> ')
-        if not auth.validar_cuit(cuit):
-            print('Ingrese correctamente el CUIT')
-            input('Ingrese Enter para reintentar')
-            print('\n\n')
+        dato = input(f'{mensaje}\n>> ')
+
+        if not funcion_auth(dato):
+            print(mensaje_error)
+            input('Presione Enter para reintentar')
+            os.system('cls')
         else:
-            cuit = limpiar_nro(cuit)
-            for i in base_datos.lista_usuarios:
-                if i['CUIT'] == cuit:
+            if transformar:
+                dato = auth.limpiar_nro(dato)
+
+            if es_cuit:
+                cuit_duplicado = False
+                for i in base_datos.lista_usuarios:
+                    if i['CUIT'] == dato:
+                        cuit_duplicado = True
+                        break
+                
+                if cuit_duplicado:
                     print('El CUIT ingresado ya existe')
                     input('Ingrese Enter para reintentar')
-                    cuit = None
-                    break
-            if cuit != None:
-                Flag = verificar_decision(cuit)
-    return cuit
+                    os.system('cls')
+                    continue #VERIFICAR SI SE PUEDE USAR
 
-def pedir_telefono():
-    """Ingreso, Validacion y verificacion de telefono del Usuario
+        if not verificar_decision(dato):
+            return dato
 
-    Returns:
-        int: Telefono Validado
-    """
-    Flag = True
-    while Flag:
-        telefono = input('Ingrese el Telefono (Sin el 15 ni 0)\n>> ')
-        if not auth.validar_numero_telefono(telefono):
-            print('Ingrese correctamente el Telefono')
-            input('Ingrese Enter para reintentar')
-            print('\n\n')
-        else:
-            telefono = int(limpiar_nro(telefono))
-            Flag = verificar_decision(telefono)
-    return telefono
-
-def pedir_email():
-    """Ingreso, Validacion y verificacion de Email de Usuario
+def elegir_plan():
+    """Imprime las posibles elecciones y permite eleccion, para devolver la elegida
 
     Returns:
-        str: Email validado de Usuario
-    """
-    Flag = True
-    while Flag:
-        email = input('Ingrese el Email\n>> ')
-        if not auth.validar_email(email):
-            print('Ingrese un Email adecuado')
-            input('Ingrese Enter para reintentar')
-            print('\n\n')
-        else:
-            Flag = verificar_decision(email)
-    return email
-
-def pedir_password():
-    """Ingreso, Validacion y Verificacion de Contraseña
-
-    Returns:
-        str: Contraseña Validad de Usuario
-    """
-    Flag = True
-    while Flag:
-        password = input('Ingrese su contraseña (Debe tener al menos 8 elementos, uno especial y un numero)\n>> ')
-        if not auth.validar_contrasenia(password):
-            print('Ingrese un Contraseña adecuada')
-            input('Ingrese Enter para reintentar')
-            print('\n\n')
-        else:
-            Flag = verificar_decision(password)
-    return password
-
-def pedir_plan():
-    """Eleccion de Plan en base a la tupla 'Planes'
-
-    Returns:
-        tuple: Con cualquier plan Retorna (Plan elegido, None, None); si eligio familiar dueño (Familiar Dueño, [], None); si elijo
-            familiar hijo (Familiar Hijo, None, Cuit de Dueño)
-    """
+        str: Nombre del plan elegido
+    """    
     print('Elija un Plan de Pago')
     Flag = True
     while Flag:
-
         #Muestra los Planes en pantalla
-        Contador = 0
-        for i in Planes:
-            Contador += 1
-            print(f'{Contador}- {i[0]} >> {i[2]} << ${i[1]} x Mes')
-        eleccion = int(input('\n--Ingrese el numero de la opcion acorde--\n>> ')) #Falta verificar que sea numero
-        if (eleccion > Contador) or (eleccion < 1):
-            print('Numero Invalido')
+        try:
+            for Num,i in enumerate(PLANES):
+                print(f'{Num+1}- {i[0]} >> {i[2]} << ${i[1]} x Mes')
+                esperar()
+            print('--------------------')
+            eleccion = int(input('\n--Ingrese el numero de la opcion acorde--\n>> '))
+        except:
+            print('Ingreso Invalido')
+            esperar()
             input('Presione Enter Para reintentar')
-            print('\n\n')
+            os.system('cls')
+
+        if (eleccion > len(PLANES)) or (eleccion < 1):
+            print('Numero Invalido')
+            esperar()
+            input('Presione Enter Para reintentar')
+            os.system('cls')
         else:
             Flag = False
 
-    plan = Planes[eleccion-1][0]
-    familia,CUIT_principal = None,None
+    return PLANES[eleccion-1][0]
 
-    if plan == 'Familiar':
-        Flag = True
-        while Flag:
-            print('Usted ha seleccionado el plan familiar')
-            print('Quiere incluirse a un plan existente (No puede haber mas de 3 afiliados + titular en el mismo plan familiar)(Ingrese 1),\nSi desea ser dueño (Ingrese 2)')
-            Check = input('>> ')
-            if Check == '2':
-                plan = 'Familiar Dueño'
-                familia = []
-                print('Se ha guardado como dueño del plan familiar')
-                input('Presione Enter para continuar')
-                print('\n')
-                CUIT_principal = None
-                return plan, familia , CUIT_principal
-            elif Check == '1':
-                if not (base_datos.lista_usuarios == []):
-                    Valido, Find = True,False
-                    while Valido:
-                        print('Ingrese el CUIT de la persona a la cual se va a incluir, si quiere volver ingrese 0')
-                        CUIT_principal = input('>> ')
-                        if CUIT_principal != '0':
-                            if auth.validar_cuit(CUIT_principal):
-                                CUIT_principal = limpiar_nro(CUIT_principal)
-                                for i in base_datos.lista_usuarios:
-                                    if i['CUIT'] == CUIT_principal and (i['Plan'] == 'Familiar Dueño'):
-                                        Find = True
-                                        if len(i['Familia']) < 3:
-                                            plan = 'Familiar Hijo'
-                                            return plan, familia , CUIT_principal
-                                        else:
-                                            print('Se ha encontrado el CUIT indicado pero se encuentra en el maximo de afiliados')
-                                            break
-                                if not Find:
-                                    print('No se ha encontrado ningun afiliado con el plan familiar dueño con ese CUIT')
-                            else:
-                                print('Ingrese un CUIT valido')
-                                print('\n')
-                        else:
-                            Valido = False
-                    input('Presione Enter para volver')
-                    print('\n')
-                else:
-                    print('No hay usuarios afiliados aun, elija ser dueño')
+def incluirse_plan_familiar(cuit):
+    """Verifica si el CUIT del Dueño es correcto, existe y si no esta lleno su lista de familia. Luego se añade el CUIT
+    del usuario a dicha lista si cumple y retorna
+
+    Args:
+        cuit (str): Cuit del usuario ingresando
+
+    Returns:
+        Dict: Diccionario de hijo completo
+        None: Si no se completa el ingreso
+    """
+    #Validar que exista algun usuario en la DB
+    if (base_datos.lista_usuarios == []):
+        print('No hay usuarios afiliados aun, elija otra opcion') 
+    else:
+        Valido = True
+        while Valido:
+            print('Ingrese el CUIT de la persona a la cual se va a incluir, si quiere volver ingrese 0')
+            CUIT_principal = input('>> ')
+
+            #Salir del Case, Volver a elegir
+            if CUIT_principal == '0':
+                Valido = False
+
+            #Validar que sea CUIT
+            elif auth.validar_cuit(CUIT_principal):
+                print('Ingrese un CUIT valido')
+                esperar()
+                input('Presione Enter para reintentar')
+                os.system('cls')
 
             else:
+                CUIT_principal = auth.limpiar_nro(CUIT_principal)
+                #Buscamos el dueño al que se quiere incluir
+                for i in base_datos.lista_usuarios:
+                    if i['CUIT'] == CUIT_principal and (i['Plan'] == 'Familiar Dueño'):
+
+                        #Si esta lleno, no lo añade
+                        if len(i['Familia']) > 2:
+                            print('Se ha encontrado el CUIT indicado pero se encuentra en el maximo de afiliados')
+                            esperar()
+                            input('Presione Enter para reintentar')
+                            os.system('cls')
+                            break
+
+                        #Sino lo añade al dueño y retorna
+                        else:
+                            i['CUIT'].append(cuit)
+                            return {
+                                    'Plan': 'Familiar Hijo',
+                                    'Dueño': CUIT_principal
+                                }
+                
+                print('No se ha encontrado ningun afiliado con el plan familiar dueño con ese CUIT')
+            
+    input('Presione Enter para volver')
+    os.system('cls')
+    return None
+
+def plan_familiar(cuit):
+    """Eleccion de tipo de plan familiar, devolucion de diccionario con datos en base a eleccion
+
+    Args:
+        cuit (str): cuit de usuario ingresando
+
+    Returns:
+        Dict: Diccionario con keys a añadir a diccionario base
+    """    
+    Flag = True
+    print('Usted ha seleccionado el plan familiar')
+    esperar()
+    while Flag:
+        print('[1] Incluirse a un Plan existente\n !!No puede haber mas de 3 afiliados + titular en el mismo plan familiar!!')
+        esperar()
+        print('[2] Ser Dueño principal')
+        esperar()
+        Check = input('>> ')
+
+        match Check:
+            case '2':
+                print('Se ha guardado como dueño del plan familiar')
+                esperar()
+                input('Presione Enter para continuar')
+                os.system('cls')
+                return {
+                    'Plan': 'Familiar Dueño',
+                    'Familia':[]
+                }
+
+            
+            case '1':
+                hijo = incluirse_plan_familiar(cuit)
+                if hijo:
+                    return hijo
+
+            case _:
                 print('Ingrese uno de los valores indicados')
-                print('Revise los datos, si esta todo correcto ingrese 1, sino ingrese 0 y vuelva a intentar')
-                print('\n')
-    else:
-        return plan, familia, CUIT_principal
+                esperar()
+                os.system('cls')
+
+def pedir_plan(cuit):
+    """Eleccion de plan y sus opciones
+
+    Args:
+        cuit (str): Cuit del usuario ingresando
+
+    Returns:
+        Dict: Diccionario con keys a añadir a diccionario base
+    """    
+
+    plan = {
+        'Plan' : elegir_plan()
+    }
+
+    if plan['Plan'] == 'Familiar':
+        plan.update(plan_familiar(cuit))
+    
+    return plan
 
 
 
@@ -233,83 +269,86 @@ def alta_usuario():
     Reinicio = True
 
     while Reinicio:
-        print('-'*50)
+        diccionario_usuario = {
+
         #Ingreso de Nombre de Usuario
-        Nombre = pedir_nombre('Nombre')
-        print('-'*50)
+        'Nombre': pedido_datos('Ingrese el nombre', auth.validacion_letras, 'Ingrese exclusivamente letras'),
 
         #Ingreso de Apellido de Usuario
-        Apellido = pedir_nombre('Apellido')
-        print('-'*50)
+        'Apellido' : pedido_datos('Ingrese el apellido', auth.validacion_letras, 'Ingrese exclusivamente letras'),
 
         #Ingreso de CUIT de Usuario
-        CUIT = pedir_cuit()
-        print('-'*50)
+        'CUIT' : pedido_datos('Ingrese el CUIT', auth.validar_cuit, 'Ingrese correctamente el CUIT', True, True),
 
         #Ingreso de Telefono de Usuario
-        Telefono = pedir_telefono()
-        print('-'*50)
+        'Telefono' : pedido_datos('Ingrese el Telefono (Sin el 15 ni 0)', auth.validar_numero_telefono, 'Ingrese correctamente el Telefono',True),
 
         #Ingreso de Email de Usuario
-        Email = pedir_email()
-        print('-'*50)
-
-        #Ingreso Plan de Usuario
-        Plan, familia, cuit_principal = pedir_plan()
-        print('-'*50)
+        'Email' : pedido_datos('Ingrese el E-Mail', auth.validar_email, 'Ingrese un Email Valido'),
 
         #Ingreso de Contraseña de Usuario
-        Password = pedir_password()
-        print('-'*50)
+        'Password' : pedido_datos('Ingrese su contraseña (Debe tener al menos 8 elementos, uno especial y un numero)',auth.validar_contrasenia,'Ingrese un Contraseña adecuada'),
 
+        'Historial': [],
 
-        diccionario_usuario = {
-            'Nombre': Nombre,
-            'Apellido': Apellido,
-            'CUIT': CUIT,
-            'Telefono': Telefono,
-            'Email': Email,
-            'Plan': Plan,
-            'Password': Password,
-            'Historial': [],
-            'Deudor' : True
+        'Deudor' : True,
+
+        'Activo' : True
         }
 
-        if familia != None:
-            diccionario_usuario['Familia'] = familia
-        elif cuit_principal != None:
-            diccionario_usuario['Dueño'] = cuit_principal
+        #Ingreso Plan de Usuario
+        diccionario_usuario.update(pedir_plan(diccionario_usuario['CUIT']))
 
-        print('\n\n')
-        imprimir_usuario(diccionario_usuario)
-        print('\n')
-        print('Revise los datos, si desea salir sin cargar ingrese 2\nSi desea volver a intentar ingrese 1\nSi esta todo correcto ingrese 0') #Posible recursividad en el futuro
+
+
         Check,Flag = True,True
         while Flag:
+            print('\n')
+            imprimir_usuario(diccionario_usuario)
+            print('\n')
+            print('Revise los datos, si desea:') #Posible recursividad en el futuro
+            esperar()
+            print('[2] Salir sin cargar')
+            esperar()
+            print('[1] Volver a Reingresar')
+            esperar()
+            print('[0] Todo correcto, continuar')
             Check = input('>> ')
-            if Check == '2':
-                return
-            if Check == '0':
-                if cuit_principal != None:
-                    for i in base_datos.lista_usuarios:
-                        if i['CUIT'] == cuit_principal:
-                            i['Familia'].append(diccionario_usuario['CUIT'])
-                            break
-                base_datos.lista_usuarios.append(diccionario_usuario)
-                print('Usuario ingresado con exito')
-                print('Comuniquese con un encargado de la empresa para cancelar su deuda, al nro 11-22334455')
-                input('Presione Enter para volver al menu anterior')
-                print('\n')
-                Flag,Reinicio = False,False
-            elif Check == '1':
-                print('Reiniciando proceso de carga')
-                input('Presione Enter para seguir')
-                print('\n')
-                Flag = False
-            else:
-                print('Ingrese uno de los valores indicados')
-                print('Revise los datos, si esta todo correcto ingrese 1, sino ingrese 0 y vuelva a intentar')
-                print('\n')
+            match Check:
+                #Salir SIN CARGAR
+                case '2':
+                    return
+
+                #Reingreso de datos
+                case '1':
+                    print('Reiniciando proceso de carga...')
+                    esperar(2)
+                    input('Presione Enter para seguir')
+                    print('\n')
+                    Flag = False
+
+
+                #Todo correcto, carga de datos
+                case '0':
+                    if 'Dueño' in diccionario_usuario:
+                        for i in base_datos.lista_usuarios:
+                            if i['CUIT'] == diccionario_usuario['Dueño']:
+                                i['Familia'].append(diccionario_usuario['CUIT'])
+                                break
+                    base_datos.lista_usuarios.append(diccionario_usuario)
+                    print('Usuario ingresado con exito')
+                    esperar()
+                    print('Comuniquese con un encargado de la empresa para cancelar su deuda, al nro 11-22334455')
+                    esperar()
+                    input('Presione Enter para volver al menu anterior')
+                    os.system('cls')
+                    Flag,Reinicio = False,False
+                
+                case _:
+                    print('Ingrese uno de los valores indicados')
+                    esperar()
+                    input('Ingrese Enter para reintentar')
+                    os.system('cls')
 
 def baja_usuario(cuit):
     if not verificar_decision('Darse de Baja'):
@@ -330,7 +369,7 @@ def eliminar_usuario(cuit):
 
 def buscar_usuarios(cuit):
     for indice, usuario in enumerate(base_datos.lista_usuarios):
-        if usuario['CUIT'] == limpiar_nro(cuit):
+        if usuario['CUIT'] == auth.limpiar_nro(cuit):
             return indice, usuario
     return None, None
 
@@ -346,7 +385,7 @@ def ver_mi_perfil_user(cuit): #asumo que el cuit existe
 def ver_cartilla(cuit):
     print('Esta es tu cartilla')
     indice, user = buscar_usuarios(cuit)
-    for i in Planes:
+    for i in PLANES:
         if (user['Plan'].split()[0] == i[0]):
             print(i[2])
             break
@@ -362,7 +401,7 @@ def modificar_usuario_admin():
         if cuit == '0':
             return
         if auth.validar_cuit(cuit):
-            cuit = limpiar_nro(cuit)
+            cuit = auth.limpiar_nro(cuit)
             print('Este es el usuario que desea modificar?')
             indice, usuario = buscar_usuarios(cuit)
             if usuario:
