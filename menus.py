@@ -1,8 +1,10 @@
+
 import usuarios
 import admin
 import base_datos
 import MedicosFarmacias
 import auth
+import time
 
 
 def mostrar_menu_principal():
@@ -10,64 +12,107 @@ def mostrar_menu_principal():
 
     while opcion != "3":
         print()
-        print("===================================")
-        print("   SISTEMA DE GESTION OBRA SOCIALL")
-        print("===================================")
+        print("=" * 40)
+        time.sleep(0.1)
+        print("   SISTEMA DE GESTION OBRA SOCIAL")
+        time.sleep(0.1)
+        print("=" * 40)
+        time.sleep(0.1)
         print("1. Iniciar sesion")
+        time.sleep(0.1)
         print("2. Registrarse")
+        time.sleep(0.1)
         print("3. Salir")
+        time.sleep(0.1)
+        print("=" * 40)
 
-        opcion = input("Seleccione una opción: ")
+        opcion = input("Seleccione una opcion: ")
 
         if opcion == "1":
+            print("\nIniciando sesion...")
+            time.sleep(1)
             mostrar_menu_login()
 
         elif opcion == "2":
+            print("\nCargando registro...")
+            time.sleep(1)
             usuarios.alta_usuario()
-        # Acá pondriamos el alta del user
+            input("\nPresione ENTER para continuar...")
 
         elif opcion == "3":
-            print("Saliste")
+            print("\nSaliendo del sistema...")
+            time.sleep(2)
+            print("Hasta luego!")
+
         else:
-            print("Opción invalida...")
+            print("\nOpcion invalida...")
+            time.sleep(1)
 
 
 def mostrar_menu_login():
     opcion = ""
 
     while opcion != "5":
-
         print()
-        print("===================================")
-        print("         INICIAR SESIÓN")
-        print("===================================")
+        print("=" * 40)
+        time.sleep(0.1)
+        print("           INICIAR SESION")
+        time.sleep(0.1)
+        print("=" * 40)
+        time.sleep(0.1)
         print("1. Ingresa como afiliado")
+        time.sleep(0.1)
         print("2. Ingresa como medico")
+        time.sleep(0.1)
         print("3. Ingresa como farmacia")
-        print("4. Ingresa como Admin/ Gestion")
-        print("5. Salir")
+        time.sleep(0.1)
+        print("4. Ingresa como Admin / Gestion")
+        time.sleep(0.1)
+        print("5. Volver")
+        time.sleep(0.1)
+        print("=" * 40)
 
-        opcion = input("Selecciones una opcion: ")
+        opcion = input("Seleccione una opcion: ")
 
         if opcion == "1":
+            print("\nCargando inicio de sesion...")
+            time.sleep(1)
+
             usuario = auth.iniciar_sesion(base_datos.lista_usuarios)
-            
+
             if usuario != None:
+                print("\nIngresando al sistema...")
+                time.sleep(1)
                 mostrar_menu_afiliados(usuario["CUIT"])
 
         elif opcion == "2":
-            print('Deshabilitado')
-            input('Presione Enter par volver')
-            """mostrar_menu_medico()"""
+            print("\nFuncion deshabilitada")
+            input("\nPresione ENTER para volver...")
+            # mostrar_menu_medico()
+
         elif opcion == "3":
-            print('Deshabilitado')
-            input('Presione Enter par volver')
-            """mostrar_menu_farmacia()"""
+            print("\nFuncion deshabilitada")
+            input("\nPresione ENTER para volver...")
+            # mostrar_menu_farmacia()
+
         elif opcion == "4":
+            print("\nCargando acceso de administrador...")
+            time.sleep(1)
+
             if auth.iniciar_sesion_admin():
+                print("\nAcceso autorizado...")
+                time.sleep(1)
                 mostrar_menu_admin()
             else:
                 return
+
+        elif opcion == "5":
+            print("\nVolviendo al menu principal...")
+            time.sleep(1)
+
+        else:
+            print("\nOpcion invalida...")
+            time.sleep(1)
 
 
 def mostrar_menu_afiliados(cuit):
@@ -75,32 +120,63 @@ def mostrar_menu_afiliados(cuit):
 
     while opcion != "6":
         print()
-        print("===================================")
-        print("       MENU DE AFILIADOS")
-        print("===================================")
+        print("=" * 40)
+        time.sleep(0.1)
+        print("         MENU DE AFILIADOS")
+        time.sleep(0.1)
+        print("=" * 40)
+        time.sleep(0.1)
         print("1. Ver perfil.")
-        print("2. Ver cobertura.")  # detalla que servicios de salud cubre el plan...
+        time.sleep(0.1)
+        print("2. Ver cobertura.")
+        time.sleep(0.1)
         print("3. Seleccionar / Cambiar plan. DESHABILITADO")
+        time.sleep(0.1)
         print("4. Turnos. DESHABILITADO")
+        time.sleep(0.1)
         print("5. Darse de baja")
+        time.sleep(0.1)
         print("6. Volver.")
+        time.sleep(0.1)
+        print("=" * 40)
 
         opcion = input("Ingrese una opcion: ")
-        
+
         if opcion == "1":
-            usuarios.ver_mi_perfil_user(cuit)  # Ingresar cuit de usuario loggeado
+            print("\nCargando perfil...")
+            time.sleep(1)
+            usuarios.ver_mi_perfil_user(cuit)
+            input("\nPresione ENTER para continuar...")
+
         elif opcion == "2":
+            print("\nCargando cobertura...")
+            time.sleep(1)
             usuarios.ver_cartilla(cuit)
+            input("\nPresione ENTER para continuar...")
+
         elif opcion == "3":
-            print("Seleccionar / Cambiar plan")
+            print("\nSeleccionar / Cambiar plan")
+            print("Funcion deshabilitada")
+            input("\nPresione ENTER para volver...")
+
         elif opcion == "4":
-            print("Ver mis Turnos")
+            print("\nVer mis turnos")
+            print("Funcion deshabilitada")
+            input("\nPresione ENTER para volver...")
+
         elif opcion == "5":
-            usuarios.baja_usuario(cuit)  # Ingresar cuit de usuario loggeado
+            print("\nProcesando solicitud de baja...")
+            time.sleep(1)
+            usuarios.baja_usuario(cuit)
+            input("\nPresione ENTER para continuar...")
+
         elif opcion == "6":
-            print("Volviste al menu principal...")
+            print("\nVolviendo al menu anterior...")
+            time.sleep(1)
+
         else:
-            print("Opcion invalida")
+            print("\nOpcion invalida")
+            time.sleep(1)
 
 
 def mostrar_menu_medico():
@@ -108,54 +184,81 @@ def mostrar_menu_medico():
 
     while opcion != "4":
         print()
-        print("===================================")
-        print("          MENU DE MEDICO")
-        print("===================================")
+        print("=" * 40)
+        time.sleep(0.1)
+        print("           MENU DE MEDICO")
+        time.sleep(0.1)
+        print("=" * 40)
+        time.sleep(0.1)
         print("1. Darse de alta")
+        time.sleep(0.1)
         print("2. Darse de baja")
+        time.sleep(0.1)
         print("3. Ver pacientes asignados - DESHABILITADO")
+        time.sleep(0.1)
         print("4. Volver")
+        time.sleep(0.1)
+        print("=" * 40)
 
         opcion = input("Ingrese una opcion: ")
 
         if opcion == "1":
-            print("Darse de alta")
+            print("\nCargando alta de medico...")
+            time.sleep(1)
             MedicosFarmacias.alta_medico(base_datos.Medicos)
+            input("\nPresione ENTER para continuar...")
+
         elif opcion == "2":
-            print("Solicitud de baja")
+            print("\nCargando solicitud de baja...")
+            time.sleep(1)
             MedicosFarmacias.eliminar_medico(base_datos.Medicos)
+            input("\nPresione ENTER para continuar...")
+
         elif opcion == "3":
-            print("Funcion deshabilitada para la entrega del 40%")
+            print("\nFuncion deshabilitada para la entrega del 40%")
+            input("\nPresione ENTER para volver...")
 
         elif opcion == "4":
-            print("Volviendo al menu principal...")
+            print("\nVolviendo al menu anterior...")
+            time.sleep(1)
 
         else:
-            print("Opcion invalida")
+            print("\nOpcion invalida")
+            time.sleep(1)
 
 
 def mostrar_menu_farmacia():
     opcion = ""
 
     while opcion != "2":
-
         print()
-        print("===================================")
-        print("         MENU DE FARMACIA")
-        print("===================================")
+        print("=" * 40)
+        time.sleep(0.1)
+        print("          MENU DE FARMACIA")
+        time.sleep(0.1)
+        print("=" * 40)
+        time.sleep(0.1)
         print("1. Consultar estado de afiliado")
+        time.sleep(0.1)
         print("2. Volver")
+        time.sleep(0.1)
+        print("=" * 40)
 
         opcion = input("Ingrese una opcion: ")
 
         if opcion == "1":
+            print("\nConsultando estado de afiliado...")
+            time.sleep(1)
             print("Consulta de afiliado")
+            input("\nPresione ENTER para continuar...")
 
         elif opcion == "2":
-            print("Volviendo al menu principal...")
+            print("\nVolviendo al menu anterior...")
+            time.sleep(1)
 
         else:
-            print("Opcion invalida")
+            print("\nOpcion invalida")
+            time.sleep(1)
 
 
 def mostrar_menu_admin():
@@ -163,43 +266,76 @@ def mostrar_menu_admin():
 
     while opcion != "8":
         print()
-        print("===================================")
-        print("        MENU GESTION / ADMIN")
-        print("===================================")
+        print("=" * 40)
+        time.sleep(0.1)
+        print("       MENU GESTION / ADMIN")
+        time.sleep(0.1)
+        print("=" * 40)
+        time.sleep(0.1)
         print("1. Dar de alta usuario")
+        time.sleep(0.1)
         print("2. Dar de baja usuario")
+        time.sleep(0.1)
         print("3. Manejar usuarios deudores")
+        time.sleep(0.1)
         print("4. Ver lista de afiliados")
+        time.sleep(0.1)
         print("5. Ver lista de medicos")
+        time.sleep(0.1)
         print("6. Ver lista de farmacias")
+        time.sleep(0.1)
         print("7. Ver historial - DESHABILITADO")
+        time.sleep(0.1)
         print("8. Volver")
+        time.sleep(0.1)
+        print("=" * 40)
 
         opcion = input("Ingrese una opcion: ")
 
         if opcion == "1":
+            print("\nCargando alta de usuario...")
+            time.sleep(1)
             usuarios.alta_usuario()
+            input("\nPresione ENTER para continuar...")
 
         elif opcion == "2":
+            print("\nCargando baja de usuario...")
+            time.sleep(1)
             admin.baja_usuario()
+            input("\nPresione ENTER para continuar...")
 
         elif opcion == "3":
+            print("\nConsultando usuarios deudores...")
+            time.sleep(1)
             admin.deudores()
+            input("\nPresione ENTER para continuar...")
 
         elif opcion == "4":
+            print("\nCargando lista de afiliados...")
+            time.sleep(1)
             usuarios.ver_lista_usuarios()
+            input("\nPresione ENTER para continuar...")
 
         elif opcion == "5":
+            print("\nCargando lista de medicos...")
+            time.sleep(1)
             MedicosFarmacias.imprimir_lista_medicos(base_datos.Medicos)
+            input("\nPresione ENTER para continuar...")
 
         elif opcion == "6":
+            print("\nCargando lista de farmacias...")
+            time.sleep(1)
             MedicosFarmacias.imprimir_lista_farmacias(base_datos.Farmacias)
+            input("\nPresione ENTER para continuar...")
 
         elif opcion == "7":
-            print("Funcion deshabilitada para la entrega del 40%")
+            print("\nFuncion deshabilitada para la entrega del 40%")
+            input("\nPresione ENTER para volver...")
 
         elif opcion == "8":
-            print("Volviendo al menu principal...")
+            print("\nVolviendo al menu anterior...")
+            time.sleep(1)
 
         else:
-            print("Opcion invalida")
+            print("\nOpcion invalida")
+            time.sleep(1)
