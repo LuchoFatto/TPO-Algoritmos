@@ -1,6 +1,6 @@
 from auth import validar_email
 from auth import validar_contrasenia
-from usuarios import auth.limpiar_nro
+from auth import limpiar_nro
 
 def test_mail():
     assert validar_email("fra@hotmail.com") == True
@@ -13,6 +13,6 @@ def test_contrasenia():
     assert validar_contrasenia("jorgito_28") == False
 
 def test_limpiarnro():
-    assert auth.limpiar_nro('44.338.568') == 44338568
-    assert auth.limpiar_nro("22 33 44 11") == 22334411
-    assert auth.limpiar_nro("234_111") == 234111
+    assert limpiar_nro('44.338.568') == 44338568
+    assert limpiar_nro("22 33 44 11") == 22334411
+    assert limpiar_nro("234_111") == 234111
