@@ -5,6 +5,7 @@ import base_datos
 import MedicosFarmacias
 import auth
 import time
+import os
 
 
 def mostrar_menu_principal():
@@ -31,6 +32,7 @@ def mostrar_menu_principal():
         if opcion == "1":
             print("\nIniciando sesion...")
             time.sleep(1)
+            os.system("cls")
             mostrar_menu_login()
 
         elif opcion == "2":
@@ -38,13 +40,16 @@ def mostrar_menu_principal():
             time.sleep(1)
             usuarios.alta_usuario()
             input("\nPresione ENTER para continuar...")
+            os.system("cls")
 
         elif opcion == "3":
             print("\nSaliendo del sistema...")
             time.sleep(2)
+            os.system("cls")
             print("Hasta luego!")
 
         else:
+            os.system("cls")
             print("\nOpcion invalida...")
             time.sleep(1)
 
@@ -75,31 +80,38 @@ def mostrar_menu_login():
         opcion = input("Seleccione una opcion: ")
 
         if opcion == "1":
+            os.system("cls")
             print("\nCargando inicio de sesion...")
             time.sleep(1)
 
             usuario = auth.iniciar_sesion(base_datos.lista_usuarios)
 
             if usuario != None:
+                os.system("cls")
                 print("\nIngresando al sistema...")
                 time.sleep(1)
                 mostrar_menu_afiliados(usuario["CUIT"])
+                
 
         elif opcion == "2":
+            os.system("cls")
             print("\nFuncion deshabilitada")
             input("\nPresione ENTER para volver...")
             # mostrar_menu_medico()
 
         elif opcion == "3":
+            os.system("cls")
             print("\nFuncion deshabilitada")
             input("\nPresione ENTER para volver...")
             # mostrar_menu_farmacia()
 
         elif opcion == "4":
+            os.system("cls")
             print("\nCargando acceso de administrador...")
             time.sleep(1)
 
             if auth.iniciar_sesion_admin():
+                os.system("cls")
                 print("\nAcceso autorizado...")
                 time.sleep(1)
                 mostrar_menu_admin()
@@ -107,10 +119,12 @@ def mostrar_menu_login():
                 return
 
         elif opcion == "5":
+            os.system("cls")
             print("\nVolviendo al menu principal...")
             time.sleep(1)
 
         else:
+            os.system("cls")
             print("\nOpcion invalida...")
             time.sleep(1)
 
@@ -143,34 +157,40 @@ def mostrar_menu_afiliados(cuit):
         opcion = input("Ingrese una opcion: ")
 
         if opcion == "1":
+            os.system("cls")
             print("\nCargando perfil...")
             time.sleep(1)
             usuarios.ver_mi_perfil_user(cuit)
             input("\nPresione ENTER para continuar...")
 
         elif opcion == "2":
+            os.system("cls")
             print("\nCargando cobertura...")
             time.sleep(1)
             usuarios.ver_cartilla(cuit)
             input("\nPresione ENTER para continuar...")
 
         elif opcion == "3":
+            os.system("cls")
             print("\nSeleccionar / Cambiar plan")
             print("Funcion deshabilitada")
             input("\nPresione ENTER para volver...")
 
         elif opcion == "4":
+            os.system("cls")
             print("\nVer mis turnos")
             print("Funcion deshabilitada")
             input("\nPresione ENTER para volver...")
 
         elif opcion == "5":
+            os.system("cls")
             print("\nProcesando solicitud de baja...")
             time.sleep(1)
             usuarios.baja_usuario(cuit)
             input("\nPresione ENTER para continuar...")
 
         elif opcion == "6":
+            os.system("cls")
             print("\nVolviendo al menu anterior...")
             time.sleep(1)
 
@@ -203,26 +223,31 @@ def mostrar_menu_medico():
         opcion = input("Ingrese una opcion: ")
 
         if opcion == "1":
+            os.system("cls")
             print("\nCargando alta de medico...")
             time.sleep(1)
             MedicosFarmacias.alta_medico(base_datos.Medicos)
             input("\nPresione ENTER para continuar...")
 
         elif opcion == "2":
+            os.system("cls")
             print("\nCargando solicitud de baja...")
             time.sleep(1)
             MedicosFarmacias.eliminar_medico(base_datos.Medicos)
             input("\nPresione ENTER para continuar...")
 
         elif opcion == "3":
+            os.system("cls")
             print("\nFuncion deshabilitada para la entrega del 40%")
             input("\nPresione ENTER para volver...")
 
         elif opcion == "4":
+            os.system("cls")
             print("\nVolviendo al menu anterior...")
             time.sleep(1)
 
         else:
+            os.system("cls")
             print("\nOpcion invalida")
             time.sleep(1)
 
@@ -247,16 +272,19 @@ def mostrar_menu_farmacia():
         opcion = input("Ingrese una opcion: ")
 
         if opcion == "1":
+            os.system("cls")
             print("\nConsultando estado de afiliado...")
             time.sleep(1)
             print("Consulta de afiliado")
             input("\nPresione ENTER para continuar...")
 
         elif opcion == "2":
+            os.system("cls")
             print("\nVolviendo al menu anterior...")
             time.sleep(1)
 
         else:
+            os.system("cls")
             print("\nOpcion invalida")
             time.sleep(1)
 
@@ -293,49 +321,58 @@ def mostrar_menu_admin():
         opcion = input("Ingrese una opcion: ")
 
         if opcion == "1":
+            os.system("cls")
             print("\nCargando alta de usuario...")
             time.sleep(1)
             usuarios.alta_usuario()
             input("\nPresione ENTER para continuar...")
 
         elif opcion == "2":
+            os.system("cls")
             print("\nCargando baja de usuario...")
             time.sleep(1)
             admin.baja_usuario()
             input("\nPresione ENTER para continuar...")
 
         elif opcion == "3":
+            os.system("cls")
             print("\nConsultando usuarios deudores...")
             time.sleep(1)
             admin.deudores()
             input("\nPresione ENTER para continuar...")
 
         elif opcion == "4":
+            os.system("cls")
             print("\nCargando lista de afiliados...")
             time.sleep(1)
             usuarios.ver_lista_usuarios()
             input("\nPresione ENTER para continuar...")
 
         elif opcion == "5":
+            os.system("cls")
             print("\nCargando lista de medicos...")
             time.sleep(1)
             MedicosFarmacias.imprimir_lista_medicos(base_datos.Medicos)
             input("\nPresione ENTER para continuar...")
 
         elif opcion == "6":
+            os.system("cls")
             print("\nCargando lista de farmacias...")
             time.sleep(1)
             MedicosFarmacias.imprimir_lista_farmacias(base_datos.Farmacias)
             input("\nPresione ENTER para continuar...")
 
         elif opcion == "7":
+            os.system("cls")
             print("\nFuncion deshabilitada para la entrega del 40%")
             input("\nPresione ENTER para volver...")
 
         elif opcion == "8":
+            os.system("cls")
             print("\nVolviendo al menu anterior...")
             time.sleep(1)
 
         else:
+            os.system("cls")
             print("\nOpcion invalida")
             time.sleep(1)
