@@ -1,6 +1,9 @@
 import re
 import base_datos
 
+# ==========================================
+# FUNCIONES DE VALIDACIÓN (EXPRESIONES REGULARES)
+# ==========================================
 
 def validar_email(email):
     """Validar formato de email.
@@ -33,6 +36,17 @@ def validar_cuit(cuit):
 
     return len(cuit_limpio) == 11 and cuit_limpio.isdigit()
 
+def obtener_cuit_limpio(cuit):
+    """Retorna el CUIT únicamente como números enteros.
+
+    Args:
+        cuit (string): CUIT ingresado por el usuario
+
+    Returns:
+        integer: Devuelve el CUIT como numero
+    """
+    return int(re.sub(r"[\.\-\s]", "", cuit))
+
 
 def validar_numero_telefono(num_telefono):
     """Validar formato de numero de telefono Argentino.
@@ -59,7 +73,7 @@ def validar_contrasenia(contrasenia):
         contrasenia (string): Contrasenia ingresada por el usuario.
 
     Returns:
-        boolean: Si la contrasenia cumple con el formato establecido (Mayus, Min, Simbolo y Numero).
+        boolean: Si la contrasenia cumple con el formato establecido (Mínimo 8 caracteres, al menos 1 Mayúscula, 1 Número y 1 Símbolo).
     """
 
     patron_contrasenia = re.compile(r"^(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$")
@@ -81,6 +95,41 @@ def validacion_letras(texto):
 
     return bool(re.match(patron_letras, texto))
 
+
+def validar_direccion(direccion):
+    """Validar dirección con nombre de calle y altura numérica.
+
+    Args:
+        direccion (string): Direccion ingresada por el usuario.
+
+    Returns:
+        boolean: Validar que el texto ingresado contenga la informacion de la direccion
+    """
+    patron_direccion = re.compile(r"^[a-zA-Z0-9À-ÿñÑ.°]+(?:\s+[a-zA-Z0-9À-ÿñÑ.°]+)*\s+\d+\s*[a-zA-Z]?$", re.IGNORECASE)
+    return bool(re.match(patron_direccion, direccion))
+
+
+# ==========================================
+# UTILIDADES DE ENTRADA DE DATOS
+# ==========================================
+
+def solicitar_dato_validado(mensaje, mensaje_error, funcion_validadora):
+    """Solicita un dato por consola y lo reitera hasta que cumpla con la función validadora.
+
+    Args:
+        mensaje (string): Mensaje del input.
+        mensaje_error (string): Mensaje de error.
+        funcion_validadora (def): Validacion a aplicar en el input.
+
+    Returns:
+        string: Dato ingresado por el usuario validado.
+    """
+    dato = input(mensaje)
+    while not funcion_validadora(dato):
+        dato = input(mensaje_error)
+    return dato
+
+# Revisar funciones de inicio de sesion de por que estan puestas aca
 
 def iniciar_sesion(lista_usuarios):
 

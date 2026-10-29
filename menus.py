@@ -1,7 +1,7 @@
 import usuarios
 import admin
 import base_datos
-import MedicosFarmacias
+import Medicos
 import auth
 
 
@@ -120,10 +120,10 @@ def mostrar_menu_medico():
 
         if opcion == "1":
             print("Darse de alta")
-            MedicosFarmacias.alta_medico(base_datos.Medicos)
+            Medicos.alta_medico(base_datos.Medicos)
         elif opcion == "2":
             print("Solicitud de baja")
-            MedicosFarmacias.eliminar_medico(base_datos.Medicos)
+            Medicos.eliminar_medico(base_datos.Medicos)
         elif opcion == "3":
             print("Funcion deshabilitada para la entrega del 40%")
 
@@ -190,10 +190,10 @@ def mostrar_menu_admin():
             usuarios.ver_lista_usuarios()
 
         elif opcion == "5":
-            MedicosFarmacias.imprimir_lista_medicos(base_datos.Medicos)
+            Medicos.imprimir_lista_medicos(base_datos.Medicos)
 
         elif opcion == "6":
-            MedicosFarmacias.imprimir_lista_farmacias(base_datos.Farmacias)
+            Medicos.imprimir_lista_farmacias(base_datos.Farmacias)
 
         elif opcion == "7":
             print("Funcion deshabilitada para la entrega del 40%")
