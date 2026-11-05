@@ -95,8 +95,9 @@ def mostrar_menu_login():
 
         elif opcion == "2":
             os.system("cls")
-            print("\nFuncion deshabilitada")
-            input("\nPresione ENTER para volver...")
+            print('--- MENU MEDICOS ---')
+            mostrar_menu_medico()
+            # input("\nPresione ENTER para volver...")
             # mostrar_menu_medico()
 
         elif opcion == "3":
