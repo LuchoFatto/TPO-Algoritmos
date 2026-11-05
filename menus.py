@@ -98,7 +98,6 @@ def mostrar_menu_login():
             print('--- MENU MEDICOS ---')
             mostrar_menu_medico()
             # input("\nPresione ENTER para volver...")
-            # mostrar_menu_medico()
 
         elif opcion == "3":
             os.system("cls")
@@ -203,7 +202,7 @@ def mostrar_menu_afiliados(cuit):
 def mostrar_menu_medico():
     opcion = ""
 
-    while opcion != "4":
+    while opcion != "5":
         print()
         print("=" * 40)
         time.sleep(0.1)
@@ -215,9 +214,11 @@ def mostrar_menu_medico():
         time.sleep(0.1)
         print("2. Darse de baja")
         time.sleep(0.1)
-        print("3. Ver pacientes asignados - DESHABILITADO")
+        print("3. Modificar Medico")
         time.sleep(0.1)
-        print("4. Volver")
+        print("4. Imprimir lista de medicos")
+        time.sleep(0.1)
+        print("5. Volver")
         time.sleep(0.1)
         print("=" * 40)
 
@@ -239,10 +240,17 @@ def mostrar_menu_medico():
 
         elif opcion == "3":
             os.system("cls")
-            print("\nFuncion deshabilitada para la entrega del 40%")
+            print("\nModificar Medico")
             input("\nPresione ENTER para volver...")
 
         elif opcion == "4":
+            os.system("cls")
+            print("\nImprimir lista de medicos")
+            time.sleep(1)
+            Medicos.imprimir_lista_medicos(base_datos.Medicos)
+            input("\nPresione ENTER para continuar...")
+
+        elif opcion == "5":
             os.system("cls")
             print("\nVolviendo al menu anterior...")
             time.sleep(1)

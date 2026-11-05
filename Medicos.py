@@ -33,7 +33,7 @@ def alta_medico(usuarios):
 
     usuarios.append({"nombre":medico_nombre, "apellido":medico_apellido, "cuit":medico_cuit, "email":medico_email,"matricula":medico_matricula, "contraseña":medico_contraseña})
 
-    imprimir_lista_medicos(usuarios)
+    #imprimir_lista_medicos(usuarios)
 
 def modificar_medico(usuarios):
     matricula_medico_eliminar = input("Para modificar un medico ingrese el numero de matricula: ")
@@ -51,15 +51,16 @@ def modificar_medico(usuarios):
 
 def eliminar_medico(usuarios):
     print(usuarios)
-    matricula_medico_eliminar = input("Para darse de baja ingrese su NUMERO de CUIT: ")
+    cuit_medico_eliminar = input("Para darse de baja ingrese su NUMERO de CUIT: ")
     for user in usuarios:
-        if user["rol"] == "medico" and user["matricula"] == str(matricula_medico_eliminar):
+        if user["cuit"] == int(cuit_medico_eliminar):
             confirmacion = input("Confirmacion, desea eliminar? SI/NO:  ") #hay que agregar que preguntar para confirmar
             if confirmacion == "SI":
-                usuarios.remove(user)
+                user["estado_socio"] = 0
+                #usuarios.remove(user) Cambiamos el estado de 1 a 0 para no perder el dato del cliente
             else:
                 pass #se vuelve al menu donde se eligio eliminar medico
-            #hay que añadir que si entra a la lista de medicos y no hay nadie con el rol medico que te diga no hay medicos para eliminar
+            
 
 def imprimir_lista_medicos(usuarios):
     for user in usuarios:        
@@ -69,3 +70,4 @@ def imprimir_lista_medicos(usuarios):
         print("Email: {0}".format(user["email"]))
         print("Matricula: {0}".format(user["matricula"]))
         print("Contraseña: {0}".format(user["contraseña"]))
+        print("Estado del Socio: {0}".format(user["estado_socio"]))

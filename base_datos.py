@@ -75,6 +75,7 @@ Medicos = [
         "email": "nicolasmartinez@gmail.com", 
         "matricula": 123456,
         "contraseña": "tateti",
+        "estado_socio": 1
     },
     {
         "nombre": "Tomas", 
@@ -83,6 +84,7 @@ Medicos = [
         "email": "ngonza@gmail.com", 
         "matricula": "123456",
         "contraseña": "asfalto",
+        "estado_socio": 1
     }
 ]
 
