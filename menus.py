@@ -3,6 +3,7 @@ import admin
 import base_datos
 import MedicosFarmacias
 import auth
+import os
 
 
 def mostrar_menu_principal():
@@ -89,8 +90,12 @@ def mostrar_menu_afiliados(cuit):
         
         if opcion == "1":
             usuarios.ver_mi_perfil_user(cuit)  # Ingresar cuit de usuario loggeado
+            usuarios.esperar()
+            input('Ingrese Enter para volver')
+            os.system('cls')
+            
         elif opcion == "2":
-            usuarios.ver_cartilla(cuit)
+            usuarios.ver_beneficios(cuit)
         elif opcion == "3":
             print("Seleccionar / Cambiar plan")
         elif opcion == "4":

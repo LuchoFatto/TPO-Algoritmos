@@ -1,5 +1,8 @@
 import re
 import base_datos
+import os
+import json
+from time import sleep
 
 
 def validar_email(email):
@@ -84,6 +87,42 @@ def validacion_letras(texto):
 def limpiar_nro(nro):
     nro = str(nro)
     return int(re.sub(r'[\.\-\s]', "", nro))
+
+def abrir_archivo(ruta):
+    """Verifica y abre el archivo json, devuelve su contenido
+
+    Args:
+        ruta (str): ruta de donde se encuentra el archivo
+
+    Returns:
+        _type_: Contenido del archivo, generalmente lista de diccionarios
+    """    
+    try:
+        with open(ruta,"r") as Archivo:
+            return json.load(Archivo)
+    except Exception as a:
+        print(f'Error "{a}" al abrir el archivo, reiniciar y verificar archivo')
+        sleep(0.3)
+        input("Presione Enter para Continuar")
+        os.system('cls')
+        exit
+
+def cargar_archivo(datos, ruta):
+    """Recive los datos a cargar, verifica y abre el archivo y lo carga dentro de el con indent=4
+
+    Args:
+        datos (_type_): Los datos a cargar dentro del json
+        ruta (str): ruta de donde se encuentra el archivo
+    """    
+    try:
+        with open(ruta,"w") as Archivo:
+            json.dump(datos, Archivo, indent=4)
+    except Exception as a:
+        print(f'Error "{a}" al abrir el archivo, reiniciar y verificar archivo')
+        sleep(0.3)
+        input("Presione Enter para Continuar")
+        os.system('cls')
+        exit
 
 def iniciar_sesion(lista_usuarios):
 
