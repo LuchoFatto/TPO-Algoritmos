@@ -1,6 +1,5 @@
 import re
 import auth
-import base_datos
 import time
 import os
 import json
@@ -382,9 +381,14 @@ def baja_usuario(cuit):
         print('Volviendo al menu anterior')
 
 def eliminar_usuario(cuit):
+    """Cambia el estado del usuario de Activo = True a False
+
+    Args:
+        cuit (int): Cuit del usuario a inhabilitar
+    """    
     lista_u = auth.abrir_archivo(RUTA_ARCHIVO)
     indice, usuario = buscar_usuarios(cuit)
-    if usuario:
+    if usuario & usuario['Activo']==True:
         print('Eliminando usuario...')
         esperar(2)
         lista_u(indice)['Activo'] = False
@@ -393,6 +397,12 @@ def eliminar_usuario(cuit):
         input('Presione Enter para volver')
         os.system('cls')
         auth.cargar_archivo(lista_u,RUTA_ARCHIVO)
+    elif usuario['Activo']==False:
+        print('El usuario ingresado ya esa inhabilitado')
+        esperar()
+        input('Presione Enter para volver')
+        esperar()
+        os.system('cls')
     else:
         print('El usuario ingresado no existe')
         esperar()
@@ -401,7 +411,15 @@ def eliminar_usuario(cuit):
 
 
 def buscar_usuarios(cuit,admin=False):
+    """Busqueda de usuario en archivo
 
+    Args:
+        cuit (int): Cuit del usuario a buscar
+        admin (bool, optional): Verifica si el que busca es admin, para saber si incluir o no los inactivos. Defaults to False.
+
+    Returns:
+        tuple: (ubicacion en lista, diccionario del usuario) | (None, None)
+    """
     with open(RUTA_ARCHIVO,"r") as Archivo:
         lista_u = json.load(Archivo)
     if admin:
@@ -415,16 +433,29 @@ def buscar_usuarios(cuit,admin=False):
     return None, None
 
 def ver_lista_usuarios():
+    """Vista de la lista completa del archivo usuarios
+    """    
     for i in auth.abrir_archivo(RUTA_ARCHIVO):
         imprimir_usuario(i)
 
-def ver_mi_perfil_user(cuit): #asumo que el cuit existe
+def ver_mi_perfil_user(cuit):
+    """Vista de perfil propio del usuario
+    Se asume que existe el cuit del usuario buscado
+
+    Args:
+        cuit (int): Cuit del usuario ingresado
+    """    
     _, user = buscar_usuarios(cuit)
     print('Este es tu usuario')
     esperar()
     imprimir_usuario(user)
 
 def ver_beneficios(cuit):
+    """Vista de beneficios del plan elegido por usuario
+
+    Args:
+        cuit (int): Cuit del usuario
+    """    
     esperar()
     print('-+-'*15)
     print('Estos son tus beneficios')
@@ -438,6 +469,14 @@ def ver_beneficios(cuit):
     print('-+-'*15)
 
 def validar_busqueda_usuario(lista_u):
+    """Valida que la lista no este vacia, el cuit sea valido y lo encuentre, devuelve el indice
+
+    Args:
+        lista_u (_type_): lista de usuarios del json
+
+    Returns:
+        int: indice del usuario buscado
+    """    
     if lista_u == []:
         print('La lista de usuarios se encuentra vacia')
         esperar()
@@ -472,36 +511,48 @@ def validar_busqueda_usuario(lista_u):
                     return indice
 
 def modificar_usuario(admin=False):
+    """Eleccion de que usuario y que key modificar
+
+    Args:
+        admin (bool, optional): _description_. Defaults to False.
+    """    
     lista_u = auth.abrir_archivo(RUTA_ARCHIVO)
     indice = validar_busqueda_usuario(lista_u)
     if indice is None:
         return
-    
-    modificar = lista_u[indice]
-    print('^-^'*15)
-    esperar()
-    imprimir_usuario(modificar)
-    print('^-^'*15)
-    esperar()
-    if admin:
-        key = elegir_key(modificar,True)
-    else:
-        key = elegir_key(modificar)
-    match key:
-        case 'Nombre' | 'Apellido':
-            modificar[key] = pedido_datos('Ingrese el nombre', auth.validacion_letras, 'Ingrese exclusivamente letras', lista_u)
-        case 'CUIT':
-            modificar[key] = pedido_datos('Ingrese el CUIT', auth.validar_cuit, 'Ingrese correctamente el CUIT', lista_u, True, True)
-        case 'Telefono':
-            modificar[key] = pedido_datos('Ingrese el Telefono (Sin el 15 ni 0)', auth.validar_numero_telefono, 'Ingrese correctamente el Telefono', lista_u,True)
-        case 'Email':
-            modificar[key] = pedido_datos('Ingrese el E-Mail', auth.validar_email, 'Ingrese un Email Valido', lista_u)
-        case 'Password':
-            modificar[key] = pedido_datos('Ingrese su contraseña (Debe tener al menos 8 elementos, uno especial y un numero)',auth.validar_contrasenia,'Ingrese un Contraseña adecuada', lista_u)
-        case 'Deudor' | 'Activo':
-            print(f'{key} modificado a estado {not modificar[key]}')
-            esperar()
-            modificar[key] = not modificar[key]
+
+    Flag = True
+    while Flag:
+        modificar = lista_u[indice]
+        print('^-^'*15)
+        esperar()
+        imprimir_usuario(modificar)
+        print('^-^'*15)
+        esperar()
+        if admin:
+            key = elegir_key(modificar,True)
+        else:
+            key = elegir_key(modificar)
+        match key:
+            case 'Nombre' | 'Apellido':
+                modificar[key] = pedido_datos('Ingrese el nombre', auth.validacion_letras, 'Ingrese exclusivamente letras', lista_u)
+            case 'CUIT':
+                modificar[key] = pedido_datos('Ingrese el CUIT', auth.validar_cuit, 'Ingrese correctamente el CUIT', lista_u, True, True)
+            case 'Telefono':
+                modificar[key] = pedido_datos('Ingrese el Telefono (Sin el 15 ni 0)', auth.validar_numero_telefono, 'Ingrese correctamente el Telefono', lista_u,True)
+            case 'Email':
+                modificar[key] = pedido_datos('Ingrese el E-Mail', auth.validar_email, 'Ingrese un Email Valido', lista_u)
+            case 'Password':
+                modificar[key] = pedido_datos('Ingrese su contraseña (Debe tener al menos 8 elementos, uno especial y un numero)',auth.validar_contrasenia,'Ingrese un Contraseña adecuada', lista_u)
+            case 'Deudor' | 'Activo':
+                print(f'{key} modificado a estado {not modificar[key]}')
+                esperar()
+                modificar[key] = not modificar[key]
+
+        if not verificar_decision((f'la modificacion de {key}. Desea modificar otro dato?')):
+            Flag = False
+
+        os.system('cls')
 
     print('Cargando cambios..')
     esperar(2)
@@ -513,6 +564,15 @@ def modificar_usuario(admin=False):
     
 
 def elegir_key(dic,admin=False):
+    """Eleccion de que key del diccionario usuario modificar. Varia si sos admin o no
+
+    Args:
+        dic (dict): Diccionario del usuario a modificar
+        admin (bool, optional): Verificar si es admin o no. Defaults to False.
+
+    Returns:
+        str: key elegida a modificar
+    """    
     lista_keys = list(dic.keys())
     lista_keys.remove('Historial')
     if admin:
@@ -566,3 +626,94 @@ def elegir_key(dic,admin=False):
 
 
 
+
+def iniciar_sesion_usuario():
+    """Inicio de sesion del usuario
+
+    Returns:
+        int or None: Si es inicio de sesion valido retorna el cuit, sino None
+    """    
+    print()
+    print("===================================")
+    print("          INICIAR SESION")
+    print("===================================")
+
+    lista_usuarios = auth.abrir_archivo(RUTA_ARCHIVO)
+
+    cuit = input("Ingrese su CUIT: ")
+
+    if not auth.validar_cuit(cuit):
+        print("CUIT invalido")
+        esperar()
+        os.system('cls')
+        return None
+
+    cuit = auth.limpiar_nro(cuit)
+
+    usuario_encontrado = None
+
+    for usuario in lista_usuarios:
+        if usuario["CUIT"] == cuit:
+            usuario_encontrado = usuario
+            break
+
+    if usuario_encontrado == None or usuario_encontrado['Activo']==False:
+        print("Usuario no encontrado")
+        return None
+    
+    usuario = check_pasword(usuario_encontrado,3)
+    if usuario is not None:
+        return(usuario_encontrado['CUIT'])
+    else:
+        return None
+
+
+
+def check_pasword(user,intentos):
+    """Funcion recursiva de intentos de ingreso de contrasena
+
+    Args:
+        user (dict): Diccionario usuario
+        intentos (int): Intentos restantes de ingreso
+
+    Returns:
+        Dict or None: Si inicia correctamente devuelve el Diccionario, sino None
+    """    
+    if intentos <= 0:
+        print("Se agotaron los intentos")
+        esperar()
+        input('Ingrese Enter para regresar')
+        os.system('cls')
+        return None
+    
+    password = input("Ingrese su contraseña: ")
+    esperar()
+
+    if password == user["Password"]:
+
+        if user["Deudor"] == True:
+            print("No puede iniciar sesion porque posee una deuda.")
+            esperar()
+            print("Debe regularizar su situacion.")
+            esperar()
+            input('Ingrese Enter para regresar')
+            os.system('cls')
+            return None
+
+        print("Inicio de sesion exitoso")
+        esperar()
+        print("Bienvenido/a", user["Apellido"])
+        esperar()
+
+        return user
+
+    else:
+        intentos -= 1
+        print("Contraseña incorrecta")
+        esperar()
+        print("Intentos restantes:", intentos)
+        esperar()
+        os.system('cls')
+        return check_pasword(user,intentos)
+
+    

@@ -101,7 +101,7 @@ def abrir_archivo(ruta):
         with open(ruta,"r") as Archivo:
             return json.load(Archivo)
     except Exception as a:
-        print(f'Error "{a}" al abrir el archivo, reiniciar y verificar archivo')
+        print(f'Error "{a}" al abrir el archivo, reiniciar y verificar su integridad')
         sleep(0.3)
         input("Presione Enter para Continuar")
         os.system('cls')
@@ -118,91 +118,13 @@ def cargar_archivo(datos, ruta):
         with open(ruta,"w") as Archivo:
             json.dump(datos, Archivo, indent=4)
     except Exception as a:
-        print(f'Error "{a}" al abrir el archivo, reiniciar y verificar archivo')
+        print(f'Error "{a}" al abrir el archivo, reiniciar y verificar su integridad')
         sleep(0.3)
         input("Presione Enter para Continuar")
         os.system('cls')
         exit
 
-def iniciar_sesion(lista_usuarios):
-
-    print()
-    print("===================================")
-    print("          INICIAR SESION")
-    print("===================================")
-
-    cuit = input("Ingrese su CUIT: ")
-
-    # Validamos el formato
-    if not validar_cuit(cuit):
-        print("CUIT invalido")
-        return None
-
-    # Sacamos puntos, guiones y espacios
-    cuit_limpio = re.sub(r"[.\-\s]", "", cuit)
-    cuit_limpio = int(cuit_limpio)
-
-    usuario_encontrado = None
-
-    # Busqueda secuencial
-    for usuario in lista_usuarios:
-        if usuario["CUIT"] == cuit_limpio:
-            usuario_encontrado = usuario
-            break
-
-    if usuario_encontrado == None:
-        print("Usuario no encontrado")
-        return None
-
-    intentos = 3
-
-    while intentos > 0:
-
-        password = input("Ingrese su contraseña: ")
-
-        if password == usuario_encontrado["Password"]:
-
-            if usuario_encontrado["Deudor"] == True:
-                print("No puede iniciar sesion porque posee una deuda.")
-                print("Debe regularizar su situacion.")
-                return None
-
-            print("Inicio de sesion exitoso")
-            print("Bienvenido/a", usuario_encontrado["Nombre"])
-
-            return usuario_encontrado
-
-        else:
-            intentos -= 1
-            print("Contraseña incorrecta")
-            print("Intentos restantes:", intentos)
-
-    print("Se agotaron los intentos")
-    return None
 
 
-def iniciar_sesion_admin():
-
-    print()
-    print("===================================")
-    print("          INICIAR SESION")
-    print("===================================")
-
-    user = input("Ingrese su USER de ADMIN: ")
 
 
-    if base_datos.Admin["Usuario"] == user:
-        intentos = 3
-        while intentos > 0:
-            password = input("Ingrese su contraseña: ")
-            if base_datos.Admin["Contraseña"] == password:
-                return True
-            else:
-                intentos -= 1
-                print("Contraseña incorrecta")
-                print("Intentos restantes:", intentos)
-                print("Se agotaron los intentos")
-                return None
-    else:
-        print("Usuario incorrecto")
-        return False

@@ -51,10 +51,9 @@ def mostrar_menu_login():
         opcion = input("Selecciones una opcion: ")
 
         if opcion == "1":
-            usuario = auth.iniciar_sesion(base_datos.lista_usuarios)
-            
-            if usuario != None:
-                mostrar_menu_afiliados(usuario["CUIT"])
+            cuit = usuarios.iniciar_sesion_usuario()
+            if cuit != None:
+                mostrar_menu_afiliados(cuit)
 
         elif opcion == "2":
             print('Deshabilitado')
@@ -65,7 +64,7 @@ def mostrar_menu_login():
             input('Presione Enter par volver')
             """mostrar_menu_farmacia()"""
         elif opcion == "4":
-            if auth.iniciar_sesion_admin():
+            if admin.iniciar_sesion_admin():
                 mostrar_menu_admin()
             else:
                 return
