@@ -130,7 +130,8 @@ def solicitar_dato_validado(mensaje, mensaje_error, funcion_validadora):
     return dato
 
 # Revisar funciones de inicio de sesion de por que estan puestas aca
-
+# usuario no es afiliado
+                #_usuario  agregar
 def iniciar_sesion(lista_usuarios):
 
     print()
@@ -186,6 +187,111 @@ def iniciar_sesion(lista_usuarios):
 
     print("Se agotaron los intentos")
     return None
+
+
+def iniciar_sesion_medicos(Medicos):
+
+    print()
+    print("===================================")
+    print("          INICIAR SESION")
+    print("===================================")
+
+    cuit = input("Ingrese su CUIT: ")
+    
+        # Validamos el formato
+    if not validar_cuit(cuit):
+        print("CUIT invalido")
+        return None
+    
+        # Sacamos puntos, guiones y espacios
+    cuit_limpio = re.sub(r"[.\-\s]", "", cuit)
+    cuit_limpio = int(cuit_limpio)
+    
+    medico_encontrado = None
+    
+        # Busqueda secuencial
+    for medico in Medicos:
+        if medico["cuit"] == cuit_limpio:
+            medico_encontrado = medico
+            break
+    
+    if medico_encontrado == None:
+        print("Medico no encontrado")
+        return None
+
+    intentos = 3
+
+    while intentos > 0:
+
+        contraseña = input("Ingrese su contraseña: ")
+
+        if contraseña == medico_encontrado["contraseña"]:
+
+            print("Inicio de sesion exitoso")
+            print("Bienvenido/a", medico_encontrado["nombre"])
+
+            return medico_encontrado
+
+        else:
+            intentos -= 1
+            print("Contraseña incorrecta")
+            print("Intentos restantes:", intentos)
+
+    print("Se agotaron los intentos")
+    return None
+
+def iniciar_sesion_farmacia(Farmacias):
+
+    print()
+    print("===================================")
+    print("          INICIAR SESION")
+    print("===================================")
+
+    cuit = input("Ingrese su CUIT: ")
+    
+        # Validamos el formato
+    if not validar_cuit(cuit):
+        print("CUIT invalido")
+        return None
+    
+        # Sacamos puntos, guiones y espacios
+    cuit_limpio = re.sub(r"[.\-\s]", "", cuit)
+    cuit_limpio = int(cuit_limpio)
+    
+    farmacia_encontrado = None
+    
+        # Busqueda secuencial
+    for farmacia in Farmacias:
+        if farmacia["cuit"] == cuit_limpio:
+            farmacia_encontrado = farmacia
+            break
+    
+    if farmacia_encontrado == None:
+        print("Farmacia no encontrado")
+        return None
+
+    intentos = 3
+
+    while intentos > 0:
+
+        contraseña = input("Ingrese su contraseña: ")
+
+        if contraseña == farmacia_encontrado["contraseña"]:
+
+            print("Inicio de sesion exitoso")
+            print("Bienvenido/a", farmacia_encontrado["nombre"])
+
+            return farmacia_encontrado
+
+        else:
+            intentos -= 1
+            print("Contraseña incorrecta")
+            print("Intentos restantes:", intentos)
+
+    print("Se agotaron los intentos")
+    return None
+
+
 
 
 def iniciar_sesion_admin():

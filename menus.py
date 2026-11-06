@@ -7,6 +7,15 @@ import auth
 import time
 import os
 
+from colorama import Fore, Style, init
+from tabulate import tabulate
+from rich.console import Console
+from rich.panel import Panel
+
+init(autoreset=True)
+
+consola = Console()
+
 
 def mostrar_menu_principal():
     opcion = ""
@@ -15,19 +24,19 @@ def mostrar_menu_principal():
         print()
         print("=" * 40)
         time.sleep(0.1)
-        print("   SISTEMA DE GESTION OBRA SOCIAL")
+        consola.print(Panel("   SISTEMA DE GESTION OBRA SOCIAL", border_style= "green", width=44))
         time.sleep(0.1)
         print("=" * 40)
         time.sleep(0.1)
-        print("1. Iniciar sesion")
+        print(Fore.GREEN + "1. Iniciar sesion")
         time.sleep(0.1)
-        print("2. Registrarse")
+        print(Fore.GREEN + "2. Registrarse")
         time.sleep(0.1)
-        print("3. Salir")
+        print(Fore.RED + "3. Salir")
         time.sleep(0.1)
         print("=" * 40)
 
-        opcion = input("Seleccione una opcion: ")
+        opcion = input(Fore.YELLOW + "Seleccione una opcion: ")
 
         if opcion == "1":
             print("\nIniciando sesion...")
@@ -38,6 +47,7 @@ def mostrar_menu_principal():
         elif opcion == "2":
             print("\nCargando registro...")
             time.sleep(1)
+            os.system("cls")
             usuarios.alta_usuario()
             input("\nPresione ENTER para continuar...")
             os.system("cls")
@@ -95,8 +105,13 @@ def mostrar_menu_login():
 
         elif opcion == "2":
             os.system("cls")
-            print("\nFuncion deshabilitada")
-            input("\nPresione ENTER para volver...")
+            if auth.iniciar_sesion_medicos(base_datos.Medicos):
+                os.system("cls")
+                print("\nAcceso autorizado...")
+                time.sleep(1)
+                mostrar_menu_medico()
+            else:
+                return
             # mostrar_menu_medico()
 
         elif opcion == "3":
