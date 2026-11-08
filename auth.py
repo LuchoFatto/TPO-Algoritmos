@@ -1,6 +1,15 @@
 import re
 import base_datos
 
+from colorama import Fore, Style, init
+from tabulate import tabulate
+from rich.console import Console
+from rich.panel import Panel
+
+init(autoreset=True)
+
+consola = Console()
+
 # ==========================================
 # FUNCIONES DE VALIDACIÓN (EXPRESIONES REGULARES)
 # ==========================================
@@ -136,7 +145,7 @@ def iniciar_sesion(lista_usuarios):
 
     print()
     print("===================================")
-    print("          INICIAR SESION")
+    consola.print(Panel("   INICIAR SESION AFILIADO", border_style= "green", width=44))
     print("===================================")
 
     cuit = input("Ingrese su CUIT: ")
@@ -193,7 +202,7 @@ def iniciar_sesion_medicos(Medicos):
 
     print()
     print("===================================")
-    print("          INICIAR SESION")
+    consola.print(Panel("   INICIAR SESION MEDICOS", border_style= "green", width=44))
     print("===================================")
 
     cuit = input("Ingrese su CUIT: ")
@@ -244,7 +253,7 @@ def iniciar_sesion_farmacia(Farmacias):
 
     print()
     print("===================================")
-    print("          INICIAR SESION")
+    consola.print(Panel("   INICIAR SESION FARMACIA", border_style= "green", width=44))
     print("===================================")
 
     cuit = input("Ingrese su CUIT: ")
@@ -298,7 +307,7 @@ def iniciar_sesion_admin():
 
     print()
     print("===================================")
-    print("          INICIAR SESION")
+    consola.print(Panel("   INICIAR SESION", border_style= "green", width=44))
     print("===================================")
 
     user = input("Ingrese su USER de ADMIN: ")
