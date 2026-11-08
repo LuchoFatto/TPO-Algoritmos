@@ -148,11 +148,11 @@ def iniciar_sesion(lista_usuarios):
     consola.print(Panel("   INICIAR SESION AFILIADO", border_style= "green", width=44))
     print("===================================")
 
-    cuit = input("Ingrese su CUIT: ")
+    cuit = input(Fore.YELLOW + "Ingrese su CUIT: ")
 
     # Validamos el formato
     if not validar_cuit(cuit):
-        print("CUIT invalido")
+        print(Fore.YELLOW + "CUIT invalido")
         return None
 
     # Sacamos puntos, guiones y espacios
@@ -168,33 +168,33 @@ def iniciar_sesion(lista_usuarios):
             break
 
     if usuario_encontrado == None:
-        print("Usuario no encontrado")
+        print(Fore.YELLOW + "Usuario no encontrado")
         return None
 
     intentos = 3
 
     while intentos > 0:
 
-        password = input("Ingrese su contraseña: ")
+        password = input(Fore.YELLOW + "Ingrese su contraseña: ")
 
         if password == usuario_encontrado["Password"]:
 
             if usuario_encontrado["Deudor"] == True:
-                print("No puede iniciar sesion porque posee una deuda.")
-                print("Debe regularizar su situacion.")
+                print(Fore.YELLOW + "No puede iniciar sesion porque posee una deuda.")
+                print(Fore.YELLOW + "Debe regularizar su situacion.")
                 return None
 
-            print("Inicio de sesion exitoso")
-            print("Bienvenido/a", usuario_encontrado["Nombre"])
+            print(Fore.YELLOW + "Inicio de sesion exitoso")
+            print(Fore.YELLOW + "Bienvenido/a", usuario_encontrado["Nombre"])
 
             return usuario_encontrado
 
         else:
             intentos -= 1
-            print("Contraseña incorrecta")
-            print("Intentos restantes:", intentos)
+            print(Fore.YELLOW + "Contraseña incorrecta")
+            print(Fore.YELLOW + "Intentos restantes:", intentos)
 
-    print("Se agotaron los intentos")
+    print(Fore.YELLOW + "Se agotaron los intentos")
     return None
 
 
@@ -205,11 +205,11 @@ def iniciar_sesion_medicos(Medicos):
     consola.print(Panel("   INICIAR SESION MEDICOS", border_style= "green", width=44))
     print("===================================")
 
-    cuit = input("Ingrese su CUIT: ")
+    cuit = input(Fore.YELLOW + "Ingrese su CUIT: ")
     
         # Validamos el formato
     if not validar_cuit(cuit):
-        print("CUIT invalido")
+        print(Fore.YELLOW + "CUIT invalido")
         return None
     
         # Sacamos puntos, guiones y espacios
@@ -225,28 +225,28 @@ def iniciar_sesion_medicos(Medicos):
             break
     
     if medico_encontrado == None:
-        print("Medico no encontrado")
+        print(Fore.YELLOW + "Medico no encontrado")
         return None
 
     intentos = 3
 
     while intentos > 0:
 
-        contraseña = input("Ingrese su contraseña: ")
+        contraseña = input(Fore.YELLOW + "Ingrese su contraseña: ")
 
         if contraseña == medico_encontrado["contraseña"]:
 
-            print("Inicio de sesion exitoso")
-            print("Bienvenido/a", medico_encontrado["nombre"])
+            print(Fore.YELLOW + "Inicio de sesion exitoso")
+            print(Fore.YELLOW + "Bienvenido/a", medico_encontrado["nombre"])
 
             return medico_encontrado
 
         else:
             intentos -= 1
-            print("Contraseña incorrecta")
-            print("Intentos restantes:", intentos)
+            print(Fore.YELLOW + "Contraseña incorrecta")
+            print(Fore.YELLOW + "Intentos restantes:", intentos)
 
-    print("Se agotaron los intentos")
+    print(Fore.YELLOW + "Se agotaron los intentos")
     return None
 
 def iniciar_sesion_farmacia(Farmacias):
@@ -256,11 +256,11 @@ def iniciar_sesion_farmacia(Farmacias):
     consola.print(Panel("   INICIAR SESION FARMACIA", border_style= "green", width=44))
     print("===================================")
 
-    cuit = input("Ingrese su CUIT: ")
+    cuit = input(Fore.YELLOW + "Ingrese su CUIT: ")
     
         # Validamos el formato
     if not validar_cuit(cuit):
-        print("CUIT invalido")
+        print(Fore.YELLOW + "CUIT invalido")
         return None
     
         # Sacamos puntos, guiones y espacios
@@ -276,28 +276,28 @@ def iniciar_sesion_farmacia(Farmacias):
             break
     
     if farmacia_encontrado == None:
-        print("Farmacia no encontrado")
+        print(Fore.YELLOW + "Farmacia no encontrado")
         return None
 
     intentos = 3
 
     while intentos > 0:
 
-        contraseña = input("Ingrese su contraseña: ")
+        contraseña = input(Fore.YELLOW + "Ingrese su contraseña: ")
 
         if contraseña == farmacia_encontrado["contraseña"]:
 
-            print("Inicio de sesion exitoso")
-            print("Bienvenido/a", farmacia_encontrado["nombre"])
+            print(Fore.YELLOW + "Inicio de sesion exitoso")
+            print(Fore.YELLOW + "Bienvenido/a", farmacia_encontrado["nombre"])
 
             return farmacia_encontrado
 
         else:
             intentos -= 1
-            print("Contraseña incorrecta")
-            print("Intentos restantes:", intentos)
+            print(Fore.YELLOW + "Contraseña incorrecta")
+            print(Fore.YELLOW + "Intentos restantes:", intentos)
 
-    print("Se agotaron los intentos")
+    print(Fore.YELLOW + "Se agotaron los intentos")
     return None
 
 
@@ -310,21 +310,21 @@ def iniciar_sesion_admin():
     consola.print(Panel("   INICIAR SESION", border_style= "green", width=44))
     print("===================================")
 
-    user = input("Ingrese su USER de ADMIN: ")
+    user = input(Fore.YELLOW + "Ingrese su USER de ADMIN: ")
 
 
     if base_datos.Admin["Usuario"] == user:
         intentos = 3
         while intentos > 0:
-            password = input("Ingrese su contraseña: ")
+            password = input(Fore.YELLOW + "Ingrese su contraseña: ")
             if base_datos.Admin["Contraseña"] == password:
                 return True
             else:
                 intentos -= 1
-                print("Contraseña incorrecta")
-                print("Intentos restantes:", intentos)
-                print("Se agotaron los intentos")
+                print(Fore.YELLOW + "Contraseña incorrecta")
+                print(Fore.YELLOW + "Intentos restantes:", intentos)
+                print(Fore.YELLOW + "Se agotaron los intentos")
                 return None
     else:
-        print("Usuario incorrecto")
+        print(Fore.YELLOW + "Usuario incorrecto")
         return False
