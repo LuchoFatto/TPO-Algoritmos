@@ -284,7 +284,7 @@ def mostrar_menu_farmacia():
         time.sleep(0.1)
         print("=" * 40)
 
-        opcion = input("Ingrese una opcion: ")
+        opcion = input(Fore.YELLOW + "Ingrese una opcion: ")
 
         if opcion == "1":
             os.system("cls")
