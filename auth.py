@@ -188,6 +188,58 @@ def iniciar_sesion(lista_usuarios):
     return None
 
 
+def iniciar_sesion_medicos(Medicos):
+
+    print()
+    print("===================================")
+    print("          INICIAR SESION")
+    print("===================================")
+
+    cuit = input("Ingrese su CUIT: ")
+    
+    # Validamos el formato
+    if not validar_cuit(cuit):
+        print("CUIT invalido")
+        return None
+    
+    # Sacamos puntos, guiones y espacios
+    cuit_limpio = re.sub(r"[.\-\s]", "", cuit)
+    cuit_limpio = int(cuit_limpio)
+    
+    medico_encontrado = None
+    
+    # Busqueda secuencial
+    for medico in Medicos:
+        if medico["cuit"] == cuit_limpio:
+            medico_encontrado = medico
+            break
+    
+    if medico_encontrado == None:
+        print("Medico no encontrado")
+        return None
+    
+    intentos = 3
+
+    while intentos > 0:
+
+        password = input("Ingrese su contraseña: ")
+
+        if password == medico_encontrado["contraseña"]:
+
+            print("Inicio de sesion exitoso")
+            print("Bienvenido/a", medico_encontrado["nombre"])
+
+            return medico_encontrado
+
+        else:
+            intentos -= 1
+            print("Contraseña incorrecta")
+            print("Intentos restantes:", intentos)
+
+    print("Se agotaron los intentos")
+    return None
+
+
 def iniciar_sesion_admin():
 
     print()

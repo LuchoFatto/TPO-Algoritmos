@@ -95,9 +95,14 @@ def mostrar_menu_login():
 
         elif opcion == "2":
             os.system("cls")
-            print('--- MENU MEDICOS ---')
-            mostrar_menu_medico()
-            # input("\nPresione ENTER para volver...")
+            if auth.iniciar_sesion_medicos(base_datos.Medicos):
+                os.system("cls")
+                print("\nAcceso autorizado...")
+                time.sleep(1)
+                mostrar_menu_medico()
+            else:
+                return
+            # mostrar_menu_medico()
 
         elif opcion == "3":
             os.system("cls")
