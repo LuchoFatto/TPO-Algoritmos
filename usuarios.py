@@ -327,9 +327,9 @@ def alta_usuario():
             print('\n')
             print('Revise los datos, si desea:') #Posible recursividad en el futuro
             esperar()
-            print('[2] Salir sin cargar')
-            esperar()
             print('[1] Volver a Reingresar')
+            esperar()
+            print('[2] Salir sin cargar')
             esperar()
             print('[0] Todo correcto, continuar')
             Check = input('>> ')

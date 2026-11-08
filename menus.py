@@ -88,13 +88,18 @@ def mostrar_menu_afiliados(cuit):
         opcion = input("Ingrese una opcion: ")
         
         if opcion == "1":
+            os.system('cls')
             usuarios.ver_mi_perfil_user(cuit)  # Ingresar cuit de usuario loggeado
             usuarios.esperar()
             input('Ingrese Enter para volver')
             os.system('cls')
             
         elif opcion == "2":
+            os.system('cls')
             usuarios.ver_beneficios(cuit)
+            usuarios.esperar()
+            input('Ingrese Enter para volver')
+            os.system('cls')
         elif opcion == "3":
             print("Seleccionar / Cambiar plan")
         elif opcion == "4":

@@ -115,7 +115,7 @@ def cargar_archivo(datos, ruta):
         ruta (str): ruta de donde se encuentra el archivo
     """    
     try:
-        with open(ruta,"w") as Archivo:
+        with open(ruta,"w",encoding='utf8') as Archivo:
             json.dump(datos, Archivo, indent=4)
     except Exception as a:
         print(f'Error "{a}" al abrir el archivo, reiniciar y verificar su integridad')
