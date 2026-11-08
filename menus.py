@@ -3,6 +3,7 @@ import usuarios
 import admin
 import base_datos
 import Medicos
+import Farmacias
 import auth
 import time
 import os
@@ -374,7 +375,7 @@ def mostrar_menu_admin():
             os.system("cls")
             print(Fore.YELLOW + "\nCargando lista de farmacias...")
             time.sleep(1)
-            Medicos.imprimir_lista_farmacias(base_datos.Farmacias)
+            Farmacias.imprimir_lista_farmacias(base_datos.Farmacias)
             input(Fore.YELLOW +"\nPresione ENTER para continuar...")
 
         elif opcion == "7":
