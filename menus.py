@@ -1,4 +1,3 @@
-
 import usuarios
 import admin
 import base_datos
@@ -84,14 +83,13 @@ def mostrar_menu_login():
             print("\nCargando inicio de sesion...")
             time.sleep(1)
 
-            usuario = auth.iniciar_sesion(base_datos.lista_usuarios)
+            cuit = usuarios.iniciar_sesion_usuario()
 
-            if usuario != None:
+            if cuit != None:
                 os.system("cls")
                 print("\nIngresando al sistema...")
                 time.sleep(1)
-                mostrar_menu_afiliados(usuario["CUIT"])
-                
+                mostrar_menu_afiliados(cuit)
 
         elif opcion == "2":
             os.system("cls")
@@ -110,7 +108,7 @@ def mostrar_menu_login():
             print("\nCargando acceso de administrador...")
             time.sleep(1)
 
-            if auth.iniciar_sesion_admin():
+            if admin.iniciar_sesion_admin():
                 os.system("cls")
                 print("\nAcceso autorizado...")
                 time.sleep(1)
@@ -160,14 +158,14 @@ def mostrar_menu_afiliados(cuit):
             os.system("cls")
             print("\nCargando perfil...")
             time.sleep(1)
-            usuarios.ver_mi_perfil_user(cuit)
+            usuarios.ver_mi_perfil_user(cuit)  # Ingresar cuit de usuario loggeado
             input("\nPresione ENTER para continuar...")
 
         elif opcion == "2":
             os.system("cls")
             print("\nCargando cobertura...")
             time.sleep(1)
-            usuarios.ver_cartilla(cuit)
+            usuarios.ver_beneficios(cuit)
             input("\nPresione ENTER para continuar...")
 
         elif opcion == "3":
