@@ -74,21 +74,21 @@ lista_usuarios = [
 Medicos = [
     {
         "nombre": "Nicolas", 
-        "apellido": "Martinez", 
+        "apellido": "Martinez",
+        "cuit": 20424733432, 
         "email": "nicolasmartinez@gmail.com", 
-        "rol": "medico",
-        "matricula": "213123",
-        #"contraseña": "tateti",
-        #"telefono": "1162453589"
+        "matricula": 123456,
+        "contraseña": "tateti",
+        "estado_socio": 1
     },
     {
         "nombre": "Tomas", 
         "apellido": "Gonzales", 
+        "cuit": 123456,
         "email": "ngonza@gmail.com", 
-        "rol": "medico",
         "matricula": "123456",
-        #"contraseña": "asfalto",
-        #"telefono": "1162452078"
+        "contraseña": "asfalto",
+        "estado_socio": 1
     }
 ]
 
