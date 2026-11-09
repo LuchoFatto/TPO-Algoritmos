@@ -97,7 +97,7 @@ def pedido_datos(mensaje:str, funcion_auth, mensaje_error:str, lista_u, transfor
 
     while Flag:
         esperar()
-        dato = input(f'{mensaje}\n>> ')
+        dato = input(Fore.YELLOW + f'{mensaje}\n>> ')
         esperar()
 
         if not funcion_auth(dato):
@@ -183,15 +183,15 @@ def pedir_plan():
             print('--------------------')
             eleccion = int(input(Fore.YELLOW + '\n--Ingrese el numero de la opcion acorde--\n>> '))
         except:
-            print('Ingreso Invalido')
+            print(Fore.YELLOW + 'Ingreso Invalido')
             esperar()
-            input('Presione Enter Para reintentar')
+            input(Fore.YELLOW + 'Presione Enter Para reintentar')
             os.system('cls')
 
         if (eleccion > len(PLANES)) or (eleccion < 1):
-            print('Numero Invalido')
+            print(Fore.YELLOW + 'Numero Invalido')
             esperar()
-            input('Presione Enter Para reintentar')
+            input(Fore.YELLOW + 'Presione Enter Para reintentar')
             os.system('cls')
         else:
             Flag = False
@@ -212,11 +212,11 @@ def incluirse_plan_familiar(cuit, lista_u):
     """
     #Validar que exista algun usuario en la DB
     if (lista_u == []):
-        print('No hay usuarios afiliados aun, elija otra opcion')
+        print(Fore.YELLOW + 'No hay usuarios afiliados aun, elija otra opcion')
     else:
         Valido = True
         while Valido:
-            print('Ingrese el CUIT de la persona a la cual se va a incluir, si quiere volver ingrese 0')
+            print(Fore.YELLOW + 'Ingrese el CUIT de la persona a la cual se va a incluir, si quiere volver ingrese 0')
             CUIT_principal = input('>> ')
 
             #Salir del Case, Volver a elegir
@@ -225,9 +225,9 @@ def incluirse_plan_familiar(cuit, lista_u):
 
             #Validar que sea CUIT
             elif auth.validar_cuit(CUIT_principal):
-                print('Ingrese un CUIT valido')
+                print(Fore.YELLOW + 'Ingrese un CUIT valido')
                 esperar()
-                input('Presione Enter para reintentar')
+                input(Fore.YELLOW + 'Presione Enter para reintentar')
                 os.system('cls')
 
             else:
@@ -238,9 +238,9 @@ def incluirse_plan_familiar(cuit, lista_u):
 
                         #Si esta lleno, no lo añade
                         if len(i['Familia']) > 2:
-                            print('Se ha encontrado el CUIT indicado pero se encuentra en el maximo de afiliados')
+                            print(Fore.YELLOW + 'Se ha encontrado el CUIT indicado pero se encuentra en el maximo de afiliados')
                             esperar()
-                            input('Presione Enter para reintentar')
+                            input(Fore.YELLOW + 'Presione Enter para reintentar')
                             os.system('cls')
                             break
 
@@ -252,9 +252,9 @@ def incluirse_plan_familiar(cuit, lista_u):
                                     'Dueño': CUIT_principal
                                 }
 
-                print('No se ha encontrado ningun afiliado con el plan familiar dueño con ese CUIT')
+                print(Fore.YELLOW + 'No se ha encontrado ningun afiliado con el plan familiar dueño con ese CUIT')
 
-    input('Presione Enter para volver')
+    input(Fore.YELLOW + 'Presione Enter para volver')
     os.system('cls')
     return None
 
@@ -269,20 +269,20 @@ def plan_familiar(cuit, lista_u):
         Dict: Diccionario con keys a añadir a diccionario base
     """
     Flag = True
-    print('Usted ha seleccionado el plan familiar')
+    print(Fore.YELLOW + 'Usted ha seleccionado el plan familiar')
     esperar()
     while Flag:
-        print('[1] Incluirse a un Plan existente\n !!No puede haber mas de 3 afiliados + titular en el mismo plan familiar!!')
+        print(Fore.YELLOW + '[1] Incluirse a un Plan existente\n !!No puede haber mas de 3 afiliados + titular en el mismo plan familiar!!')
         esperar()
-        print('[2] Ser Dueño principal')
+        print(Fore.YELLOW + '[2] Ser Dueño principal')
         esperar()
         Check = input('>> ')
 
         match Check:
             case '2':
-                print('Se ha guardado como dueño del plan familiar')
+                print(Fore.YELLOW + 'Se ha guardado como dueño del plan familiar')
                 esperar()
-                input('Presione Enter para continuar')
+                input(Fore.YELLOW + 'Presione Enter para continuar')
                 os.system('cls')
                 return {
                     'Plan': 'Familiar Dueño',
@@ -296,7 +296,7 @@ def plan_familiar(cuit, lista_u):
                     return hijo
 
             case _:
-                print('Ingrese uno de los valores indicados')
+                print(Fore.YELLOW + 'Ingrese uno de los valores indicados')
                 esperar()
                 os.system('cls')
 
@@ -369,13 +369,13 @@ def alta_usuario():
             print('\n')
             imprimir_usuario(diccionario_usuario)
             print('\n')
-            print('Revise los datos, si desea:') #Posible recursividad en el futuro
+            print(Fore.YELLOW + 'Revise los datos, si desea:') #Posible recursividad en el futuro
             esperar()
-            print('[1] Volver a Reingresar')
+            print(Fore.YELLOW + '[1] Volver a Reingresar')
             esperar()
-            print('[2] Salir sin cargar')
+            print(Fore.YELLOW + '[2] Salir sin cargar')
             esperar()
-            print('[0] Todo correcto, continuar')
+            print(Fore.YELLOW + '[0] Todo correcto, continuar')
             Check = input('>> ')
             match Check:
                 #Salir SIN CARGAR
@@ -384,9 +384,9 @@ def alta_usuario():
 
                 #Reingreso de datos
                 case '1':
-                    print('Reiniciando proceso de carga...')
+                    print('Fore.YELLOW + Reiniciando proceso de carga...')
                     esperar(2)
-                    input('Presione Enter para seguir')
+                    input(Fore.YELLOW + 'Presione Enter para seguir')
                     print('\n')
                     Flag = False
 
@@ -399,19 +399,19 @@ def alta_usuario():
                                 i['Familia'].append(diccionario_usuario['CUIT'])
                                 break
                     lista_u.append(diccionario_usuario)
-                    print('Usuario ingresado con exito')
+                    print(Fore.YELLOW + 'Usuario ingresado con exito')
                     esperar()
-                    print('Comuniquese con un encargado de la empresa para cancelar su deuda, al nro 11-22334455')
+                    print(Fore.YELLOW + 'Comuniquese con un encargado de la empresa para cancelar su deuda, al nro 11-22334455')
                     esperar()
-                    input('Presione Enter para volver al menu anterior')
+                    input(Fore.YELLOW + 'Presione Enter para volver al menu anterior')
                     os.system('cls')
                     auth.cargar_archivo(lista_u,RUTA_ARCHIVO)
                     Flag,Reinicio = False,False
 
                 case _:
-                    print('Ingrese uno de los valores indicados')
+                    print(Fore.YELLOW + 'Ingrese uno de los valores indicados')
                     esperar()
-                    input('Ingrese Enter para reintentar')
+                    input(Fore.YELLOW + 'Ingrese Enter para reintentar')
                     os.system('cls')
 
 def baja_usuario(cuit):
@@ -433,24 +433,24 @@ def eliminar_usuario(cuit):
     lista_u = auth.abrir_archivo(RUTA_ARCHIVO)
     indice, usuario = buscar_usuarios(cuit)
     if usuario & usuario['Activo']==True:
-        print('Eliminando usuario...')
+        print(Fore.YELLOW + 'Eliminando usuario...')
         esperar(2)
         lista_u(indice)['Activo'] = False
-        print('Usuario Eliminado')
+        print(Fore.YELLOW + 'Usuario Eliminado')
         esperar()
-        input('Presione Enter para volver')
+        input(Fore.YELLOW + 'Presione Enter para volver')
         os.system('cls')
         auth.cargar_archivo(lista_u,RUTA_ARCHIVO)
     elif usuario['Activo']==False:
-        print('El usuario ingresado ya esa inhabilitado')
+        print(Fore.YELLOW + 'El usuario ingresado ya esa inhabilitado')
         esperar()
-        input('Presione Enter para volver')
+        input(Fore.YELLOW + 'Presione Enter para volver')
         esperar()
         os.system('cls')
     else:
-        print('El usuario ingresado no existe')
+        print(Fore.YELLOW + 'El usuario ingresado no existe')
         esperar()
-        input('Presione Enter para volver')
+        input(Fore.YELLOW + 'Presione Enter para volver')
         os.system('cls')
 
 
@@ -490,7 +490,7 @@ def ver_mi_perfil_user(cuit):
         cuit (int): Cuit del usuario ingresado
     """
     _, user = buscar_usuarios(cuit)
-    print('Este es tu usuario')
+    print(Fore.YELLOW + 'Este es tu usuario')
     esperar()
     imprimir_usuario(user)
 
@@ -502,7 +502,7 @@ def ver_beneficios(cuit):
     """
     esperar()
     print('-+-'*15)
-    print('Estos son tus beneficios')
+    print(Fore.YELLOW + 'Estos son tus beneficios')
     esperar()
     _, user = buscar_usuarios(cuit)
     for i in PLANES:
@@ -522,9 +522,9 @@ def validar_busqueda_usuario(lista_u):
         int: indice del usuario buscado
     """
     if lista_u == []:
-        print('La lista de usuarios se encuentra vacia')
+        print(Fore.YELLOW + 'La lista de usuarios se encuentra vacia')
         esperar()
-        input('Presione Enter para volver')
+        input(Fore.YELLOW + 'Presione Enter para volver')
         esperar()
         os.system('cls')
         return None
@@ -535,18 +535,18 @@ def validar_busqueda_usuario(lista_u):
         if cuit == '0':
             return None
         if not auth.validar_cuit(cuit):
-            print('CUIT ingresado es invalido')
+            print(Fore.YELLOW + 'CUIT ingresado es invalido')
         else:
             cuit = auth.limpiar_nro(cuit)
             indice, usuario = buscar_usuarios(cuit,True)
             if usuario == None:
-                print('Usuario no encontrado intente nuevamente')
+                print(Fore.YELLOW + 'Usuario no encontrado intente nuevamente')
                 esperar()
-                input('Presione Enter para volver')
+                input(Fore.YELLOW + 'Presione Enter para volver')
                 esperar()
                 os.system('cls')
             else:
-                print('Este es el usuario que desea modificar?')
+                print(Fore.YELLOW + 'Este es el usuario que desea modificar?')
                 esperar()
                 imprimir_usuario(usuario)
                 esperar()
@@ -598,12 +598,12 @@ def modificar_usuario(admin=False):
 
         os.system('cls')
 
-    print('Cargando cambios..')
+    print(Fore.YELLOW + 'Cargando cambios..')
     esperar(2)
     auth.cargar_archivo(lista_u,RUTA_ARCHIVO)
     esperar(1)
-    print('Datos cambiados correctamente')
-    input('Ingrese Enter para regresar')
+    print(Fore.YELLOW + 'Datos cambiados correctamente')
+    input(Fore.YELLOW + 'Ingrese Enter para regresar')
     os.system('cls')
 
 
@@ -623,7 +623,7 @@ def elegir_key(dic,admin=False):
         for indice,i in enumerate(lista_keys):
             print(f'[{indice+1}] {i} | Valor actual {dic[i]}')
             esperar()
-        print('Ingrese la caracteristica a modificar')
+        print(Fore.YELLOW + 'Ingrese la caracteristica a modificar')
         esperar()
         Flag = True
         while Flag:
@@ -632,14 +632,14 @@ def elegir_key(dic,admin=False):
                 if 0 <= eleccion < len(lista_keys):
                     return lista_keys[eleccion]
                 else:
-                    print('Elija una opcion dentro del rango dado')
+                    print(Fore.YELLOW + 'Elija una opcion dentro del rango dado')
                     esperar()
-                    input('Presione Enter para reintentar')
+                    input(Fore.YELLOW + 'Presione Enter para reintentar')
                     os.system('cls')
             except Exception as a:
-                print(f'Error {a}, Ingrese nuevamente')
+                print(Fore.YELLOW + f'Error {a}, Ingrese nuevamente')
                 esperar()
-                input('Presione Enter para reintentar')
+                input(Fore.YELLOW + 'Presione Enter para reintentar')
                 os.system('cls')
     else:
         no_admin = {'CUIT','Deudor','Familia','Activo'}
@@ -647,7 +647,7 @@ def elegir_key(dic,admin=False):
         for indice,i in enumerate(lista_keys):
             print(f'[{indice+1}] {i} | Valor actual {dic[i]}')
             esperar()
-        print('Ingrese la caracteristica a modificar')
+        print(Fore.YELLOW + 'Ingrese la caracteristica a modificar')
         esperar()
         Flag = True
         while Flag:
@@ -656,14 +656,14 @@ def elegir_key(dic,admin=False):
                 if 0 <= eleccion < len(lista_keys):
                     return lista_keys[eleccion]
                 else:
-                    print('Elija una opcion dentro del rango dado')
+                    print(Fore.YELLOW + 'Elija una opcion dentro del rango dado')
                     esperar()
-                    input('Presione Enter para reintentar')
+                    input(Fore.YELLOW + 'Presione Enter para reintentar')
                     os.system('cls')
             except Exception as a:
-                print(f'Error {a}, Ingrese nuevamente')
+                print(Fore.YELLOW + f'Error {a}, Ingrese nuevamente')
                 esperar()
-                input('Presione Enter para reintentar')
+                input(Fore.YELLOW + 'Presione Enter para reintentar')
                 os.system('cls')
 
 
@@ -679,15 +679,15 @@ def iniciar_sesion_usuario():
     """
     print()
     print("===================================")
-    print("          INICIAR SESION")
+    consola.print(Panel("   INICIAR SESION", border_style= "green", width=44))
     print("===================================")
 
     lista_usuarios = auth.abrir_archivo(RUTA_ARCHIVO)
 
-    cuit = input("Ingrese su CUIT: ")
+    cuit = input(Fore.YELLOW + "Ingrese su CUIT: ")
 
     if not auth.validar_cuit(cuit):
-        print("CUIT invalido")
+        print(Fore.YELLOW + "CUIT invalido")
         esperar()
         os.system('cls')
         return None
@@ -702,7 +702,7 @@ def iniciar_sesion_usuario():
             break
 
     if usuario_encontrado == None or usuario_encontrado['Activo']==False:
-        print("Usuario no encontrado")
+        print(Fore.YELLOW + "Usuario no encontrado")
         return None
 
     usuario = check_pasword(usuario_encontrado,3)
@@ -724,38 +724,38 @@ def check_pasword(user,intentos):
         Dict or None: Si inicia correctamente devuelve el Diccionario, sino None
     """
     if intentos <= 0:
-        print("Se agotaron los intentos")
+        print(Fore.YELLOW + "Se agotaron los intentos")
         esperar()
-        input('Ingrese Enter para regresar')
+        input(Fore.YELLOW + 'Ingrese Enter para regresar')
         os.system('cls')
         return None
 
-    password = input("Ingrese su contraseña: ")
+    password = input(Fore.YELLOW + "Ingrese su contraseña: ")
     esperar()
 
     if password == user["Password"]:
 
         if user["Deudor"] == True:
-            print("No puede iniciar sesion porque posee una deuda.")
+            print(Fore.YELLOW + "No puede iniciar sesion porque posee una deuda.")
             esperar()
-            print("Debe regularizar su situacion.")
+            print(Fore.YELLOW + "Debe regularizar su situacion.")
             esperar()
-            input('Ingrese Enter para regresar')
+            input(Fore.YELLOW + 'Ingrese Enter para regresar')
             os.system('cls')
             return None
 
-        print("Inicio de sesion exitoso")
+        print(Fore.YELLOW + "Inicio de sesion exitoso")
         esperar()
-        print("Bienvenido/a", user["Apellido"])
+        print(Fore.YELLOW + "Bienvenido/a", user["Apellido"])
         esperar()
 
         return user
 
     else:
         intentos -= 1
-        print("Contraseña incorrecta")
+        print(Fore.YELLOW + "Contraseña incorrecta")
         esperar()
-        print("Intentos restantes:", intentos)
+        print(Fore.YELLOW + "Intentos restantes:", intentos)
         esperar()
         os.system('cls')
         return check_pasword(user,intentos)
