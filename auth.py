@@ -4,6 +4,15 @@ import os
 import json
 from time import sleep
 
+from colorama import Fore, Style, init
+from tabulate import tabulate
+from rich.console import Console
+from rich.panel import Panel
+
+init(autoreset=True)
+
+consola = Console()
+
 # ==========================================
 # FUNCIONES DE VALIDACIÓN (EXPRESIONES REGULARES)
 # ==========================================
@@ -187,14 +196,14 @@ def iniciar_sesion_medicos(Medicos):
 
     print()
     print("===================================")
-    print("          INICIAR SESION")
+    consola.print(Panel("   INICIAR SESION AFILIADO", border_style= "green", width=44))
     print("===================================")
 
-    cuit = input("Ingrese su CUIT: ")
+    cuit = input(Fore.YELLOW + "Ingrese su CUIT: ")
 
     # Validamos el formato
     if not validar_cuit(cuit):
-        print("CUIT invalido")
+        print(Fore.YELLOW + "CUIT invalido")
         return None
 
     # Sacamos puntos, guiones y espacios
@@ -217,7 +226,7 @@ def iniciar_sesion_medicos(Medicos):
 
     while intentos > 0:
 
-        password = input("Ingrese su contraseña: ")
+        password = input(Fore.YELLOW + "Ingrese su contraseña: ")
 
         if password == medico_encontrado["contraseña"]:
 
@@ -228,8 +237,60 @@ def iniciar_sesion_medicos(Medicos):
 
         else:
             intentos -= 1
-            print("Contraseña incorrecta")
-            print("Intentos restantes:", intentos)
+            print(Fore.YELLOW + "Contraseña incorrecta")
+            print(Fore.YELLOW + "Intentos restantes:", intentos)
 
-    print("Se agotaron los intentos")
+    print(Fore.YELLOW + "Se agotaron los intentos")
+    return None
+
+
+def iniciar_sesion_farmacia(Farmacias):
+
+    print()
+    print("===================================")
+    consola.print(Panel("   INICIAR SESION FARMACIA", border_style= "green", width=44))
+    print("===================================")
+
+    cuit = input(Fore.YELLOW + "Ingrese su CUIT: ")
+
+        # Validamos el formato
+    if not validar_cuit(cuit):
+        print(Fore.YELLOW + "CUIT invalido")
+        return None
+
+        # Sacamos puntos, guiones y espacios
+    cuit_limpio = re.sub(r"[.\-\s]", "", cuit)
+    cuit_limpio = int(cuit_limpio)
+
+    farmacia_encontrado = None
+
+        # Busqueda secuencial
+    for farmacia in Farmacias:
+        if farmacia["cuit"] == cuit_limpio:
+            farmacia_encontrado = farmacia
+            break
+
+    if farmacia_encontrado == None:
+        print(Fore.YELLOW + "Farmacia no encontrado")
+        return None
+
+    intentos = 3
+
+    while intentos > 0:
+
+        contraseña = input(Fore.YELLOW + "Ingrese su contraseña: ")
+
+        if contraseña == farmacia_encontrado["contraseña"]:
+
+            print(Fore.YELLOW + "Inicio de sesion exitoso")
+            print(Fore.YELLOW + "Bienvenido/a", farmacia_encontrado["nombre"])
+
+            return farmacia_encontrado
+
+        else:
+            intentos -= 1
+            print(Fore.YELLOW + "Contraseña incorrecta")
+            print(Fore.YELLOW + "Intentos restantes:", intentos)
+
+    print(Fore.YELLOW + "Se agotaron los intentos")
     return None
