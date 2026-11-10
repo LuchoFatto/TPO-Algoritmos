@@ -167,9 +167,9 @@ def abrir_archivo(ruta):
         with open(ruta, "r") as Archivo:
             return json.load(Archivo)
     except Exception as a:
-        print(f'Error "{a}" al abrir el archivo, reiniciar y verificar su integridad')
+        print(Fore.YELLOW + f'Error "{a}" al abrir el archivo, reiniciar y verificar su integridad')
         sleep(0.3)
-        input("Presione Enter para Continuar")
+        input(Fore.YELLOW + "Presione Enter para Continuar: ")
         os.system("cls")
         exit
 
@@ -185,9 +185,9 @@ def cargar_archivo(datos, ruta):
         with open(ruta, "w", encoding="utf8") as Archivo:
             json.dump(datos, Archivo, indent=4)
     except Exception as a:
-        print(f'Error "{a}" al abrir el archivo, reiniciar y verificar su integridad')
+        print(Fore.YELLOW + f'Error "{a}" al abrir el archivo, reiniciar y verificar su integridad')
         sleep(0.3)
-        input("Presione Enter para Continuar")
+        input(Fore.YELLOW + "Presione Enter para Continuar")
         os.system("cls")
         exit
 
@@ -219,7 +219,7 @@ def iniciar_sesion_medicos(Medicos):
             break
 
     if medico_encontrado == None:
-        print("Medico no encontrado")
+        print(Fore.YELLOW + "Medico no encontrado")
         return None
 
     intentos = 3
@@ -230,8 +230,8 @@ def iniciar_sesion_medicos(Medicos):
 
         if password == medico_encontrado["contraseña"]:
 
-            print("Inicio de sesion exitoso")
-            print("Bienvenido/a", medico_encontrado["nombre"])
+            print(Fore.YELLOW + "Inicio de sesion exitoso")
+            print(Fore.YELLOW + "Bienvenido/a", medico_encontrado["nombre"])
 
             return medico_encontrado
 
