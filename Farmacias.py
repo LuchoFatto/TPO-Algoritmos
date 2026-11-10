@@ -1,30 +1,39 @@
 import validaciones
 
+from colorama import Fore, Style, init
+from tabulate import tabulate
+from rich.console import Console
+from rich.panel import Panel
+
+init(autoreset=True)
+
+consola = Console()
+
 # Farmacias
 def imprimir_lista_farmacias(farmacias):
     for farmacia in farmacias:
-            print("\nID Farmacia: {0}".format(farmacia["id"],))
-            print("Direccion: {0}".format(farmacia["direccion"]))
-            print("Beneficiaria: {0}".format(farmacia["beneficiaria"]))
+            print(Fore.YELLOW + "\nID Farmacia: {0}".format(farmacia["id"],))
+            print(Fore.YELLOW + "Direccion: {0}".format(farmacia["direccion"]))
+            print(Fore.YELLOW + "Beneficiaria: {0}".format(farmacia["beneficiaria"]))
 
 def cargar_farmacia(farmacias):
 
-    id_farmacia = input("ingrese el nombre de la farmacia: ")
+    id_farmacia = input(Fore.YELLOW + "ingrese el nombre de la farmacia: ")
     flag_id_farmacia = validaciones.validador_solo_letras(id_farmacia)
     while flag_id_farmacia == False:
-        id_farmacia = input("ingrese el nombre de la farmacia: ")
+        id_farmacia = input(Fore.YELLOW + "ingrese el nombre de la farmacia: ")
         flag_id_farmacia = validaciones.validador_solo_letras(id_farmacia)
 
-    direccion_farmacia = input("Ingrese la direccion: ")
+    direccion_farmacia = input(Fore.YELLOW + "Ingrese la direccion: ")
     flag = validaciones.validar_direccion(direccion_farmacia)
     while flag == False:
-        direccion_farmacia = input("Ingrese la direccion correctamente: ")
+        direccion_farmacia = input(Fore.YELLOW + "Ingrese la direccion correctamente: ")
         flag = validaciones.validar_direccion(direccion_farmacia)
 
-    numero_farmacia = input("indique nro de telefono: ")
+    numero_farmacia = input(Fore.YELLOW + "indique nro de telefono: ")
     flag_numero_farmacia = validaciones.validador_solo_numeros(numero_farmacia)
     while flag_numero_farmacia == False:
-        numero_farmacia = input("indique nro de telefono: ")
+        numero_farmacia = input(Fore.YELLOW + "indique nro de telefono: ")
         flag_numero_farmacia = validaciones.validador_solo_numeros(numero_farmacia)
 
     farmacias.append({"id": id_farmacia, "direccion": direccion_farmacia, "numero": numero_farmacia})
