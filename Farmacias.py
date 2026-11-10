@@ -39,11 +39,11 @@ def cargar_farmacia(farmacias):
     farmacias.append({"id": id_farmacia, "direccion": direccion_farmacia, "numero": numero_farmacia})
 
 def eliminar_farmacia(farmacias):
-    id_farmacia_eliminar = input("Para eliminar la farmacia ingrese su ID: ")
+    id_farmacia_eliminar = input(Fore.YELLOW + "Para eliminar la farmacia ingrese su ID: ")
     for farmacia in farmacias:
         if farmacia["id"] == str(id_farmacia_eliminar):
             farmacias.remove(farmacia)
-            #confirmacion = input("Confirmacion: desea eliminar? SI/NO") #hay que agregar que preguntar para confirmar
+            #confirmacion = input(Fore.YELLOW + "Confirmacion: desea eliminar? SI/NO") #hay que agregar que preguntar para confirmar
             #if confirmacion == "SI":
             #    usuarios.remove(user)
             #else:
