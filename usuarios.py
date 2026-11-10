@@ -371,9 +371,9 @@ def alta_usuario():
             print('\n')
             print(Fore.YELLOW + 'Revise los datos, si desea:') #Posible recursividad en el futuro
             esperar()
-            print(Fore.YELLOW + '[1] Volver a Reingresar')
+            print(Fore.GREEN + '[1] Volver a Reingresar')
             esperar()
-            print(Fore.YELLOW + '[2] Salir sin cargar')
+            print(Fore.RED + '[2] Salir sin cargar')
             esperar()
             print(Fore.YELLOW + '[0] Todo correcto, continuar')
             Check = input('>> ')
@@ -384,7 +384,7 @@ def alta_usuario():
 
                 #Reingreso de datos
                 case '1':
-                    print('Fore.YELLOW + Reiniciando proceso de carga...')
+                    print(Fore.YELLOW + 'Reiniciando proceso de carga...')
                     esperar(2)
                     input(Fore.YELLOW + 'Presione Enter para seguir')
                     print('\n')
@@ -589,11 +589,11 @@ def modificar_usuario(admin=False):
             case 'Password':
                 modificar[key] = pedido_datos('Ingrese su contraseña (Debe tener al menos 8 elementos, uno especial y un numero)',auth.validar_contrasenia,'Ingrese un Contraseña adecuada', lista_u)
             case 'Deudor' | 'Activo':
-                print(f'{key} modificado a estado {not modificar[key]}')
+                print(Fore.YELLOW + f'{key} modificado a estado {not modificar[key]}')
                 esperar()
                 modificar[key] = not modificar[key]
 
-        if not verificar_decision((f'la modificacion de {key}. Desea modificar otro dato?')):
+        if not verificar_decision((Fore.YELLOW + f'la modificacion de {key}. Desea modificar otro dato?')):
             Flag = False
 
         os.system('cls')
@@ -621,7 +621,7 @@ def elegir_key(dic,admin=False):
     lista_keys.remove('Historial')
     if admin:
         for indice,i in enumerate(lista_keys):
-            print(f'[{indice+1}] {i} | Valor actual {dic[i]}')
+            print(Fore.YELLOW + f'[{indice+1}] {i} | Valor actual {dic[i]}')
             esperar()
         print(Fore.YELLOW + 'Ingrese la caracteristica a modificar')
         esperar()
@@ -645,7 +645,7 @@ def elegir_key(dic,admin=False):
         no_admin = {'CUIT','Deudor','Familia','Activo'}
         lista_keys = [key for key in lista_keys if key not in no_admin]
         for indice,i in enumerate(lista_keys):
-            print(f'[{indice+1}] {i} | Valor actual {dic[i]}')
+            print(Fore.YELLOW + f'[{indice+1}] {i} | Valor actual {dic[i]}')
             esperar()
         print(Fore.YELLOW + 'Ingrese la caracteristica a modificar')
         esperar()
