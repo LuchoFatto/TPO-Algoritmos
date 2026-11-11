@@ -1,11 +1,20 @@
-
 import usuarios
 import admin
 import base_datos
 import Medicos
+import Farmacias
 import auth
 import time
 import os
+
+from colorama import Fore, Style, init
+from tabulate import tabulate
+from rich.console import Console
+from rich.panel import Panel
+
+init(autoreset=True)
+
+consola = Console()
 
 
 def mostrar_menu_principal():
@@ -15,42 +24,43 @@ def mostrar_menu_principal():
         print()
         print("=" * 40)
         time.sleep(0.1)
-        print("   SISTEMA DE GESTION OBRA SOCIAL")
+        consola.print(Panel("   SISTEMA DE GESTION OBRA SOCIAL", border_style= "green", width=44))
         time.sleep(0.1)
         print("=" * 40)
         time.sleep(0.1)
-        print("1. Iniciar sesion")
+        print(Fore.GREEN + "1. Iniciar sesion")
         time.sleep(0.1)
-        print("2. Registrarse")
+        print(Fore.GREEN + "2. Registrarse")
         time.sleep(0.1)
-        print("3. Salir")
+        print(Fore.RED + "3. Salir")
         time.sleep(0.1)
         print("=" * 40)
 
-        opcion = input("Seleccione una opcion: ")
+        opcion = input(Fore.YELLOW + "Seleccione una opcion: ")
 
         if opcion == "1":
-            print("\nIniciando sesion...")
+            print(Fore.YELLOW + "\nIniciando sesion...")
             time.sleep(1)
             os.system("cls")
             mostrar_menu_login()
 
         elif opcion == "2":
-            print("\nCargando registro...")
+            print(Fore.YELLOW + "\nCargando registro...")
             time.sleep(1)
+            os.system("cls")
             usuarios.alta_usuario()
-            input("\nPresione ENTER para continuar...")
+            input(Fore.YELLOW + "\nPresione ENTER para continuar...")
             os.system("cls")
 
         elif opcion == "3":
-            print("\nSaliendo del sistema...")
+            print(Fore.YELLOW + "\nSaliendo del sistema...")
             time.sleep(2)
             os.system("cls")
-            print("Hasta luego!")
+            print(Fore.YELLOW + "Hasta luego!")
 
         else:
             os.system("cls")
-            print("\nOpcion invalida...")
+            print(Fore.YELLOW + "\nOpcion invalida...")
             time.sleep(1)
 
 
@@ -61,43 +71,42 @@ def mostrar_menu_login():
         print()
         print("=" * 40)
         time.sleep(0.1)
-        print("           INICIAR SESION")
+        consola.print(Panel("   INICIAR SESION", border_style= "green", width=44))
         time.sleep(0.1)
         print("=" * 40)
         time.sleep(0.1)
-        print("1. Ingresa como afiliado")
+        print(Fore.GREEN + "1. Ingresa como afiliado")
         time.sleep(0.1)
-        print("2. Ingresa como medico")
+        print(Fore.GREEN + "2. Ingresa como medico")
         time.sleep(0.1)
-        print("3. Ingresa como farmacia")
+        print(Fore.GREEN + "3. Ingresa como farmacia")
         time.sleep(0.1)
-        print("4. Ingresa como Admin / Gestion")
+        print(Fore.GREEN + "4. Ingresa como Admin / Gestion")
         time.sleep(0.1)
-        print("5. Volver")
+        print(Fore.RED + "5. Volver")
         time.sleep(0.1)
         print("=" * 40)
 
-        opcion = input("Seleccione una opcion: ")
+        opcion = input(Fore.YELLOW + "Seleccione una opcion: ")
 
         if opcion == "1":
             os.system("cls")
-            print("\nCargando inicio de sesion...")
+            print(Fore.YELLOW + "\nCargando inicio de sesion...")
             time.sleep(1)
 
-            usuario = auth.iniciar_sesion(base_datos.lista_usuarios)
+            cuit = usuarios.iniciar_sesion_usuario()
 
-            if usuario != None:
+            if cuit != None:
                 os.system("cls")
-                print("\nIngresando al sistema...")
+                print(Fore.YELLOW + "\nIngresando al sistema...")
                 time.sleep(1)
-                mostrar_menu_afiliados(usuario["CUIT"])
-                
+                mostrar_menu_afiliados(cuit)
 
         elif opcion == "2":
             os.system("cls")
             if auth.iniciar_sesion_medicos(base_datos.Medicos):
                 os.system("cls")
-                print("\nAcceso autorizado...")
+                print(Fore.YELLOW + "\nAcceso autorizado...")
                 time.sleep(1)
                 mostrar_menu_medico()
             else:
@@ -112,12 +121,12 @@ def mostrar_menu_login():
 
         elif opcion == "4":
             os.system("cls")
-            print("\nCargando acceso de administrador...")
+            print(Fore.YELLOW + "\nCargando acceso de administrador...")
             time.sleep(1)
 
-            if auth.iniciar_sesion_admin():
+            if admin.iniciar_sesion_admin():
                 os.system("cls")
-                print("\nAcceso autorizado...")
+                print(Fore.YELLOW + "\nAcceso autorizado...")
                 time.sleep(1)
                 mostrar_menu_admin()
             else:
@@ -125,12 +134,12 @@ def mostrar_menu_login():
 
         elif opcion == "5":
             os.system("cls")
-            print("\nVolviendo al menu principal...")
+            print(Fore.YELLOW + "\nVolviendo al menu principal...")
             time.sleep(1)
 
         else:
             os.system("cls")
-            print("\nOpcion invalida...")
+            print(Fore.YELLOW + "\nOpcion invalida...")
             time.sleep(1)
 
 
@@ -141,66 +150,66 @@ def mostrar_menu_afiliados(cuit):
         print()
         print("=" * 40)
         time.sleep(0.1)
-        print("         MENU DE AFILIADOS")
+        consola.print(Panel("   MENU DE AFILIADOS", border_style= "green", width=44))
         time.sleep(0.1)
         print("=" * 40)
         time.sleep(0.1)
-        print("1. Ver perfil.")
+        print(Fore.GREEN + "1. Ver perfil.")
         time.sleep(0.1)
-        print("2. Ver cobertura.")
+        print(Fore.GREEN + "2. Ver cobertura.")
         time.sleep(0.1)
-        print("3. Seleccionar / Cambiar plan. DESHABILITADO")
+        print(Fore.GREEN + "3. Seleccionar / Cambiar plan. DESHABILITADO")
         time.sleep(0.1)
-        print("4. Turnos. DESHABILITADO")
+        print(Fore.GREEN + "4. Turnos. DESHABILITADO")
         time.sleep(0.1)
-        print("5. Darse de baja")
+        print(Fore.RED + "5. Darse de baja")
         time.sleep(0.1)
-        print("6. Volver.")
+        print(Fore.RED + "6. Volver.")
         time.sleep(0.1)
         print("=" * 40)
 
-        opcion = input("Ingrese una opcion: ")
+        opcion = input(Fore.YELLOW + "Ingrese una opcion: ")
 
         if opcion == "1":
             os.system("cls")
-            print("\nCargando perfil...")
+            print(Fore.YELLOW + "\nCargando perfil...")
             time.sleep(1)
-            usuarios.ver_mi_perfil_user(cuit)
-            input("\nPresione ENTER para continuar...")
+            usuarios.ver_mi_perfil_user(cuit)  # Ingresar cuit de usuario loggeado
+            input(Fore.YELLOW + "\nPresione ENTER para continuar...")
 
         elif opcion == "2":
             os.system("cls")
-            print("\nCargando cobertura...")
+            print(Fore.YELLOW + "\nCargando cobertura...")
             time.sleep(1)
-            usuarios.ver_cartilla(cuit)
-            input("\nPresione ENTER para continuar...")
+            usuarios.ver_beneficios(cuit)
+            input(Fore.YELLOW + "\nPresione ENTER para continuar...")
 
         elif opcion == "3":
             os.system("cls")
-            print("\nSeleccionar / Cambiar plan")
+            print(Fore.YELLOW + "\nSeleccionar / Cambiar plan")
             print("Funcion deshabilitada")
             input("\nPresione ENTER para volver...")
 
         elif opcion == "4":
             os.system("cls")
-            print("\nVer mis turnos")
+            print(Fore.YELLOW + "\nVer mis turnos")
             print("Funcion deshabilitada")
             input("\nPresione ENTER para volver...")
 
         elif opcion == "5":
             os.system("cls")
-            print("\nProcesando solicitud de baja...")
+            print(Fore.YELLOW + "\nProcesando solicitud de baja...")
             time.sleep(1)
             usuarios.baja_usuario(cuit)
-            input("\nPresione ENTER para continuar...")
+            input(Fore.YELLOW + "\nPresione ENTER para continuar...")
 
         elif opcion == "6":
             os.system("cls")
-            print("\nVolviendo al menu anterior...")
+            print(Fore.YELLOW + "\nVolviendo al menu anterior...")
             time.sleep(1)
 
         else:
-            print("\nOpcion invalida")
+            print(Fore.YELLOW + "\nOpcion invalida")
             time.sleep(1)
 
 
@@ -211,27 +220,27 @@ def mostrar_menu_medico():
         print()
         print("=" * 40)
         time.sleep(0.1)
-        print("           MENU DE MEDICO")
+        consola.print(Panel("   MENU DE MEDICOS", border_style= "green", width=44))
         time.sleep(0.1)
         print("=" * 40)
         time.sleep(0.1)
-        print("1. Darse de alta")
+        print(Fore.GREEN + "1. Darse de alta")
         time.sleep(0.1)
-        print("2. Darse de baja")
+        print(Fore.RED + "2. Darse de baja")
         time.sleep(0.1)
-        print("3. Modificar Medico")
+        print(Fore.GREEN + "3. Modificar Medico")
         time.sleep(0.1)
         print("4. Imprimir lista de medicos")
         time.sleep(0.1)
-        print("5. Volver")
+        print(Fore.RED + "5. Volver")
         time.sleep(0.1)
         print("=" * 40)
 
-        opcion = input("Ingrese una opcion: ")
+        opcion = input(Fore.YELLOW + "Ingrese una opcion: ")
 
         if opcion == "1":
             os.system("cls")
-            print("\nCargando alta de medico...")
+            print(Fore.YELLOW + "\nCargando alta de medico...")
             time.sleep(1)
 
             medico = Medicos.alta_medico()
@@ -245,10 +254,10 @@ def mostrar_menu_medico():
 
         elif opcion == "2":
             os.system("cls")
-            print("\nCargando solicitud de baja...")
+            print(Fore.YELLOW + "\nCargando solicitud de baja...")
             time.sleep(1)
             Medicos.eliminar_medico(base_datos.Medicos)
-            input("\nPresione ENTER para continuar...")
+            input(Fore.YELLOW + "\nPresione ENTER para continuar...")
 
         elif opcion == "3":
             os.system("cls")
@@ -264,12 +273,12 @@ def mostrar_menu_medico():
 
         elif opcion == "5":
             os.system("cls")
-            print("\nVolviendo al menu anterior...")
+            print(Fore.YELLOW + "\nVolviendo al menu anterior...")
             time.sleep(1)
 
         else:
             os.system("cls")
-            print("\nOpcion invalida")
+            print(Fore.YELLOW + "\nOpcion invalida")
             time.sleep(1)
 
 
@@ -280,33 +289,33 @@ def mostrar_menu_farmacia():
         print()
         print("=" * 40)
         time.sleep(0.1)
-        print("          MENU DE FARMACIA")
+        consola.print(Panel("   MENU DE FARMACIAS", border_style= "green", width=44))
         time.sleep(0.1)
         print("=" * 40)
         time.sleep(0.1)
-        print("1. Consultar estado de afiliado")
+        print(Fore.GREEN + "1. Consultar estado de afiliado")
         time.sleep(0.1)
-        print("2. Volver")
+        print(Fore.RED + "2. Volver")
         time.sleep(0.1)
         print("=" * 40)
 
-        opcion = input("Ingrese una opcion: ")
+        opcion = input(Fore.YELLOW + "Ingrese una opcion: ")
 
         if opcion == "1":
             os.system("cls")
-            print("\nConsultando estado de afiliado...")
+            print(Fore.YELLOW + "\nConsultando estado de afiliado...")
             time.sleep(1)
-            print("Consulta de afiliado")
-            input("\nPresione ENTER para continuar...")
+            print(Fore.YELLOW + "Consulta de afiliado")
+            input(Fore.YELLOW + "\nPresione ENTER para continuar...")
 
         elif opcion == "2":
             os.system("cls")
-            print("\nVolviendo al menu anterior...")
+            print(Fore.YELLOW + "\nVolviendo al menu anterior...")
             time.sleep(1)
 
         else:
             os.system("cls")
-            print("\nOpcion invalida")
+            print(Fore.YELLOW + "\nOpcion invalida")
             time.sleep(1)
 
 
@@ -317,71 +326,71 @@ def mostrar_menu_admin():
         print()
         print("=" * 40)
         time.sleep(0.1)
-        print("       MENU GESTION / ADMIN")
+        consola.print(Panel("   MENU DE GESTION / ADMIN", border_style= "green", width=44))
         time.sleep(0.1)
         print("=" * 40)
         time.sleep(0.1)
-        print("1. Dar de alta usuario")
+        print(Fore.GREEN + "1. Dar de alta usuario")
         time.sleep(0.1)
-        print("2. Dar de baja usuario")
+        print(Fore.GREEN + "2. Dar de baja usuario")
         time.sleep(0.1)
-        print("3. Manejar usuarios deudores")
+        print(Fore.GREEN + "3. Manejar usuarios deudores")
         time.sleep(0.1)
-        print("4. Ver lista de afiliados")
+        print(Fore.BLUE + "4. Ver lista de afiliados")
         time.sleep(0.1)
-        print("5. Ver lista de medicos")
+        print(Fore.BLUE + "5. Ver lista de medicos")
         time.sleep(0.1)
-        print("6. Ver lista de farmacias")
+        print(Fore.BLUE + "6. Ver lista de farmacias")
         time.sleep(0.1)
-        print("7. Ver historial - DESHABILITADO")
+        print(Fore.BLUE + "7. Ver historial - DESHABILITADO")
         time.sleep(0.1)
-        print("8. Volver")
+        print(Fore.RED + "8. Volver")
         time.sleep(0.1)
         print("=" * 40)
 
-        opcion = input("Ingrese una opcion: ")
+        opcion = input(Fore.YELLOW + "Ingrese una opcion: ")
 
         if opcion == "1":
             os.system("cls")
-            print("\nCargando alta de usuario...")
+            print(Fore.YELLOW + "\nCargando alta de usuario...")
             time.sleep(1)
             usuarios.alta_usuario()
-            input("\nPresione ENTER para continuar...")
+            input(Fore.YELLOW + "\nPresione ENTER para continuar...")
 
         elif opcion == "2":
             os.system("cls")
-            print("\nCargando baja de usuario...")
+            print(Fore.YELLOW + "\nCargando baja de usuario...")
             time.sleep(1)
             admin.baja_usuario()
-            input("\nPresione ENTER para continuar...")
+            input(Fore.YELLOW + "\nPresione ENTER para continuar...")
 
         elif opcion == "3":
             os.system("cls")
-            print("\nConsultando usuarios deudores...")
+            print(Fore.YELLOW + "\nConsultando usuarios deudores...")
             time.sleep(1)
             admin.deudores()
-            input("\nPresione ENTER para continuar...")
+            input(Fore.YELLOW + "\nPresione ENTER para continuar...")
 
         elif opcion == "4":
             os.system("cls")
-            print("\nCargando lista de afiliados...")
+            print(Fore.YELLOW + "\nCargando lista de afiliados...")
             time.sleep(1)
             usuarios.ver_lista_usuarios()
-            input("\nPresione ENTER para continuar...")
+            input(Fore.YELLOW + "\nPresione ENTER para continuar...")
 
         elif opcion == "5":
             os.system("cls")
-            print("\nCargando lista de medicos...")
+            print(Fore.YELLOW + "\nCargando lista de medicos...")
             time.sleep(1)
             Medicos.imprimir_lista_medicos(base_datos.Medicos)
-            input("\nPresione ENTER para continuar...")
+            input(Fore.YELLOW + "\nPresione ENTER para continuar...")
 
         elif opcion == "6":
             os.system("cls")
-            print("\nCargando lista de farmacias...")
+            print(Fore.YELLOW + "\nCargando lista de farmacias...")
             time.sleep(1)
-            Medicos.imprimir_lista_farmacias(base_datos.Farmacias)
-            input("\nPresione ENTER para continuar...")
+            Farmacias.imprimir_lista_farmacias(base_datos.Farmacias)
+            input(Fore.YELLOW +"\nPresione ENTER para continuar...")
 
         elif opcion == "7":
             os.system("cls")
@@ -390,10 +399,10 @@ def mostrar_menu_admin():
 
         elif opcion == "8":
             os.system("cls")
-            print("\nVolviendo al menu anterior...")
+            print(Fore.YELLOW + "\nVolviendo al menu anterior...")
             time.sleep(1)
 
         else:
             os.system("cls")
-            print("\nOpcion invalida")
+            print(Fore.YELLOW + "\nOpcion invalida")
             time.sleep(1)

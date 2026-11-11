@@ -1,6 +1,6 @@
 from auth import validar_email
 from auth import validar_contrasenia
-from usuarios import limpiar_nro
+from auth import limpiar_nro
 
 def test_mail():
     assert validar_email("fra@hotmail.com") == True

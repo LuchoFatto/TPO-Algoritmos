@@ -1,9 +1,22 @@
 import re
 import base_datos
+import os
+import json
+from time import sleep
+
+from colorama import Fore, Style, init
+from tabulate import tabulate
+from rich.console import Console
+from rich.panel import Panel
+
+init(autoreset=True)
+
+consola = Console()
 
 # ==========================================
 # FUNCIONES DE VALIDACIÓN (EXPRESIONES REGULARES)
 # ==========================================
+
 
 def validar_email(email):
     """Validar formato de email.
@@ -35,6 +48,7 @@ def validar_cuit(cuit):
     cuit_limpio = re.sub(patron_limpiar, "", cuit)
 
     return len(cuit_limpio) == 11 and cuit_limpio.isdigit()
+
 
 def obtener_cuit_limpio(cuit):
     """Retorna el CUIT únicamente como números enteros.
@@ -105,13 +119,17 @@ def validar_direccion(direccion):
     Returns:
         boolean: Validar que el texto ingresado contenga la informacion de la direccion
     """
-    patron_direccion = re.compile(r"^[a-zA-Z0-9À-ÿñÑ.°]+(?:\s+[a-zA-Z0-9À-ÿñÑ.°]+)*\s+\d+\s*[a-zA-Z]?$", re.IGNORECASE)
+    patron_direccion = re.compile(
+        r"^[a-zA-Z0-9À-ÿñÑ.°]+(?:\s+[a-zA-Z0-9À-ÿñÑ.°]+)*\s+\d+\s*[a-zA-Z]?$",
+        re.IGNORECASE,
+    )
     return bool(re.match(patron_direccion, direccion))
 
 
 # ==========================================
 # UTILIDADES DE ENTRADA DE DATOS
 # ==========================================
+
 
 def solicitar_dato_validado(mensaje, mensaje_error, funcion_validadora):
     """Solicita un dato por consola y lo reitera hasta que cumpla con la función validadora.
@@ -129,100 +147,86 @@ def solicitar_dato_validado(mensaje, mensaje_error, funcion_validadora):
         dato = input(mensaje_error)
     return dato
 
+
 # Revisar funciones de inicio de sesion de por que estan puestas aca
+def limpiar_nro(nro):
+    nro = str(nro)
+    return int(re.sub(r"[\.\-\s]", "", nro))
 
-def iniciar_sesion(lista_usuarios):
 
-    print()
-    print("===================================")
-    print("          INICIAR SESION")
-    print("===================================")
+def abrir_archivo(ruta):
+    """Verifica y abre el archivo json, devuelve su contenido
 
-    cuit = input("Ingrese su CUIT: ")
+    Args:
+        ruta (str): ruta de donde se encuentra el archivo
 
-    # Validamos el formato
-    if not validar_cuit(cuit):
-        print("CUIT invalido")
-        return None
+    Returns:
+        _type_: Contenido del archivo, generalmente lista de diccionarios
+    """
+    try:
+        with open(ruta, "r") as Archivo:
+            return json.load(Archivo)
+    except Exception as a:
+        print(f'Error "{a}" al abrir el archivo, reiniciar y verificar su integridad')
+        sleep(0.3)
+        input("Presione Enter para Continuar")
+        os.system("cls")
+        exit
 
-    # Sacamos puntos, guiones y espacios
-    cuit_limpio = re.sub(r"[.\-\s]", "", cuit)
-    cuit_limpio = int(cuit_limpio)
 
-    usuario_encontrado = None
+def cargar_archivo(datos, ruta):
+    """Recive los datos a cargar, verifica y abre el archivo y lo carga dentro de el con indent=4
 
-    # Busqueda secuencial
-    for usuario in lista_usuarios:
-        if usuario["CUIT"] == cuit_limpio:
-            usuario_encontrado = usuario
-            break
-
-    if usuario_encontrado == None:
-        print("Usuario no encontrado")
-        return None
-
-    intentos = 3
-
-    while intentos > 0:
-
-        password = input("Ingrese su contraseña: ")
-
-        if password == usuario_encontrado["Password"]:
-
-            if usuario_encontrado["Deudor"] == True:
-                print("No puede iniciar sesion porque posee una deuda.")
-                print("Debe regularizar su situacion.")
-                return None
-
-            print("Inicio de sesion exitoso")
-            print("Bienvenido/a", usuario_encontrado["Nombre"])
-
-            return usuario_encontrado
-
-        else:
-            intentos -= 1
-            print("Contraseña incorrecta")
-            print("Intentos restantes:", intentos)
-
-    print("Se agotaron los intentos")
-    return None
+    Args:
+        datos (_type_): Los datos a cargar dentro del json
+        ruta (str): ruta de donde se encuentra el archivo
+    """
+    try:
+        with open(ruta, "w", encoding="utf8") as Archivo:
+            json.dump(datos, Archivo, indent=4)
+    except Exception as a:
+        print(f'Error "{a}" al abrir el archivo, reiniciar y verificar su integridad')
+        sleep(0.3)
+        input("Presione Enter para Continuar")
+        os.system("cls")
+        exit
 
 
 def iniciar_sesion_medicos(Medicos):
 
     print()
     print("===================================")
-    print("          INICIAR SESION")
+    consola.print(Panel("   INICIAR SESION AFILIADO", border_style= "green", width=44))
     print("===================================")
 
-    cuit = input("Ingrese su CUIT: ")
-    
+    cuit = input(Fore.YELLOW + "Ingrese su CUIT: ")
+
     # Validamos el formato
     if not validar_cuit(cuit):
-        print("CUIT invalido")
+        print(Fore.YELLOW + "CUIT invalido")
         return None
-    
+
     # Sacamos puntos, guiones y espacios
     cuit_limpio = re.sub(r"[.\-\s]", "", cuit)
     cuit_limpio = int(cuit_limpio)
-    
+
     medico_encontrado = None
-    
+
     # Busqueda secuencial
     for medico in Medicos:
         if medico["CUIT"] == cuit_limpio:
             medico_encontrado = medico
             break
-    
+
     if medico_encontrado == None:
         print("Medico no encontrado")
         return None
-    
+
     intentos = 3
 
     while intentos > 0:
 
-        password = input("Ingrese su contraseña: ")
+        password = input(Fore.YELLOW + "Ingrese su contraseña: ")
 
         if password == medico_encontrado["contraseña"]:
 
@@ -233,35 +237,60 @@ def iniciar_sesion_medicos(Medicos):
 
         else:
             intentos -= 1
-            print("Contraseña incorrecta")
-            print("Intentos restantes:", intentos)
+            print(Fore.YELLOW + "Contraseña incorrecta")
+            print(Fore.YELLOW + "Intentos restantes:", intentos)
 
-    print("Se agotaron los intentos")
+    print(Fore.YELLOW + "Se agotaron los intentos")
     return None
 
 
-def iniciar_sesion_admin():
+def iniciar_sesion_farmacia(Farmacias):
 
     print()
     print("===================================")
-    print("          INICIAR SESION")
+    consola.print(Panel("   INICIAR SESION FARMACIA", border_style= "green", width=44))
     print("===================================")
 
-    user = input("Ingrese su USER de ADMIN: ")
+    cuit = input(Fore.YELLOW + "Ingrese su CUIT: ")
 
+        # Validamos el formato
+    if not validar_cuit(cuit):
+        print(Fore.YELLOW + "CUIT invalido")
+        return None
 
-    if base_datos.Admin["Usuario"] == user:
-        intentos = 3
-        while intentos > 0:
-            password = input("Ingrese su contraseña: ")
-            if base_datos.Admin["Contraseña"] == password:
-                return True
-            else:
-                intentos -= 1
-                print("Contraseña incorrecta")
-                print("Intentos restantes:", intentos)
-                print("Se agotaron los intentos")
-                return None
-    else:
-        print("Usuario incorrecto")
-        return False
+        # Sacamos puntos, guiones y espacios
+    cuit_limpio = re.sub(r"[.\-\s]", "", cuit)
+    cuit_limpio = int(cuit_limpio)
+
+    farmacia_encontrado = None
+
+        # Busqueda secuencial
+    for farmacia in Farmacias:
+        if farmacia["cuit"] == cuit_limpio:
+            farmacia_encontrado = farmacia
+            break
+
+    if farmacia_encontrado == None:
+        print(Fore.YELLOW + "Farmacia no encontrado")
+        return None
+
+    intentos = 3
+
+    while intentos > 0:
+
+        contraseña = input(Fore.YELLOW + "Ingrese su contraseña: ")
+
+        if contraseña == farmacia_encontrado["contraseña"]:
+
+            print(Fore.YELLOW + "Inicio de sesion exitoso")
+            print(Fore.YELLOW + "Bienvenido/a", farmacia_encontrado["nombre"])
+
+            return farmacia_encontrado
+
+        else:
+            intentos -= 1
+            print(Fore.YELLOW + "Contraseña incorrecta")
+            print(Fore.YELLOW + "Intentos restantes:", intentos)
+
+    print(Fore.YELLOW + "Se agotaron los intentos")
+    return None

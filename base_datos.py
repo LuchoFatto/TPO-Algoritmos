@@ -27,7 +27,8 @@ lista_usuarios = [
         "Plan": "Basico",
         "Password": "Juan123!",
         "Historial": [],
-        "Deudor": False
+        "Deudor": False,
+        "Activo":True
     },
     {
         "Nombre": "María",
@@ -38,7 +39,8 @@ lista_usuarios = [
         "Plan": "Plus",
         "Password": "Maria123!",
         "Historial": [],
-        "Deudor": True
+        "Deudor": True,
+        "Activo":True
     },
     {
         "Nombre": "Carlos",
@@ -50,7 +52,8 @@ lista_usuarios = [
         "Password": "Carlos123!",
         "Historial": [],
         "Deudor": False,
-        "Familia": [20444555666]
+        "Familia": [20444555666],
+        "Activo":True
     },
     {
         "Nombre": "Lucía",
@@ -62,7 +65,8 @@ lista_usuarios = [
         "Password": "Lucia123!",
         "Historial": [],
         "Deudor": False,
-        "Dueño": 20333444555
+        "Dueño": 20333444555,
+        "Activo":True
     }
 ]
 
