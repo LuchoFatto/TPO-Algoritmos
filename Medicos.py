@@ -1,17 +1,18 @@
 import validaciones
+import usuarios
+import json
+import re
+import auth
+import base_datos
 
 # Afiliados / médicos
-def alta_medico(usuarios):
+def alta_medico():
 
     medico_nombre = validaciones.bucle_medico("Ingrese su nombre: ", "SOLO LETRAS - Ingrese su nombre: ", validaciones.validador_solo_letras) #verifica solo letras sin limite de caracteres
 
     medico_apellido = validaciones.bucle_medico("ingrse su apellido: ", "SOLO LETRAS - Ingrese su apellido: ", validaciones.validador_solo_letras)
 
-    medico_cuit = input("Ingrese su NRO de CUIT: ")
-    flag_cuit = validaciones.validador_solo_numeros(medico_cuit)
-    while flag_cuit == False:
-        medico_cuit = input("SOLO NUMEROS SIN GUIONES - CUIT: ")
-        flag_cuit = validaciones.validador_solo_numeros(medico_cuit)
+    medico_cuit = validar_cuit_medicos()
 
     medico_matricula = input("Ingrese su NRO de matricula: ")
     flag_matricula = validaciones.validador_solo_numeros(medico_matricula)
@@ -31,9 +32,71 @@ def alta_medico(usuarios):
         medico_contraseña = input("ERROR: ingrese una contraseña de solo numero: ")
         flag_contraseña = validaciones.validador_solo_numeros(medico_contraseña)
 
-    usuarios.append({"nombre":medico_nombre, "apellido":medico_apellido, "cuit":medico_cuit, "email":medico_email,"matricula":medico_matricula, "contraseña":medico_contraseña})
+    medico = {
+        "nombre":medico_nombre,
+        "apellido":medico_apellido,
+        "CUIT":medico_cuit, 
+        "email":medico_email,
+        "matricula":medico_matricula,
+        "contraseña":medico_contraseña,
+        "estado_socio": 1
+        }
+    
+    print(medico)
+    return(medico)
 
+    #usuarios.append({"nombre":medico_nombre, "apellido":medico_apellido, "cuit":medico_cuit, "email":medico_email,"matricula":medico_matricula, "contraseña":medico_contraseña})
     #imprimir_lista_medicos(usuarios)
+
+def generarArchivo(medico, ruta_archivo):
+    print("""Agregar un médico al archivo JSON""")
+
+    try:
+        # Intentar leer los médicos existentes
+        try:
+            with open(ruta_archivo, "r", encoding="utf-8") as archivo:
+                medicos = json.load(archivo)
+
+        except FileNotFoundError:
+            medicos = []
+
+        # Agregar el nuevo diccionario a la lista
+        medicos.append(medico)
+
+        # Guardar la lista actualizada
+        with open(ruta_archivo, "w", encoding="utf-8") as archivo:
+            json.dump(medicos, archivo, indent=4, ensure_ascii=False)
+
+        print("Médico agregado con éxito")
+
+    except Exception as e:
+        print(e)
+
+
+def validar_cuit_medicos():
+    """Ingreso, Validacion y verificacion de CUIT de Usuario
+
+    Returns:
+        int: CUIT Validado y no repetido ingresado por el Usuario
+    """
+    Flag = True
+    while Flag:
+        cuit = input('Ingrese el CUIT\n>> ')
+        if not auth.validar_cuit(cuit):
+            print('Ingrese correctamente el CUIT')
+            input('Ingrese Enter para reintentar')
+            print('\n\n')
+        else:
+            cuit = usuarios.limpiar_nro(cuit)
+            for i in base_datos.lista_usuarios:
+                if i['CUIT'] == cuit:
+                    print('El CUIT ingresado ya existe')
+                    input('Ingrese Enter para reintentar')
+                    cuit = None
+                    break
+            if cuit != None:
+                Flag = usuarios.verificar_decision(cuit)
+    return cuit
 
 def modificar_medico(usuarios):
     matricula_medico_eliminar = input("Para modificar un medico ingrese el numero de matricula: ")

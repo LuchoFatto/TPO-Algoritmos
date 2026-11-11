@@ -233,7 +233,14 @@ def mostrar_menu_medico():
             os.system("cls")
             print("\nCargando alta de medico...")
             time.sleep(1)
-            Medicos.alta_medico(base_datos.Medicos)
+
+            medico = Medicos.alta_medico()
+
+            rutaDirectorio = os.path.dirname(__file__)
+            rutaArchivo = os.path.join(rutaDirectorio,"medicos.json")
+
+            Medicos.generarArchivo(medico, rutaArchivo)
+
             input("\nPresione ENTER para continuar...")
 
         elif opcion == "2":

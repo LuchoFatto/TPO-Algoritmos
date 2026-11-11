@@ -210,7 +210,7 @@ def iniciar_sesion_medicos(Medicos):
     
     # Busqueda secuencial
     for medico in Medicos:
-        if medico["cuit"] == cuit_limpio:
+        if medico["CUIT"] == cuit_limpio:
             medico_encontrado = medico
             break
     
