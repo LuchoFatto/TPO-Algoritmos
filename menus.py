@@ -230,7 +230,7 @@ def mostrar_menu_medico():
         time.sleep(0.1)
         print(Fore.GREEN + "3. Modificar Medico")
         time.sleep(0.1)
-        print("4. Imprimir lista de medicos")
+        print(Fore.YELLOW + "4. Imprimir lista de medicos")
         time.sleep(0.1)
         print(Fore.RED + "5. Volver")
         time.sleep(0.1)
@@ -259,10 +259,10 @@ def mostrar_menu_medico():
 
         elif opcion == "4":
             os.system("cls")
-            print("\nImprimir lista de medicos")
+            print(Fore.YELLOW + "\nImprimir lista de medicos")
             time.sleep(1)
             Medicos.imprimir_lista_medicos(base_datos.Medicos)
-            input("\nPresione ENTER para continuar...")
+            input(Fore.YELLOW + "\nPresione ENTER para continuar...")
 
         elif opcion == "5":
             os.system("cls")
