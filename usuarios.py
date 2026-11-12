@@ -692,6 +692,7 @@ def modificar_usuario(admin=False):
     """
     lista_u = auth.abrir_archivo(RUTA_ARCHIVO)
     indice = validar_busqueda_usuario(lista_u)
+        
     if indice is None:
         return
 
