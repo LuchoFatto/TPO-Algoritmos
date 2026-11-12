@@ -164,12 +164,12 @@ def abrir_archivo(ruta):
         _type_: Contenido del archivo, generalmente lista de diccionarios
     """
     try:
-        with open(ruta, "r") as Archivo:
+        with open(ruta, "r", encoding="utf-8") as Archivo:
             return json.load(Archivo)
     except Exception as a:
-        print(Fore.YELLOW + f'Error "{a}" al abrir el archivo, reiniciar y verificar su integridad')
+        print(f'Error "{a}" al abrir el archivo, reiniciar y verificar su integridad')
         sleep(0.3)
-        input(Fore.YELLOW + "Presione Enter para Continuar: ")
+        input("Presione Enter para Continuar")
         os.system("cls")
         exit
 
@@ -185,19 +185,22 @@ def cargar_archivo(datos, ruta):
         with open(ruta, "w", encoding="utf8") as Archivo:
             json.dump(datos, Archivo, indent=4)
     except Exception as a:
-        print(Fore.YELLOW + f'Error "{a}" al abrir el archivo, reiniciar y verificar su integridad')
+        print(f'Error "{a}" al abrir el archivo, reiniciar y verificar su integridad')
         sleep(0.3)
-        input(Fore.YELLOW + "Presione Enter para Continuar")
+        input("Presione Enter para Continuar")
         os.system("cls")
         exit
 
 
-def iniciar_sesion_medicos(Medicos):
+def iniciar_sesion_medicos():
 
     print()
     print("===================================")
     consola.print(Panel("   INICIAR SESION AFILIADO", border_style= "green", width=44))
     print("===================================")
+
+    RUTA_ARCHIVO = os.path.join(os.path.dirname(__file__),"medicos.json")
+    Medicos = abrir_archivo(RUTA_ARCHIVO)
 
     cuit = input(Fore.YELLOW + "Ingrese su CUIT: ")
 
@@ -214,10 +217,13 @@ def iniciar_sesion_medicos(Medicos):
 
     # Busqueda secuencial
     for medico in Medicos:
-        if medico["cuit"] == cuit_limpio:
+        if medico["CUIT"] == cuit_limpio:
             medico_encontrado = medico
             break
-
+    
+    if medico_encontrado["estado_socio"] == 0:
+        print("Usuario se encuentra dado de baja")
+        return (None)
     if medico_encontrado == None:
         print(Fore.YELLOW + "Medico no encontrado")
         return None

@@ -54,6 +54,7 @@ def deudores():
 
 def usuario_pago():
 
+
     Flag = True
     while Flag:
         print(Fore.YELLOW + 'Ingrese el cuit del usuario que desea dar de autorizar el pago o ingrese 0 para volver')

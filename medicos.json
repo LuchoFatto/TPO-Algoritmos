@@ -1,0 +1,29 @@
+[
+    {
+        "nombre": "MARCO",
+        "apellido": "masr",
+        "CUIT": 20424733452,
+        "email": "casd@asdas.com",
+        "matricula": "1234",
+        "contraseña": "12345",
+        "estado_socio": 1
+    },
+    {
+        "nombre": "qwer",
+        "apellido": "qwer",
+        "CUIT": 20424833432,
+        "email": "ASDF@ASDF.ASDG",
+        "matricula": "1234567",
+        "contraseña": "123456789",
+        "estado_socio": 1
+    },
+    {
+        "nombre": "Maro",
+        "apellido": "asda",
+        "CUIT": 20424733432,
+        "email": "CABELLO@HOT.COM",
+        "matricula": "23123",
+        "contraseña": "1234",
+        "estado_socio": 0
+    }
+]
