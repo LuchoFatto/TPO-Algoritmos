@@ -198,6 +198,7 @@ def mostrar_menu_afiliados(cuit):
             time.sleep(1)
             usuarios.baja_usuario(cuit)
             input(Fore.YELLOW + "\nPresione ENTER para continuar...")
+            return
 
         elif opcion == "5":
             os.system("cls")
@@ -242,7 +243,8 @@ def mostrar_menu_medico(medico):
             print(Fore.YELLOW + "\nCargando solicitud de baja...")
             time.sleep(1)
             Medicos.dar_baja_medico(medico["CUIT"])
-            input(Fore.YELLOW + "\nPresione ENTER para continuar...")  
+            input(Fore.YELLOW + "\nPresione ENTER para continuar...")
+            return  
 
         elif opcion == "3":
             os.system("cls")

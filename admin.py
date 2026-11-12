@@ -87,7 +87,7 @@ def usuario_pago():
 def usuario_deudor():
     Flag = True
     while Flag:
-        print(Fore.YELLOW + 'Ingrese el cuit del usuario que desea dar de autorizar el pago o ingrese 0 para volver')
+        print(Fore.YELLOW + 'Ingrese el cuit del usuario que desea marcar como deudor o ingrese 0 para volver')
         esperar()
         cuit = input('>> ')
         if cuit == '0':
@@ -132,13 +132,15 @@ def iniciar_sesion_admin():
             password = input(Fore.YELLOW + "Ingrese su contraseña: ")
             if base_datos.Admin["Contraseña"] == password:
                 return True
-            else:
+            elif intentos > 0:
                 intentos -= 1
                 print(Fore.YELLOW + "Contraseña incorrecta")
                 esperar()
                 print(Fore.YELLOW + "Intentos restantes:", intentos)
                 esperar()
+            else:
                 print(Fore.YELLOW + "Se agotaron los intentos")
+                input(Fore.YELLOW + "presione Enter para continuar")
                 return None
     else:
         print(Fore.YELLOW + "Usuario incorrecto")
