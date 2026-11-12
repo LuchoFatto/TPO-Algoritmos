@@ -170,7 +170,7 @@ def abrir_archivo(ruta):
         sleep(0.3)
         input("Presione Enter para Continuar")
         os.system("cls")
-        exit
+        exit()
 
 
 def cargar_archivo(datos, ruta):
@@ -188,7 +188,7 @@ def cargar_archivo(datos, ruta):
         sleep(0.3)
         input("Presione Enter para Continuar")
         os.system("cls")
-        exit
+        exit()
 
 
 def iniciar_sesion_medicos():

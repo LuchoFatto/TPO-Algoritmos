@@ -24,7 +24,9 @@ def mostrar_menu_principal():
         print()
         print("=" * 40)
         time.sleep(0.1)
-        consola.print(Panel("   SISTEMA DE GESTION OBRA SOCIAL", border_style= "green", width=44))
+        consola.print(
+            Panel("   SISTEMA DE GESTION OBRA SOCIAL", border_style="green", width=44)
+        )
         time.sleep(0.1)
         print("=" * 40)
         time.sleep(0.1)
@@ -71,7 +73,7 @@ def mostrar_menu_login():
         print()
         print("=" * 40)
         time.sleep(0.1)
-        consola.print(Panel("   INICIAR SESION", border_style= "green", width=44))
+        consola.print(Panel("   INICIAR SESION", border_style="green", width=44))
         time.sleep(0.1)
         print("=" * 40)
         time.sleep(0.1)
@@ -155,7 +157,7 @@ def mostrar_menu_afiliados(cuit):
         print()
         print("=" * 40)
         time.sleep(0.1)
-        consola.print(Panel("   MENU DE AFILIADOS", border_style= "green", width=44))
+        consola.print(Panel("   MENU DE AFILIADOS", border_style="green", width=44))
         time.sleep(0.1)
         print("=" * 40)
         time.sleep(0.1)
@@ -201,6 +203,7 @@ def mostrar_menu_afiliados(cuit):
                 input(Fore.YELLOW + "\nBaja realizada. Presione ENTER para volver...")
                 return
             input(Fore.YELLOW + "\nPresione ENTER para continuar...")
+            return
 
         elif opcion == "5":
             os.system("cls")
@@ -219,7 +222,7 @@ def mostrar_menu_medico(medico):
         print()
         print("=" * 40)
         time.sleep(0.1)
-        consola.print(Panel("   MENU DE MEDICOS", border_style= "green", width=44))
+        consola.print(Panel("   MENU DE MEDICOS", border_style="green", width=44))
         time.sleep(0.1)
         print("=" * 40)
         time.sleep(0.1)
@@ -270,7 +273,7 @@ def mostrar_menu_farmacia(farmacia):
         print()
         print("=" * 40)
         time.sleep(0.1)
-        consola.print(Panel("   MENU DE FARMACIAS", border_style= "green", width=44))
+        consola.print(Panel("   MENU DE FARMACIAS", border_style="green", width=44))
         print(Fore.YELLOW + f"Farmacia: {farmacia['nombre']}")
         time.sleep(0.1)
         print("=" * 40)
@@ -322,7 +325,9 @@ def mostrar_menu_admin():
         print()
         print("=" * 40)
         time.sleep(0.1)
-        consola.print(Panel("   MENU DE GESTION / ADMIN", border_style= "green", width=44))
+        consola.print(
+            Panel("   MENU DE GESTION / ADMIN", border_style="green", width=44)
+        )
         time.sleep(0.1)
         print("=" * 40)
         time.sleep(0.1)
@@ -401,7 +406,7 @@ def mostrar_menu_admin():
             time.sleep(1)
             farmacias = Farmacias.leer_farmacias()
             Farmacias.imprimir_lista_farmacias(farmacias)
-            input(Fore.YELLOW +"\nPresione ENTER para continuar...")
+            input(Fore.YELLOW + "\nPresione ENTER para continuar...")
 
         elif opcion == "7":
             os.system("cls")
