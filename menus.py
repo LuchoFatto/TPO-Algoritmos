@@ -165,9 +165,7 @@ def mostrar_menu_afiliados(cuit):
         time.sleep(0.1)
         print(Fore.RED + "4. Darse de baja")
         time.sleep(0.1)
-        print(Fore.RED + "5. Modificar Datos Personales")
-        time.sleep(0.1)
-        print(Fore.RED + "6. Volver.")
+        print(Fore.RED + "5. Volver.")
         time.sleep(0.1)
         print("=" * 40)
 
@@ -200,10 +198,6 @@ def mostrar_menu_afiliados(cuit):
             input(Fore.YELLOW + "\nPresione ENTER para continuar...")
 
         elif opcion == "5":
-            print(Fore.YELLOW + "\nModificar Datos Personales")
-            usuarios.modificar_usuario(False,cuit)
-
-        elif opcion == "6":
             os.system("cls")
             print(Fore.YELLOW + "\nVolviendo al menu anterior...")
             time.sleep(1)

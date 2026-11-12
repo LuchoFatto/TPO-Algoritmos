@@ -563,10 +563,6 @@ def validar_busqueda_usuario(lista_u):
                     os.system('cls')
                     return indice
 
-<<<<<<< HEAD
-def modificar_usuario(admin=False,cuit=0):
-    """Eleccion de que usuario y que key modificar
-=======
 def es_plan_familiar(plan_usuario):
     """Indica si el nombre del plan pertenece a una modalidad familiar."""
     return plan_usuario.split()[0] == 'Familiar'
@@ -604,7 +600,6 @@ def convertir_integrantes_a_plan_individual(usuario, lista_u):
 
 def modificar_plan_usuario(usuario, lista_u):
     """Cambia el plan y actualiza las relaciones familiares involucradas.
->>>>>>> eff8541bd9b7bfeb8691db419cbc9faf6fb7ca5d
 
     Args:
         usuario (dict): Usuario cuyo plan se va a modificar.
@@ -647,10 +642,7 @@ def modificar_usuario(admin=False):
             administrativos. Defaults to False.
     """
     lista_u = auth.abrir_archivo(RUTA_ARCHIVO)
-    if cuit != 0:
-        indice = validar_busqueda_usuario(lista_u)
-    else:
-        indice,_ = buscar_usuarios(cuit)
+    indice = validar_busqueda_usuario(lista_u)
         
     if indice is None:
         return
