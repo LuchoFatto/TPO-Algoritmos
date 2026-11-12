@@ -1,5 +1,4 @@
 import re
-import base_datos
 import os
 import json
 from time import sleep
@@ -182,8 +181,8 @@ def cargar_archivo(datos, ruta):
         ruta (str): ruta de donde se encuentra el archivo
     """
     try:
-        with open(ruta, "w", encoding="utf8") as Archivo:
-            json.dump(datos, Archivo, indent=4)
+        with open(ruta, "w", encoding="utf-8") as Archivo:
+            json.dump(datos, Archivo, indent=4, ensure_ascii=False)
     except Exception as a:
         print(f'Error "{a}" al abrir el archivo, reiniciar y verificar su integridad')
         sleep(0.3)
@@ -220,7 +219,7 @@ def iniciar_sesion_medicos():
         if medico["CUIT"] == cuit_limpio:
             medico_encontrado = medico
             break
-    
+
     if medico_encontrado["estado_socio"] == 0:
         print("Usuario se encuentra dado de baja")
         return (None)
@@ -250,34 +249,40 @@ def iniciar_sesion_medicos():
     return None
 
 
-def iniciar_sesion_farmacia(Farmacias):
+def iniciar_sesion_farmacia():
 
     print()
     print("===================================")
     consola.print(Panel("   INICIAR SESION FARMACIA", border_style= "green", width=44))
     print("===================================")
 
+    ruta_archivo = os.path.join(
+        os.path.dirname(__file__),
+        "farmacias.json"
+    )
+    farmacias = abrir_archivo(ruta_archivo)
+
     cuit = input(Fore.YELLOW + "Ingrese su CUIT: ")
 
-        # Validamos el formato
     if not validar_cuit(cuit):
         print(Fore.YELLOW + "CUIT invalido")
         return None
 
-        # Sacamos puntos, guiones y espacios
-    cuit_limpio = re.sub(r"[.\-\s]", "", cuit)
-    cuit_limpio = int(cuit_limpio)
+    cuit_limpio = limpiar_nro(cuit)
 
     farmacia_encontrado = None
 
-        # Busqueda secuencial
-    for farmacia in Farmacias:
-        if farmacia["cuit"] == cuit_limpio:
+    for farmacia in farmacias:
+        if farmacia["CUIT"] == cuit_limpio:
             farmacia_encontrado = farmacia
             break
 
-    if farmacia_encontrado == None:
-        print(Fore.YELLOW + "Farmacia no encontrado")
+    if farmacia_encontrado is None:
+        print(Fore.YELLOW + "Farmacia no encontrada")
+        return None
+
+    if farmacia_encontrado["estado_farmacia"] == 0:
+        print(Fore.YELLOW + "La farmacia se encuentra inactiva")
         return None
 
     intentos = 3
