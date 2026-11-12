@@ -33,7 +33,7 @@
         "email": "TOMAS@TOMAS.tomas",
         "matricula": "456789",
         "contraseña": "7890",
-        "estado_socio": 1
+        "estado_socio": 0
     },
     {
         "nombre": "Marco",

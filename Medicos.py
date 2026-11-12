@@ -187,24 +187,26 @@ def dar_baja_medico(cuit_medico=None):
 
     if not auth.validar_cuit(cuit_medico_eliminar):
         print("El CUIT ingresado no es válido")
-        return
+        return False
 
     cuit_medico_eliminar = auth.limpiar_nro(cuit_medico_eliminar)
 
     for medico in medicos:
         if medico["CUIT"] == cuit_medico_eliminar:
             confirmacion = input("Confirmacion, desea eliminar? SI/NO: ")
-            if confirmacion == "SI":
+            if confirmacion.strip().upper() == "SI":
                 medico["estado_socio"] = 0
                 # Guardar los cambios en el JSON
                 with open(RUTA_ARCHIVO, "w", encoding="utf-8") as archivo:
                     json.dump(medicos, archivo, indent=4, ensure_ascii=False)
                 print("Médico dado de baja correctamente")
+                return True
             else:
                 print("Operación cancelada")
-            return
+            return False
 
     print("No se encontró ningún médico con ese CUIT")
+    return False
 
 
 def imprimir_lista_medicos():
