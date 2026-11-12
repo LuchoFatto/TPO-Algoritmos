@@ -25,12 +25,15 @@ RUTA_ARCHIVO = os.path.join(os.path.dirname(__file__),"lista_usuarios.json")
 
 #funciones auxiliares
 def imprimir_usuario(dic:dict):
-    """Imprime el diccionario ingresado de usuario bonito
+    """Imprime los datos visibles del usuario, omitiendo su contraseña.
 
     Args:
         dic (dict): usuario a imprimir
     """
-    for key,valor in dic.items():
+    for key, valor in dic.items():
+        if key.lower() in ('password', 'contraseña'):
+            continue
+
         print('-'*30)
         print(Fore.YELLOW + f'| {key} : {valor} |')
         esperar(0.2)
@@ -137,16 +140,26 @@ def elegir_plan():
     Returns:
         str: Nombre del plan elegido
     """
-    Flag = True
-    while Flag:
-        email = input(Fore.YELLOW + 'Ingrese el Email\n>> ')
-        if not auth.validar_email(email):
-            print(Fore.YELLOW + 'Ingrese un Email adecuado')
-            input(Fore.YELLOW + 'Ingrese Enter para reintentar')
-            print('\n\n')
-        else:
-            Flag = verificar_decision(email)
-    return email
+    while True:
+        print(Fore.YELLOW + 'Elija un Plan de Pago')
+        for numero, plan in enumerate(PLANES, start=1):
+            print(Fore.YELLOW + f'[{numero}] {plan[0]} >> {plan[2]} << ${plan[1]} x Mes')
+
+        try:
+            eleccion = int(input(Fore.YELLOW + '\n--Ingrese el numero de la opcion acorde--\n>> '))
+        except ValueError:
+            print(Fore.YELLOW + 'Ingrese un numero valido')
+            input(Fore.YELLOW + 'Presione Enter para reintentar')
+            os.system('cls')
+            continue
+
+        if eleccion < 1 or eleccion > len(PLANES):
+            print(Fore.YELLOW + 'Numero invalido')
+            input(Fore.YELLOW + 'Presione Enter para reintentar')
+            os.system('cls')
+            continue
+
+        return PLANES[eleccion - 1][0]
 
 def pedir_password():
     """Ingreso, Validacion y Verificacion de Contraseña
@@ -165,54 +178,25 @@ def pedir_password():
             Flag = verificar_decision(password)
     return password
 
-def pedir_plan():
-    """Eleccion de Plan en base a la tupla 'Planes'
-
-    Returns:
-        tuple: Con cualquier plan Retorna (Plan elegido, None, None); si eligio familiar dueño (Familiar Dueño, [], None); si elijo
-            familiar hijo (Familiar Hijo, None, Cuit de Dueño)
-    """
-    print(Fore.YELLOW + 'Elija un Plan de Pago')
-    Flag = True
-    while Flag:
-        #Muestra los Planes en pantalla
-        try:
-            for Num,i in enumerate(PLANES):
-                print(Fore.YELLOW + f'[{Num+1}] {i[0]} >> {i[2]} << ${i[1]} x Mes')
-                esperar()
-            print('--------------------')
-            eleccion = int(input(Fore.YELLOW + '\n--Ingrese el numero de la opcion acorde--\n>> '))
-        except:
-            print(Fore.YELLOW + 'Ingreso Invalido')
-            esperar()
-            input(Fore.YELLOW + 'Presione Enter Para reintentar')
-            os.system('cls')
-
-        if (eleccion > len(PLANES)) or (eleccion < 1):
-            print(Fore.YELLOW + 'Numero Invalido')
-            esperar()
-            input(Fore.YELLOW + 'Presione Enter Para reintentar')
-            os.system('cls')
-        else:
-            Flag = False
-
-    return PLANES[eleccion-1][0]
-
-def incluirse_plan_familiar(cuit, lista_u):
-    """Verifica si el CUIT del Dueño es correcto, existe y si no esta lleno su lista de familia. Luego se añade el CUIT
-    del usuario a dicha lista si cumple y retorna
+def incluirse_plan_familiar(lista_u):
+    """Verifica si el CUIT del dueño es correcto, existe y tiene espacio.
+    Si cumple, devuelve los datos necesarios para asociar el nuevo usuario
+    cuando se confirme el alta.
 
     Args:
-        cuit (str): Cuit del usuario ingresando
         lista_u (list): Lista de diccionarios del archivo json
 
     Returns:
-        Dict: Diccionario de hijo completo
-        None: Si no se completa el ingreso
+        Dict: Datos del usuario que se incorpora a una familia.
+        False: El usuario cancelo la seleccion.
+        None: No se encontro un titular valido.
     """
     #Validar que exista algun usuario en la DB
     if (lista_u == []):
         print(Fore.YELLOW + 'No hay usuarios afiliados aun, elija otra opcion')
+        input(Fore.YELLOW + 'Presione Enter para volver')
+        os.system('cls')
+        return False
     else:
         Valido = True
         while Valido:
@@ -221,10 +205,11 @@ def incluirse_plan_familiar(cuit, lista_u):
 
             #Salir del Case, Volver a elegir
             if CUIT_principal == '0':
-                Valido = False
+                os.system('cls')
+                return False
 
             #Validar que sea CUIT
-            elif auth.validar_cuit(CUIT_principal):
+            elif not auth.validar_cuit(CUIT_principal):
                 print(Fore.YELLOW + 'Ingrese un CUIT valido')
                 esperar()
                 input(Fore.YELLOW + 'Presione Enter para reintentar')
@@ -237,16 +222,15 @@ def incluirse_plan_familiar(cuit, lista_u):
                     if i['CUIT'] == CUIT_principal and (i['Plan'] == 'Familiar Dueño'):
 
                         #Si esta lleno, no lo añade
-                        if len(i['Familia']) > 2:
+                        if len(i['Familia']) >= 3:
                             print(Fore.YELLOW + 'Se ha encontrado el CUIT indicado pero se encuentra en el maximo de afiliados')
                             esperar()
                             input(Fore.YELLOW + 'Presione Enter para reintentar')
                             os.system('cls')
                             break
 
-                        #Sino lo añade al dueño y retorna
+                        # Se agrega al dueño cuando el nuevo usuario confirma el alta.
                         else:
-                            i['CUIT'].append(cuit)
                             return {
                                     'Plan': 'Familiar Hijo',
                                     'Dueño': CUIT_principal
@@ -258,15 +242,15 @@ def incluirse_plan_familiar(cuit, lista_u):
     os.system('cls')
     return None
 
-def plan_familiar(cuit, lista_u):
-    """Eleccion de tipo de plan familiar, devolucion de diccionario con datos en base a eleccion
+def plan_familiar(lista_u):
+    """Permite elegir si el usuario será titular o integrante familiar.
 
     Args:
-        cuit (str): cuit de usuario ingresando
         lista_u (list): Lista de diccionarios del archivo json
 
     Returns:
-        Dict: Diccionario con keys a añadir a diccionario base
+        dict: Datos del plan familiar seleccionado.
+        None: Si se cancela la selección familiar.
     """
     Flag = True
     print(Fore.YELLOW + 'Usted ha seleccionado el plan familiar')
@@ -291,34 +275,40 @@ def plan_familiar(cuit, lista_u):
 
 
             case '1':
-                hijo = incluirse_plan_familiar(cuit, lista_u)
-                if hijo:
-                    return hijo
+                resultado_inclusion = incluirse_plan_familiar(lista_u)
+                if resultado_inclusion is False:
+                    return None
+                if resultado_inclusion is not None:
+                    return resultado_inclusion
 
             case _:
                 print(Fore.YELLOW + 'Ingrese uno de los valores indicados')
                 esperar()
                 os.system('cls')
 
-def pedir_plan(cuit, lista_u):
-    """Eleccion de plan y sus opciones
+def pedir_plan(lista_u):
+    """Solicita un plan y repite la selección si se cancela la parte familiar.
 
     Args:
-        cuit (str): Cuit del usuario ingresando
         lista_u (list): Lista de diccionarios del archivo json
 
     Returns:
-        Dict: Diccionario con keys a añadir a diccionario base
+        dict: Datos del plan seleccionado.
     """
 
-    plan = {
-        'Plan' : elegir_plan()
-    }
+    #Si se cancela el ingreso de datos vuelve a pedir el plan, no cancela el alta
+    while True:
+        plan_elegido = elegir_plan()
 
-    if plan['Plan'] == 'Familiar':
-        plan.update(plan_familiar(cuit, lista_u))
+        if plan_elegido != 'Familiar':
+            return {'Plan': plan_elegido}
 
-    return plan
+        datos_plan_familiar = plan_familiar(lista_u)
+        if datos_plan_familiar is not None:
+            return datos_plan_familiar
+
+        print(Fore.YELLOW + 'Volviendo a la seleccion de planes')
+        esperar()
 
 
 
@@ -360,7 +350,10 @@ def alta_usuario():
         }
 
         #Ingreso Plan de Usuario
-        diccionario_usuario.update(pedir_plan(diccionario_usuario['CUIT'], lista_u))
+        datos_plan = pedir_plan(lista_u)
+        if datos_plan is None:
+            return
+        diccionario_usuario.update(datos_plan)
 
 
 
@@ -431,26 +424,29 @@ def eliminar_usuario(cuit):
         cuit (int): Cuit del usuario a inhabilitar
     """
     lista_u = auth.abrir_archivo(RUTA_ARCHIVO)
-    indice, usuario = buscar_usuarios(cuit)
-    if usuario & usuario['Activo']==True:
+    indice, usuario = buscar_usuarios(cuit, True)
+
+    if usuario is None:
+        print(Fore.YELLOW + 'El usuario ingresado no existe')
+        esperar()
+        input(Fore.YELLOW + 'Presione Enter para volver')
+        os.system('cls')
+
+    elif usuario['Activo'] is True:
         print(Fore.YELLOW + 'Eliminando usuario...')
         esperar(2)
-        lista_u(indice)['Activo'] = False
+        lista_u[indice]['Activo'] = False
         print(Fore.YELLOW + 'Usuario Eliminado')
         esperar()
         input(Fore.YELLOW + 'Presione Enter para volver')
         os.system('cls')
         auth.cargar_archivo(lista_u,RUTA_ARCHIVO)
-    elif usuario['Activo']==False:
+
+    elif usuario['Activo'] is False:
         print(Fore.YELLOW + 'El usuario ingresado ya esa inhabilitado')
         esperar()
         input(Fore.YELLOW + 'Presione Enter para volver')
         esperar()
-        os.system('cls')
-    else:
-        print(Fore.YELLOW + 'El usuario ingresado no existe')
-        esperar()
-        input(Fore.YELLOW + 'Presione Enter para volver')
         os.system('cls')
 
 
@@ -464,7 +460,7 @@ def buscar_usuarios(cuit,admin=False):
     Returns:
         tuple: (ubicacion en lista, diccionario del usuario) | (None, None)
     """
-    with open(RUTA_ARCHIVO,"r") as Archivo:
+    with open(RUTA_ARCHIVO, "r", encoding="utf-8") as Archivo:
         lista_u = json.load(Archivo)
     if admin:
         for indice, usuario in enumerate(lista_u):
@@ -484,15 +480,18 @@ def ver_lista_usuarios():
 
 def ver_mi_perfil_user(cuit):
     """Vista de perfil propio del usuario
-    Se asume que existe el cuit del usuario buscado
 
     Args:
         cuit (int): Cuit del usuario ingresado
     """
-    _, user = buscar_usuarios(cuit)
+    _, usuario_encontrado = buscar_usuarios(cuit)
+    if usuario_encontrado is None:
+        print(Fore.YELLOW + 'No se encontro un usuario activo con ese CUIT')
+        return
+
     print(Fore.YELLOW + 'Este es tu usuario')
     esperar()
-    imprimir_usuario(user)
+    imprimir_usuario(usuario_encontrado)
 
 def ver_beneficios(cuit):
     """Vista de beneficios del plan elegido por usuario
@@ -504,12 +503,22 @@ def ver_beneficios(cuit):
     print('-+-'*15)
     print(Fore.YELLOW + 'Estos son tus beneficios')
     esperar()
-    _, user = buscar_usuarios(cuit)
-    for i in PLANES:
-        if (user['Plan'].split()[0] == i[0]):
-            print(i[2])
+    _, usuario_encontrado = buscar_usuarios(cuit)
+    if usuario_encontrado is None:
+        print(Fore.YELLOW + 'No se encontraron beneficios porque el usuario no existe o esta inactivo')
+        print('-+-'*15)
+        return
+
+    beneficios_encontrados = False
+    for plan_disponible in PLANES:
+        if usuario_encontrado['Plan'].split()[0] == plan_disponible[0]:
+            print(plan_disponible[2])
             esperar()
+            beneficios_encontrados = True
             break
+
+    if not beneficios_encontrados:
+        print(Fore.YELLOW + 'No se encontraron beneficios para el plan asignado')
     print('-+-'*15)
 
 def validar_busqueda_usuario(lista_u):
@@ -554,11 +563,83 @@ def validar_busqueda_usuario(lista_u):
                     os.system('cls')
                     return indice
 
-def modificar_usuario(admin=False):
-    """Eleccion de que usuario y que key modificar
+def es_plan_familiar(plan_usuario):
+    """Indica si el nombre del plan pertenece a una modalidad familiar."""
+    return plan_usuario.split()[0] == 'Familiar'
+
+def es_titular_plan_familiar(plan_usuario):
+    """Indica si el usuario es titular de un plan familiar."""
+    return es_plan_familiar(plan_usuario) and 'Hijo' not in plan_usuario
+
+def quitar_integrante_de_plan_familiar(usuario, lista_u):
+    """Desvincula un usuario hijo de su titular familiar."""
+    cuit_titular = usuario.get('Dueño')
+
+    if cuit_titular is not None:
+        for posible_titular in lista_u:
+            if posible_titular['CUIT'] == cuit_titular:
+                familia_titular = posible_titular.get('Familia', [])
+                if usuario['CUIT'] in familia_titular:
+                    familia_titular.remove(usuario['CUIT'])
+                break
+
+    usuario.pop('Dueño', None)
+
+def convertir_integrantes_a_plan_individual(usuario, lista_u):
+    """Desvincula a los integrantes cuando el titular abandona su plan."""
+    integrantes = usuario.get('Familia', [])
+
+    for cuit_integrante in integrantes:
+        for posible_integrante in lista_u:
+            if posible_integrante['CUIT'] == cuit_integrante:
+                posible_integrante['Plan'] = 'Basico'
+                posible_integrante.pop('Dueño', None)
+                break
+
+    usuario['Familia'] = []
+
+def modificar_plan_usuario(usuario, lista_u):
+    """Cambia el plan y actualiza las relaciones familiares involucradas.
 
     Args:
-        admin (bool, optional): _description_. Defaults to False.
+        usuario (dict): Usuario cuyo plan se va a modificar.
+        lista_u (list): Lista completa de usuarios afiliados.
+    """
+    plan_anterior = usuario['Plan']
+    plan_seleccionado = elegir_plan()
+
+    if plan_seleccionado == 'Familiar':
+        if es_plan_familiar(plan_anterior):
+            print(Fore.YELLOW + 'El usuario ya pertenece a un plan familiar')
+            return
+
+        datos_plan_familiar = plan_familiar(lista_u)
+        if datos_plan_familiar is None:
+            print(Fore.YELLOW + 'No se modifico el plan del usuario')
+            return
+
+        usuario.update(datos_plan_familiar)
+
+        if 'Dueño' in datos_plan_familiar:
+            for posible_titular in lista_u:
+                if posible_titular['CUIT'] == datos_plan_familiar['Dueño']:
+                    posible_titular.setdefault('Familia', []).append(usuario['CUIT'])
+                    break
+        return
+
+    if es_titular_plan_familiar(plan_anterior):
+        convertir_integrantes_a_plan_individual(usuario, lista_u)
+    elif es_plan_familiar(plan_anterior):
+        quitar_integrante_de_plan_familiar(usuario, lista_u)
+
+    usuario['Plan'] = plan_seleccionado
+
+def modificar_usuario(admin=False):
+    """Permite elegir un usuario y modificar uno de sus datos permitidos.
+
+    Args:
+        admin (bool, optional): Permite modificar también estados
+            administrativos. Defaults to False.
     """
     lista_u = auth.abrir_archivo(RUTA_ARCHIVO)
     indice = validar_busqueda_usuario(lista_u)
@@ -578,8 +659,10 @@ def modificar_usuario(admin=False):
         else:
             key = elegir_key(modificar)
         match key:
-            case 'Nombre' | 'Apellido':
+            case 'Nombre':
                 modificar[key] = pedido_datos('Ingrese el nombre', auth.validacion_letras, 'Ingrese exclusivamente letras', lista_u)
+            case 'Apellido':
+                modificar[key] = pedido_datos('Ingrese el apellido', auth.validacion_letras, 'Ingrese exclusivamente letras', lista_u)
             case 'CUIT':
                 modificar[key] = pedido_datos('Ingrese el CUIT', auth.validar_cuit, 'Ingrese correctamente el CUIT', lista_u, True, True)
             case 'Telefono':
@@ -588,6 +671,8 @@ def modificar_usuario(admin=False):
                 modificar[key] = pedido_datos('Ingrese el E-Mail', auth.validar_email, 'Ingrese un Email Valido', lista_u)
             case 'Password':
                 modificar[key] = pedido_datos('Ingrese su contraseña (Debe tener al menos 8 elementos, uno especial y un numero)',auth.validar_contrasenia,'Ingrese un Contraseña adecuada', lista_u)
+            case 'Plan':
+                modificar_plan_usuario(modificar, lista_u)
             case 'Deudor' | 'Activo':
                 print(Fore.YELLOW + f'{key} modificado a estado {not modificar[key]}')
                 esperar()
@@ -617,11 +702,15 @@ def elegir_key(dic,admin=False):
     Returns:
         str: key elegida a modificar
     """
-    lista_keys = list(dic.keys())
-    lista_keys.remove('Historial')
+    campos_no_modificables = {'Historial', 'Familia', 'Dueño'}
+    lista_keys = [key for key in dic.keys() if key not in campos_no_modificables]
     if admin:
-        for indice,i in enumerate(lista_keys):
-            print(Fore.YELLOW + f'[{indice+1}] {i} | Valor actual {dic[i]}')
+        for indice, clave_usuario in enumerate(lista_keys):
+            if clave_usuario == 'Password':
+                valor_actual = '********'
+            else:
+                valor_actual = dic[clave_usuario]
+            print(Fore.YELLOW + f'[{indice+1}] {clave_usuario} | Valor actual {valor_actual}')
             esperar()
         print(Fore.YELLOW + 'Ingrese la caracteristica a modificar')
         esperar()
@@ -642,10 +731,14 @@ def elegir_key(dic,admin=False):
                 input(Fore.YELLOW + 'Presione Enter para reintentar')
                 os.system('cls')
     else:
-        no_admin = {'CUIT','Deudor','Familia','Activo'}
+        no_admin = {'CUIT', 'Deudor', 'Activo'}
         lista_keys = [key for key in lista_keys if key not in no_admin]
-        for indice,i in enumerate(lista_keys):
-            print(Fore.YELLOW + f'[{indice+1}] {i} | Valor actual {dic[i]}')
+        for indice, clave_usuario in enumerate(lista_keys):
+            if clave_usuario == 'Password':
+                valor_actual = '********'
+            else:
+                valor_actual = dic[clave_usuario]
+            print(Fore.YELLOW + f'[{indice+1}] {clave_usuario} | Valor actual {valor_actual}')
             esperar()
         print(Fore.YELLOW + 'Ingrese la caracteristica a modificar')
         esperar()

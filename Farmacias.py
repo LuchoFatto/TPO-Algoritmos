@@ -129,7 +129,7 @@ def cargar_farmacia(farmacias):
         email = input(Fore.YELLOW + "Ingrese un email válido: ")
 
     direccion = input(Fore.YELLOW + "Ingrese la dirección de la farmacia: ")
-    while not validaciones.validar_direccion(direccion):
+    while not auth.validar_direccion(direccion):
         direccion = input(
             Fore.YELLOW + "Ingrese una dirección válida, por ejemplo: Alvear 1234: "
         )

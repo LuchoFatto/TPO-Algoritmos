@@ -16,42 +16,34 @@ consola = Console()
 
 
 # Afiliados / médicos
-def bucle_validacion(mensaje, mensaje_error, validador):
-    dato = input(mensaje)
-    flag = validador(dato)
-
-    while flag == False:
-        dato = input(mensaje_error)
-        flag = validador(dato)
-    return dato
 
 def alta_medico():
 
-    medico_nombre = bucle_validacion(Fore.YELLOW + 
+    medico_nombre = validaciones.bucle_medico(Fore.YELLOW + 
         "Ingrese su nombre: ", 
         "SOLO LETRAS - Ingrese su nombre: ", 
         validaciones.validador_solo_letras) #verifica solo letras sin limite de caracteres
 
-    medico_apellido = bucle_validacion(Fore.YELLOW + 
+    medico_apellido = validaciones.bucle_medico(Fore.YELLOW + 
         "Ingrese su apellido: ", 
         "SOLO LETRAS - Ingrese su apellido: ", 
         validaciones.validador_solo_letras)
 
     medico_cuit = validar_cuit_medicos()
 
-    medico_matricula = bucle_validacion(
+    medico_matricula = validaciones.bucle_medico(
         "Ingrese su NRO de matricula: ",
         "SOLO NUMEROS SIN GUIONES - Ingrese su NRO de matricula: ",
         validaciones.validador_solo_numeros
     )
 
-    medico_email = bucle_validacion(
+    medico_email = validaciones.bucle_medico(
         "Ingrese su email: ",
         "ERROR - Ingrese su email correctamente: ",
         validaciones.validar_email
     )
 
-    medico_contraseña = bucle_validacion(
+    medico_contraseña = validaciones.bucle_medico(
         "Contraseña: ",
         "ERROR: ingrese una contraseña de solo numero: ",
         validaciones.validador_solo_numeros
@@ -59,13 +51,13 @@ def alta_medico():
     medico = {
         "nombre":medico_nombre,
         "apellido":medico_apellido,
-        "CUIT":medico_cuit, 
+        "CUIT":medico_cuit,
         "email":medico_email,
         "matricula":medico_matricula,
         "contraseña":medico_contraseña,
         "estado_socio": 1
         }
-    
+
     print(medico)
     return(medico)
 
@@ -136,13 +128,13 @@ def modificar_medico():
         if medico["CUIT"] == int(cuit_medico_modificar):
             opcion = input("¿Qué desea modificar? 1) Mail - 2) Contraseña: ")
             if opcion == "1":
-                medico["email"] = bucle_validacion(
+                medico["email"] = validaciones.bucle_medico(
                     "Ingrese el nuevo email del médico/a: ",
                     "Ingrese su mail correctamente: ",
                     validaciones.validar_email)
 
             elif opcion == "2":
-                medico["contraseña"] = bucle_validacion(
+                medico["contraseña"] = validaciones.bucle_medico(
                     "Ingrese la nueva contraseña: ",
                     "ERROR: ingrese una contraseña de solo números: ",
                     validaciones.validador_solo_numeros)
@@ -182,7 +174,7 @@ def dar_baja_medico():
             return
 
     print("No se encontró ningún médico con ese CUIT")
-            
+
 
 def imprimir_lista_medicos():
 
