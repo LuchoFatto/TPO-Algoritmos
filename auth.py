@@ -33,7 +33,7 @@ def validar_email(email):
 
 
 def validar_cuit(cuit):
-    """Validar formato de CUIT Argentino.
+    """  formato de CUIT Argentino.
 
     Args:
         cuit (string): CUIT ingresado por usuario.

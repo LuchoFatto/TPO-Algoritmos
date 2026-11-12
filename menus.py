@@ -220,7 +220,7 @@ def mostrar_menu_medico(medico):
         time.sleep(0.1)
         print("=" * 40)
         time.sleep(0.1)
-        print(Fore.GREEN + "1. Consultar agenda de turnos - DESHABILITADO")
+        print(Fore.GREEN + "1. Consultar agenda de turnos ")
         time.sleep(0.1)
         print(Fore.RED + "2. Darse de baja")
         time.sleep(0.1)
@@ -233,7 +233,9 @@ def mostrar_menu_medico(medico):
         if opcion == "1":
             os.system("cls")
             print(Fore.YELLOW + "\nConsultando agenda de turnos...")
-            print("Función deshabilitada para esta entrega")
+            cuit_medico = input("\nIngrese su CUIT: ")
+            turnos.ver_turnos_medico(cuit_medico)
+
             input("\nPresione ENTER para volver...")
 
         elif opcion == "2":

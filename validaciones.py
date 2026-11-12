@@ -23,3 +23,9 @@ def bucle_medico(mensaje, mensaje_error, funcion_validadora):
         dato = input(mensaje_error)
         flag = funcion_validadora(dato)
     return dato
+
+def validador_especialidad(especialidad):
+    if especialidad in ["Cardiologia", "Dermatologia", "Pediatria", "Traumatologia"]:
+        return True
+    else:
+        return False

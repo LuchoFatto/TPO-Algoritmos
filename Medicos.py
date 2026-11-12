@@ -5,6 +5,7 @@ import json
 import re
 import auth
 import turnos
+import random
 
 from colorama import Fore, Style, init
 from tabulate import tabulate
@@ -49,6 +50,13 @@ def alta_medico():
         "ERROR: ingrese una contraseña de solo numero: ",
         validaciones.validador_solo_numeros
     )
+
+    medico_especialidad = validaciones.bucle_medico(
+    "Seleccione su especialidad (Cardiologia, Dermatologia, Pediatria o Traumatologia): ",
+    "ERROR: seleccione una especialidad válida (Cardiología, Dermatología, Pediatría o Traumatología): ",
+    validaciones.validador_especialidad
+    )
+
     medico = {
         "nombre":medico_nombre,
         "apellido":medico_apellido,
@@ -56,7 +64,8 @@ def alta_medico():
         "email":medico_email,
         "matricula":medico_matricula,
         "contraseña":medico_contraseña,
-        "estado_socio": 1
+        "estado_socio": 1,
+        "especialidad": medico_especialidad
         }
 
     turnos.agregarMedicoTurnos(medico["CUIT"])

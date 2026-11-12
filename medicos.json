@@ -1,6 +1,6 @@
 [
     {
-        "nombre": "MARCO",
+        "nombre": "Nicolas",
         "apellido": "masr",
         "CUIT": 20424733452,
         "email": "TUTUTTU@TUTUTUT.TUTUTUT",
@@ -43,5 +43,25 @@
         "matricula": "123456",
         "contraseña": "098765",
         "estado_socio": 1
+    },
+    {
+        "nombre": "marco",
+        "apellido": "marco",
+        "CUIT": 20454733432,
+        "email": "cabello@ruta.com",
+        "matricula": "1235",
+        "contraseña": "1234567",
+        "estado_socio": 1,
+        "especialidad": "Dermatología"
+    },
+    {
+        "nombre": "Marco",
+        "apellido": "cabello",
+        "CUIT": 30457863216,
+        "email": "Lucarna@gmail.com",
+        "matricula": "4567",
+        "contraseña": "5468",
+        "estado_socio": 1,
+        "especialidad": "Pediatría"
     }
 ]

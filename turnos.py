@@ -1,5 +1,6 @@
-import os
 import csv
+import os
+from colorama import Fore
 
 # def creacion_csv():
 #     horarios = ["CUIT Médico", "08:00", "09:00", "10:00", "11:00", "12:00"]
@@ -40,3 +41,45 @@ def agregarMedicoTurnos(cuit_medico):
         # Agregar médico con todos los horarios disponibles
         escritor = csv.writer(archivo)
         escritor.writerow([str(cuit_medico), "", "", "", "", ""])
+
+def ver_turnos_medico(cuit_medico):
+
+    carpeta = os.path.dirname(os.path.abspath(__file__))
+    ruta_archivo = os.path.join(carpeta, "turnos.csv")
+
+    if not os.path.exists(ruta_archivo):
+        print(Fore.RED + "\nNo existe el archivo de turnos.")
+        return
+
+    with open(ruta_archivo, "r", newline="", encoding="utf-8") as archivo:
+
+        lector = csv.DictReader(archivo)
+
+        encontrado = False
+
+        for fila in lector:
+
+            if not fila or not fila["CUIT Médico"]:
+                continue
+
+            if fila["CUIT Médico"] == str(cuit_medico):
+
+                encontrado = True
+
+                print(Fore.YELLOW + "\n--- MIS TURNOS ---")
+                print(Fore.CYAN + f"\nMédico: {cuit_medico}\n")
+
+                for horario, paciente in fila.items():
+
+                    if horario == "CUIT Médico":
+                        continue
+
+                    if paciente.strip() == "":
+                        print(Fore.GREEN + f"{horario} - LIBRE")
+                    else:
+                        print(Fore.RED + f"{horario} - OCUPADO (Paciente: {paciente})")
+
+                break
+
+        if not encontrado:
+            print(Fore.RED + "\nNo se encontró ningún médico con ese CUIT.")
