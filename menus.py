@@ -357,7 +357,7 @@ def mostrar_menu_admin():
         time.sleep(0.1)
         print(Fore.GREEN + "13. Modificar cobertura de planes")
         time.sleep(0.1)
-        print(Fore.BLUE + "14. Ver historial - DESHABILITADO")
+        print(Fore.BLUE + "14. Ver historial general de turnos")
         time.sleep(0.1)
         print(Fore.RED + "15. Volver")
         time.sleep(0.1)
@@ -463,8 +463,9 @@ def mostrar_menu_admin():
 
         elif opcion == "14":
             os.system("cls")
-            print("\nFuncion deshabilitada para la entrega del 40%")
-            input("\nPresione ENTER para volver...")
+            print(Fore.YELLOW + "\nCargando historial general de turnos...")
+            time.sleep(1)
+            turnos.ver_historial_todos_usuarios()
 
         elif opcion == "15":
             os.system("cls")

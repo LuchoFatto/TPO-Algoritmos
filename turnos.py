@@ -488,6 +488,63 @@ def ver_historial(cuit):
     )
 
 
+def ver_historial_todos_usuarios():
+    """Muestra al administrador todos los turnos guardados de los afiliados."""
+    ruta_u = usuarios.RUTA_ARCHIVO
+    lista_usuarios = auth.abrir_archivo(ruta_u)
+    # filter recorre la lista y conserva solamente los usuarios con historial.
+    # La lambda devuelve el historial de cada usuario para comprobar si tiene datos.
+    usuarios_con_historial = list(
+        filter(lambda usuario: usuario.get("Historial"), lista_usuarios)
+    )
+    # sorted ordena los usuarios seleccionados de menor a mayor CUIT.
+    # La lambda indica que el criterio de orden debe ser el CUIT de cada usuario.
+    usuarios_con_historial = sorted(
+        usuarios_con_historial, key=lambda usuario: usuario["CUIT"]
+    )
+
+    os.system("cls")
+    console.print(
+        Panel.fit(
+            "[bold cyan]HISTORIAL GENERAL DE TURNOS[/bold cyan]",
+            border_style="cyan",
+        )
+    )
+
+    if not usuarios_con_historial:
+        console.print(
+            Panel(
+                "[yellow]No hay turnos registrados en los historiales.[/yellow]",
+                border_style="yellow",
+                expand=False,
+            )
+        )
+    else:
+        tabla_historial = Table(box=box.ROUNDED, header_style="bold white on blue")
+        tabla_historial.add_column("Afiliado", style="bold white", width=28)
+        tabla_historial.add_column("CUIT Afiliado", justify="center", width=16)
+        tabla_historial.add_column("Profesional", style="bold white", width=28)
+        tabla_historial.add_column("Horario", justify="center", style="bold green", width=14)
+
+        for usuario in usuarios_con_historial:
+            nombre_afiliado = f"{usuario['Nombre']} {usuario['Apellido']}"
+            for registro in usuario["Historial"]:
+                nombre_medico = registro[0]
+                hora_turno = registro[1]
+                tabla_historial.add_row(
+                    nombre_afiliado,
+                    str(usuario["CUIT"]),
+                    nombre_medico,
+                    f"{hora_turno} hs",
+                )
+
+        console.print(tabla_historial)
+
+    input(
+        f"\n{Fore.CYAN}{Style.BRIGHT}Presione Enter para volver al menú...{Style.RESET_ALL}"
+    )
+
+
 def menu_turnos(cuit):
     """Despliega el menú principal de gestión de turnos para reservar o consultar historial.
 

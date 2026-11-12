@@ -59,7 +59,12 @@
         "Email": "lucia@gmail.com",
         "Plan": "Familiar Hijo",
         "Password": "Lucia123!",
-        "Historial": [],
+        "Historial": [
+            [
+                "tomas tomas",
+                "11:00"
+            ]
+        ],
         "Deudor": false,
         "Dueño": 20333444555,
         "Activo": true
