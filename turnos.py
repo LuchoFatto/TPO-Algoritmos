@@ -237,34 +237,37 @@ def seleccionar_turno(disponibles, especialidad):
 
 
 def guardar_turno_csv(ruta_turnos, cuit_medico, hora_elegida, cuit_paciente):
-    """Graba el CUIT del paciente en la celda correspondiente dentro de turnos.csv."""
+    """Graba el CUIT del paciente en la celda correspondiente manteniendo intactos todos los demás médicos."""
+    nuevas_lineas = []
+
     with open(ruta_turnos, "r", encoding="utf-8") as archivo:
-        lineas = archivo.readlines()
+        primera_linea = archivo.readline().rstrip("\r\n")
 
-    if lineas:
-        encabezado = lineas[0].rstrip("\r\n").split(",")
-        indice_hora = -1
+        if primera_linea:
+            nuevas_lineas.append(primera_linea + "\n")
+            encabezado = primera_linea.split(",")
 
-        for i in range(len(encabezado)):
-            if encabezado[i].strip() == hora_elegida:
-                indice_hora = i
+            indice_hora = -1
+            for i in range(len(encabezado)):
+                if encabezado[i].strip() == hora_elegida:
+                    indice_hora = i
 
-        if indice_hora != -1:
-            nuevas_lineas = [lineas[0]]
-
-            for linea in lineas[1:]:
+            for linea in archivo:
                 if linea.strip():
                     columnas = linea.rstrip("\r\n").split(",")
                     while len(columnas) < len(encabezado):
                         columnas.append("")
 
-                    if int(columnas[0].strip()) == int(cuit_medico):
+                    # Solo se modifica la columna si la fila pertenece al médico elegido
+                    if indice_hora != -1 and int(columnas[0].strip()) == int(cuit_medico):
                         columnas[indice_hora] = str(cuit_paciente)
 
+                    # Este append va fuera del if anterior para conservar a TODOS los médicos
                     nuevas_lineas.append(",".join(columnas) + "\n")
 
-            with open(ruta_turnos, "w", encoding="utf-8") as archivo:
-                archivo.writelines(nuevas_lineas)
+    if nuevas_lineas:
+        with open(ruta_turnos, "w", encoding="utf-8") as archivo:
+            archivo.writelines(nuevas_lineas)
 
 
 def guardar_historial_usuario(ruta_u, cuit_paciente, nombre_medico, hora_elegida):
