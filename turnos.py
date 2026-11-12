@@ -25,7 +25,7 @@ from rich.table import Table
 
 
 def agregarMedicoTurnos(cuit_medico):
-
+    
     carpeta = os.path.dirname(os.path.abspath(__file__))
     ruta_archivo = os.path.join(carpeta, "turnos.csv")
 
@@ -58,7 +58,15 @@ console = Console()
 
 
 def pedir_opcion(mensaje, maximo):
-    """Valida que el usuario ingrese un número entero entre 0 y maximo."""
+    """Solicita y valida que el usuario ingrese un número entero dentro de un rango.
+
+    Args:
+        mensaje(str): Texto mostrado en consola para solicitar el dato.
+        maximo(int): Límite superior permitido para la opción ingresada.
+
+    Returns:
+        int: Número entero validado entre 0 y maximo.
+    """
     opcion_valida = False
     resultado = 0
 
@@ -75,7 +83,11 @@ def pedir_opcion(mensaje, maximo):
 
 
 def elegir_especialidad():
-    """Muestra el menú de especialidades con tabla Rich y devuelve el nombre elegido."""
+    """Muestra el menú de especialidades médicas y captura la selección del usuario.
+
+    Returns:
+        str: Nombre de la especialidad médica seleccionada.
+    """
     especialidades = ["Cardiologia", "Pediatria", "Traumatologia", "Dermatologia"]
     flag = True
     eleccion = ""
@@ -110,7 +122,15 @@ def elegir_especialidad():
 
 
 def filtrar_medicos_por_especialidad(ruta_m, especialidad):
-    """Lee medicos.json y devuelve {CUIT: 'nombre apellido'} para la especialidad dada."""
+    """Filtra los profesionales desde el archivo JSON según la especialidad indicada.
+
+    Args:
+        ruta_m(str): Ruta al archivo medicos.json.
+        especialidad(str): Especialidad médica utilizada como criterio de filtro.
+
+    Returns:
+        dict[int, str]: Diccionario que asocia cada CUIT de médico con su nombre completo.
+    """
     medicos = auth.abrir_archivo(ruta_m)
     lista_permitida = {}
 
@@ -122,7 +142,15 @@ def filtrar_medicos_por_especialidad(ruta_m, especialidad):
 
 
 def medicos_disponibles(ruta_turnos, lista_permitida):
-    """Lee turnos.csv y devuelve los médicos permitidos con al menos 1 horario libre."""
+    """Obtiene los médicos filtrados que poseen al menos un horario disponible en el CSV.
+
+    Args:
+        ruta_turnos(str): Ruta al archivo turnos.csv.
+        lista_permitida(dict[int, str]): Diccionario de médicos permitidos con formato {CUIT: nombre_completo}.
+
+    Returns:
+        list[dict]: Lista de diccionarios con keys 'cuit', 'nombre' y 'libres' de cada médico disponible.
+    """
     disponibles = []
 
     with open(ruta_turnos, "r", newline="", encoding="utf-8") as archivo:
@@ -150,7 +178,15 @@ def medicos_disponibles(ruta_turnos, lista_permitida):
 
 
 def seleccionar_turno(disponibles, especialidad):
-    """Gestiona la elección de médico y horario con interfaz Rich y opción de retroceso."""
+    """Gestiona la selección interactiva de profesional y horario con opción de retroceso.
+
+    Args:
+        disponibles(list[dict]): Lista de médicos disponibles con sus horarios libres.
+        especialidad(str): Nombre de la especialidad médica en curso.
+
+    Returns:
+        tuple[int | None, str | None, str | None]: Tupla con (cuit_medico, nombre_medico, hora_elegida) o valores None si se cancela.
+    """
     cuit_medico = None
     nombre_medico = None
     hora_elegida = None
@@ -237,7 +273,14 @@ def seleccionar_turno(disponibles, especialidad):
 
 
 def guardar_turno_csv(ruta_turnos, cuit_medico, hora_elegida, cuit_paciente):
-    """Graba el CUIT del paciente en la celda correspondiente manteniendo intactos todos los demás médicos."""
+    """Registra el CUIT del paciente en el turno reservado conservando el resto del archivo CSV.
+
+    Args:
+        ruta_turnos(str): Ruta al archivo turnos.csv.
+        cuit_medico(int): CUIT del médico cuya agenda se actualiza.
+        hora_elegida(str): Horario reservado correspondiente a una columna del CSV.
+        cuit_paciente(int | str): CUIT del afiliado que toma el turno.
+    """
     nuevas_lineas = []
 
     with open(ruta_turnos, "r", encoding="utf-8") as archivo:
@@ -258,11 +301,9 @@ def guardar_turno_csv(ruta_turnos, cuit_medico, hora_elegida, cuit_paciente):
                     while len(columnas) < len(encabezado):
                         columnas.append("")
 
-                    # Solo se modifica la columna si la fila pertenece al médico elegido
                     if indice_hora != -1 and int(columnas[0].strip()) == int(cuit_medico):
                         columnas[indice_hora] = str(cuit_paciente)
 
-                    # Este append va fuera del if anterior para conservar a TODOS los médicos
                     nuevas_lineas.append(",".join(columnas) + "\n")
 
     if nuevas_lineas:
@@ -271,7 +312,14 @@ def guardar_turno_csv(ruta_turnos, cuit_medico, hora_elegida, cuit_paciente):
 
 
 def guardar_historial_usuario(ruta_u, cuit_paciente, nombre_medico, hora_elegida):
-    """Agrega la tupla (nombre_medico, hora_elegida) en la key 'Historial' del paciente."""
+    """Agrega una tupla con el médico y la hora reservada en la key 'Historial' del afiliado.
+
+    Args:
+        ruta_u(str): Ruta al archivo JSON de usuarios.
+        cuit_paciente(int | str): CUIT del afiliado que realizó la reserva.
+        nombre_medico(str): Nombre completo del médico seleccionado.
+        hora_elegida(str): Horario reservado por el afiliado.
+    """
     lista_usuarios = auth.abrir_archivo(ruta_u)
 
     for usuario in lista_usuarios:
@@ -284,7 +332,11 @@ def guardar_historial_usuario(ruta_u, cuit_paciente, nombre_medico, hora_elegida
 
 
 def pedir_turno(cuit):
-    """Orquesta el flujo completo de reserva para el paciente identificado por 'cuit'."""
+    """Orquesta el flujo completo de consulta, selección y persistencia de un turno médico.
+
+    Args:
+        cuit(int | str): CUIT del afiliado que solicita el turno.
+    """
     ruta_m = os.path.join(os.path.dirname(os.path.abspath(__file__)), "medicos.json")
     ruta_turnos = os.path.join(os.path.dirname(os.path.abspath(__file__)), "turnos.csv")
     ruta_u = usuarios.RUTA_ARCHIVO
@@ -321,7 +373,15 @@ def pedir_turno(cuit):
 
 
 def obtener_historial_usuario(ruta_u, cuit_paciente):
-    """Busca al paciente por CUIT en el JSON y devuelve su lista 'Historial'."""
+    """Recupera la lista de turnos almacenada en la key 'Historial' de un afiliado.
+
+    Args:
+        ruta_u(str): Ruta al archivo JSON de usuarios.
+        cuit_paciente(int | str): CUIT del afiliado a consultar.
+
+    Returns:
+        list: Lista de registros de turnos reservados por el afiliado.
+    """
     lista_usuarios = auth.abrir_archivo(ruta_u)
     historial = []
 
@@ -333,7 +393,11 @@ def obtener_historial_usuario(ruta_u, cuit_paciente):
 
 
 def ver_historial(cuit):
-    """Muestra en una tabla Rich los turnos guardados en la key 'Historial' del paciente."""
+    """Muestra en pantalla el historial de turnos reservados por el afiliado.
+
+    Args:
+        cuit(int | str): CUIT del afiliado cuyo historial se visualiza.
+    """
     ruta_u = usuarios.RUTA_ARCHIVO
     historial = obtener_historial_usuario(ruta_u, cuit)
 
@@ -371,7 +435,11 @@ def ver_historial(cuit):
 
 
 def menu_turnos(cuit):
-    """Menú principal para elegir entre reservar un turno o consultar el historial."""
+    """Despliega el menú principal de gestión de turnos para reservar o consultar historial.
+
+    Args:
+        cuit(int | str): CUIT del afiliado autenticado.
+    """
     continuar = True
 
     while continuar:
