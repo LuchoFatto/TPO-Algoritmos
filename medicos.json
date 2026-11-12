@@ -25,5 +25,23 @@
         "matricula": "23123",
         "contraseña": "1234",
         "estado_socio": 0
+    },
+    {
+        "nombre": "tomas",
+        "apellido": "tomas",
+        "CUIT": 20424733492,
+        "email": "TOMAS@TOMAS.tomas",
+        "matricula": "456789",
+        "contraseña": "7890",
+        "estado_socio": 1
+    },
+    {
+        "nombre": "Marco",
+        "apellido": "MARCO",
+        "CUIT": 20424733412,
+        "email": "cas@cas.cas",
+        "matricula": "123456",
+        "contraseña": "098765",
+        "estado_socio": 1
     }
 ]

@@ -237,7 +237,6 @@ def mostrar_menu_medico():
             print(Fore.YELLOW + "\nCargando alta de medico...")
             time.sleep(1)
 
-            turnos.creacion_csv()
             medico = Medicos.alta_medico()
             rutaDirectorio = os.path.dirname(__file__)
             rutaArchivo = os.path.join(rutaDirectorio,"medicos.json")
