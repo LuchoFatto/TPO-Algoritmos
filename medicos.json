@@ -6,7 +6,8 @@
         "email": "TUTUTTU@TUTUTUT.TUTUTUT",
         "matricula": "1234",
         "contraseña": "12345",
-        "estado_socio": 1
+        "estado_socio": 1,
+        "especialidad": "Cardiologia"
     },
     {
         "nombre": "qwer",
@@ -15,7 +16,8 @@
         "email": "ASDF@ASDF.ASDG",
         "matricula": "1234567",
         "contraseña": "123456789",
-        "estado_socio": 1
+        "estado_socio": 1,
+        "especialidad": "Dermatologia"
     },
     {
         "nombre": "Maro",
@@ -24,6 +26,27 @@
         "email": "CABELLO@HOT.COM",
         "matricula": "23123",
         "contraseña": "1234",
-        "estado_socio": 0
+        "estado_socio": 0,
+        "especialidad": "Pediatria"
+    },
+    {
+        "nombre": "tomas",
+        "apellido": "tomas",
+        "CUIT": 20424733492,
+        "email": "TOMAS@TOMAS.tomas",
+        "matricula": "456789",
+        "contraseña": "7890",
+        "estado_socio": 1,
+        "especialidad": "Traumatologia"
+    },
+    {
+        "nombre": "Marco",
+        "apellido": "MARCO",
+        "CUIT": 20424733412,
+        "email": "cas@cas.cas",
+        "matricula": "123456",
+        "contraseña": "098765",
+        "estado_socio": 1,
+        "especialidad": "Cardiologia"
     }
 ]

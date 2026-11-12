@@ -31,7 +31,12 @@
         "Email": "carlos@gmail.com",
         "Plan": "Familiar Dueño",
         "Password": "Carlos123!",
-        "Historial": [],
+        "Historial": [
+            [
+                "Marco MARCO",
+                "11:00"
+            ]
+        ],
         "Deudor": false,
         "Familia": [
             20444555666
@@ -62,5 +67,17 @@
         "Deudor": true,
         "Activo": true,
         "Plan": "Plus"
+    },
+    {
+        "Nombre": "Franco",
+        "Apellido": "Guido",
+        "CUIT": 22113344112,
+        "Telefono": 1122334411,
+        "Email": "wiwiw@jose.com",
+        "Password": "Mortadela#12",
+        "Historial": [],
+        "Deudor": true,
+        "Activo": true,
+        "Plan": "Basico"
     }
 ]

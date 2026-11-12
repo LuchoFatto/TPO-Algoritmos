@@ -163,7 +163,7 @@ def mostrar_menu_afiliados(cuit):
         time.sleep(0.1)
         print(Fore.GREEN + "2. Ver cobertura.")
         time.sleep(0.1)
-        print(Fore.GREEN + "3. Turnos. DESHABILITADO")
+        print(Fore.GREEN + "3. Turnos.")
         time.sleep(0.1)
         print(Fore.RED + "4. Darse de baja")
         time.sleep(0.1)
@@ -189,7 +189,7 @@ def mostrar_menu_afiliados(cuit):
 
         elif opcion == "3":
             os.system("cls")
-            print(Fore.YELLOW + "\nVer mis turnos")
+            turnos.menu_turnos(cuit)
             input("\nPresione ENTER para volver...")
 
         elif opcion == "4":
