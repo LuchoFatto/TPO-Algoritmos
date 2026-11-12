@@ -15,12 +15,13 @@ consola = Console()
 
 #Todos los planes disponibles y sus descripciones (Nombre, Precio Mensual, Descripcion)
 PLANES = (
-        ('Basico',5000,"Covertura del 40%"),
-        ('Plus',10000,"Covertura del 65%"),
-        ('Familiar',12000,"Covertura del 50% y posibilidad de añadir hasta 2 hijos y 1 conyuge")
+        ('Basico', 5000, 'Plan individual'),
+        ('Plus', 10000, 'Plan con mayor cobertura'),
+        ('Familiar', 12000, 'Plan familiar con hasta 3 integrantes adicionales')
 )
 
 RUTA_ARCHIVO = os.path.join(os.path.dirname(__file__),"lista_usuarios.json")
+RUTA_COBERTURAS = os.path.join(os.path.dirname(__file__), "coberturas.json")
 
 
 #funciones auxiliares
@@ -143,7 +144,9 @@ def elegir_plan():
     while True:
         print(Fore.YELLOW + 'Elija un Plan de Pago')
         for numero, plan in enumerate(PLANES, start=1):
-            print(Fore.YELLOW + f'[{numero}] {plan[0]} >> {plan[2]} << ${plan[1]} x Mes')
+            coberturas = auth.abrir_archivo(RUTA_COBERTURAS)
+            porcentaje_cobertura = coberturas[plan[0]]
+            print(Fore.YELLOW + f'[{numero}] {plan[0]} >> {plan[2]} << Cobertura: {porcentaje_cobertura}% | ${plan[1]} x Mes')
 
         try:
             eleccion = int(input(Fore.YELLOW + '\n--Ingrese el numero de la opcion acorde--\n>> '))
@@ -510,9 +513,11 @@ def ver_beneficios(cuit):
         return
 
     beneficios_encontrados = False
+    coberturas = auth.abrir_archivo(RUTA_COBERTURAS)
     for plan_disponible in PLANES:
         if usuario_encontrado['Plan'].split()[0] == plan_disponible[0]:
-            print(plan_disponible[2])
+            porcentaje_cobertura = coberturas[plan_disponible[0]]
+            print(f'{plan_disponible[2]} - Cobertura: {porcentaje_cobertura}%')
             esperar()
             beneficios_encontrados = True
             break
@@ -633,6 +638,46 @@ def modificar_plan_usuario(usuario, lista_u):
         quitar_integrante_de_plan_familiar(usuario, lista_u)
 
     usuario['Plan'] = plan_seleccionado
+
+def modificar_cobertura_plan():
+    """Permite a Administración modificar la cobertura de un plan."""
+    coberturas = auth.abrir_archivo(RUTA_COBERTURAS)
+
+    while True:
+        print(Fore.YELLOW + 'Seleccione el plan cuya cobertura desea modificar')
+        for numero, plan in enumerate(PLANES, start=1):
+            nombre_plan = plan[0]
+            print(Fore.YELLOW + f'[{numero}] {nombre_plan} - Cobertura actual: {coberturas[nombre_plan]}%')
+        print(Fore.YELLOW + '[0] Volver')
+
+        try:
+            opcion_plan = int(input('>> '))
+        except ValueError:
+            print(Fore.YELLOW + 'Ingrese un numero valido')
+            continue
+
+        if opcion_plan == 0:
+            return
+
+        if opcion_plan < 1 or opcion_plan > len(PLANES):
+            print(Fore.YELLOW + 'Seleccione una opcion dentro del rango indicado')
+            continue
+
+        nombre_plan_seleccionado = PLANES[opcion_plan - 1][0]
+        try:
+            nuevo_porcentaje = int(input(Fore.YELLOW + 'Ingrese la nueva cobertura (0 a 100): '))
+        except ValueError:
+            print(Fore.YELLOW + 'Ingrese un porcentaje numerico')
+            continue
+
+        if nuevo_porcentaje < 0 or nuevo_porcentaje > 100:
+            print(Fore.YELLOW + 'El porcentaje debe estar entre 0 y 100')
+            continue
+
+        coberturas[nombre_plan_seleccionado] = nuevo_porcentaje
+        auth.cargar_archivo(coberturas, RUTA_COBERTURAS)
+        print(Fore.YELLOW + 'Cobertura actualizada correctamente')
+        return
 
 def modificar_usuario(admin=False):
     """Permite elegir un usuario y modificar uno de sus datos permitidos.

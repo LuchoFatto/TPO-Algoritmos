@@ -104,11 +104,13 @@ def mostrar_menu_login():
 
         elif opcion == "2":
             os.system("cls")
-            if auth.iniciar_sesion_medicos():
+            medico = auth.iniciar_sesion_medicos()
+
+            if medico is not None:
                 os.system("cls")
                 print(Fore.YELLOW + "\nAcceso autorizado...")
                 time.sleep(1)
-                mostrar_menu_medico()
+                mostrar_menu_medico(medico)
             else:
                 return
 
@@ -207,10 +209,10 @@ def mostrar_menu_afiliados(cuit):
             time.sleep(1)
 
 
-def mostrar_menu_medico():
+def mostrar_menu_medico(medico):
     opcion = ""
 
-    while opcion != "5":
+    while opcion != "3":
         print()
         print("=" * 40)
         time.sleep(0.1)
@@ -218,15 +220,11 @@ def mostrar_menu_medico():
         time.sleep(0.1)
         print("=" * 40)
         time.sleep(0.1)
-        print(Fore.GREEN + "1. Darse de alta")
+        print(Fore.GREEN + "1. Consultar agenda de turnos - DESHABILITADO")
         time.sleep(0.1)
-        print(Fore.GREEN + "2. Modificar Medico")
+        print(Fore.RED + "2. Darse de baja")
         time.sleep(0.1)
-        print(Fore.RED + "3. Darse de baja")
-        time.sleep(0.1)
-        print(Fore.YELLOW + "4. Imprimir lista de medicos")
-        time.sleep(0.1)
-        print(Fore.RED + "5. Volver")
+        print(Fore.RED + "3. Volver")
         time.sleep(0.1)
         print("=" * 40)
 
@@ -234,40 +232,19 @@ def mostrar_menu_medico():
 
         if opcion == "1":
             os.system("cls")
-            print(Fore.YELLOW + "\nCargando alta de medico...")
-            time.sleep(1)
-
-            turnos.creacion_csv()
-            medico = Medicos.alta_medico()
-            rutaDirectorio = os.path.dirname(__file__)
-            rutaArchivo = os.path.join(rutaDirectorio,"medicos.json")
-            Medicos.generarArchivo(medico, rutaArchivo)
-            
-            input(Fore.YELLOW + "\nPresione ENTER para continuar...")
-
-        elif opcion == "2":
-            # MODIFICAR DATOS MAIL Y CONTRASEÑA #
-            os.system("cls")
-            print("\nModificar Mail o Contraseña")
-            Medicos.modificar_medico()
+            print(Fore.YELLOW + "\nConsultando agenda de turnos...")
+            print("Función deshabilitada para esta entrega")
             input("\nPresione ENTER para volver...")
 
-        elif opcion == "3":
+        elif opcion == "2":
             # DAR DE BAJA #
             os.system("cls")
             print(Fore.YELLOW + "\nCargando solicitud de baja...")
             time.sleep(1)
-            Medicos.dar_baja_medico()
+            Medicos.dar_baja_medico(medico["CUIT"])
             input(Fore.YELLOW + "\nPresione ENTER para continuar...")  
 
-        elif opcion == "4":
-            os.system("cls")
-            print(Fore.YELLOW + "\nImprimir lista de medicos")
-            time.sleep(1)
-            Medicos.imprimir_lista_medicos()
-            input(Fore.YELLOW + "\nPresione ENTER para continuar...")
-
-        elif opcion == "5":
+        elif opcion == "3":
             os.system("cls")
             print(Fore.YELLOW + "\nVolviendo al menu anterior...")
             time.sleep(1)
@@ -333,7 +310,7 @@ def mostrar_menu_farmacia(farmacia):
 def mostrar_menu_admin():
     opcion = ""
 
-    while opcion != "11":
+    while opcion != "15":
         print()
         print("=" * 40)
         time.sleep(0.1)
@@ -359,9 +336,17 @@ def mostrar_menu_admin():
         time.sleep(0.1)
         print(Fore.GREEN + "9. Modificar usuario")
         time.sleep(0.1)
-        print(Fore.BLUE + "10. Ver historial - DESHABILITADO")
+        print(Fore.GREEN + "10. Dar de alta médico")
         time.sleep(0.1)
-        print(Fore.RED + "11. Volver")
+        print(Fore.RED + "11. Dar de baja médico")
+        time.sleep(0.1)
+        print(Fore.GREEN + "12. Modificar médico")
+        time.sleep(0.1)
+        print(Fore.GREEN + "13. Modificar cobertura de planes")
+        time.sleep(0.1)
+        print(Fore.BLUE + "14. Ver historial - DESHABILITADO")
+        time.sleep(0.1)
+        print(Fore.RED + "15. Volver")
         time.sleep(0.1)
         print("=" * 40)
 
@@ -435,10 +420,40 @@ def mostrar_menu_admin():
 
         elif opcion == "10":
             os.system("cls")
+            print(Fore.YELLOW + "\nCargando alta de médico...")
+            time.sleep(1)
+            medico = Medicos.alta_medico()
+            ruta_archivo = os.path.join(os.path.dirname(__file__), "medicos.json")
+            Medicos.generarArchivo(medico, ruta_archivo)
+            input(Fore.YELLOW + "\nPresione ENTER para continuar...")
+
+        elif opcion == "11":
+            os.system("cls")
+            print(Fore.YELLOW + "\nCargando baja de médico...")
+            time.sleep(1)
+            Medicos.dar_baja_medico()
+            input(Fore.YELLOW + "\nPresione ENTER para continuar...")
+
+        elif opcion == "12":
+            os.system("cls")
+            print(Fore.YELLOW + "\nCargando modificación de médico...")
+            time.sleep(1)
+            Medicos.modificar_medico()
+            input(Fore.YELLOW + "\nPresione ENTER para continuar...")
+
+        elif opcion == "13":
+            os.system("cls")
+            print(Fore.YELLOW + "\nModificando cobertura de planes...")
+            time.sleep(1)
+            usuarios.modificar_cobertura_plan()
+            input(Fore.YELLOW + "\nPresione ENTER para continuar...")
+
+        elif opcion == "14":
+            os.system("cls")
             print("\nFuncion deshabilitada para la entrega del 40%")
             input("\nPresione ENTER para volver...")
 
-        elif opcion == "11":
+        elif opcion == "15":
             os.system("cls")
             print(Fore.YELLOW + "\nVolviendo al menu anterior...")
             time.sleep(1)

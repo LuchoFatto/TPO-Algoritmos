@@ -220,11 +220,11 @@ def iniciar_sesion_medicos():
             medico_encontrado = medico
             break
 
+    if medico_encontrado is None:
+        print(Fore.YELLOW + "Medico no encontrado")
+        return None
     if medico_encontrado["estado_socio"] == 0:
         print("Usuario se encuentra dado de baja")
-        return (None)
-    if medico_encontrado == None:
-        print(Fore.YELLOW + "Medico no encontrado")
         return None
 
     intentos = 3
