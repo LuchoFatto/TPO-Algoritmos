@@ -1,3 +1,5 @@
 .pytest_cache/
 *.pyc
 PRUEBAS.py
+alcance.txt
+anotaciones_pendientes.txt

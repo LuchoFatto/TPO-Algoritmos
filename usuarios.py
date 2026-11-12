@@ -416,9 +416,10 @@ def baja_usuario(cuit):
         cuit (int): Cuit del usuario
     """
     if not verificar_decision('Darse de Baja'):
-        eliminar_usuario(cuit)
+        return eliminar_usuario(cuit)
     else:
         print(Fore.YELLOW + 'Volviendo al menu anterior')
+        return False
 
 def eliminar_usuario(cuit):
     """Cambia el estado del usuario de Activo = True a False
@@ -434,6 +435,7 @@ def eliminar_usuario(cuit):
         esperar()
         input(Fore.YELLOW + 'Presione Enter para volver')
         os.system('cls')
+        return False
 
     elif usuario['Activo'] is True:
         print(Fore.YELLOW + 'Eliminando usuario...')
@@ -444,6 +446,7 @@ def eliminar_usuario(cuit):
         input(Fore.YELLOW + 'Presione Enter para volver')
         os.system('cls')
         auth.cargar_archivo(lista_u,RUTA_ARCHIVO)
+        return True
 
     elif usuario['Activo'] is False:
         print(Fore.YELLOW + 'El usuario ingresado ya esa inhabilitado')
@@ -451,6 +454,7 @@ def eliminar_usuario(cuit):
         input(Fore.YELLOW + 'Presione Enter para volver')
         esperar()
         os.system('cls')
+        return False
 
 
 def buscar_usuarios(cuit,admin=False):
