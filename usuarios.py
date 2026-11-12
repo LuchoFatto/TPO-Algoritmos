@@ -178,22 +178,25 @@ def pedir_password():
             Flag = verificar_decision(password)
     return password
 
-def incluirse_plan_familiar(cuit, lista_u):
+def incluirse_plan_familiar(lista_u):
     """Verifica si el CUIT del dueño es correcto, existe y tiene espacio.
     Si cumple, devuelve los datos necesarios para asociar el nuevo usuario
     cuando se confirme el alta.
 
     Args:
-        cuit (str): Cuit del usuario ingresando
         lista_u (list): Lista de diccionarios del archivo json
 
     Returns:
-        Dict: Diccionario de hijo completo
-        None: Si no se completa el ingreso
+        Dict: Datos del usuario que se incorpora a una familia.
+        False: El usuario cancelo la seleccion.
+        None: No se encontro un titular valido.
     """
     #Validar que exista algun usuario en la DB
     if (lista_u == []):
         print(Fore.YELLOW + 'No hay usuarios afiliados aun, elija otra opcion')
+        input(Fore.YELLOW + 'Presione Enter para volver')
+        os.system('cls')
+        return False
     else:
         Valido = True
         while Valido:
@@ -202,7 +205,8 @@ def incluirse_plan_familiar(cuit, lista_u):
 
             #Salir del Case, Volver a elegir
             if CUIT_principal == '0':
-                Valido = False
+                os.system('cls')
+                return False
 
             #Validar que sea CUIT
             elif not auth.validar_cuit(CUIT_principal):
@@ -238,15 +242,15 @@ def incluirse_plan_familiar(cuit, lista_u):
     os.system('cls')
     return None
 
-def plan_familiar(cuit, lista_u):
-    """Eleccion de tipo de plan familiar, devolucion de diccionario con datos en base a eleccion
+def plan_familiar(lista_u):
+    """Permite elegir si el usuario será titular o integrante familiar.
 
     Args:
-        cuit (str): cuit de usuario ingresando
         lista_u (list): Lista de diccionarios del archivo json
 
     Returns:
-        Dict: Diccionario con keys a añadir a diccionario base
+        dict: Datos del plan familiar seleccionado.
+        None: Si se cancela la selección familiar.
     """
     Flag = True
     print(Fore.YELLOW + 'Usted ha seleccionado el plan familiar')
@@ -271,34 +275,40 @@ def plan_familiar(cuit, lista_u):
 
 
             case '1':
-                hijo = incluirse_plan_familiar(cuit, lista_u)
-                if hijo:
-                    return hijo
+                resultado_inclusion = incluirse_plan_familiar(lista_u)
+                if resultado_inclusion is False:
+                    return None
+                if resultado_inclusion is not None:
+                    return resultado_inclusion
 
             case _:
                 print(Fore.YELLOW + 'Ingrese uno de los valores indicados')
                 esperar()
                 os.system('cls')
 
-def pedir_plan(cuit, lista_u):
-    """Eleccion de plan y sus opciones
+def pedir_plan(lista_u):
+    """Solicita un plan y repite la selección si se cancela la parte familiar.
 
     Args:
-        cuit (str): Cuit del usuario ingresando
         lista_u (list): Lista de diccionarios del archivo json
 
     Returns:
-        Dict: Diccionario con keys a añadir a diccionario base
+        dict: Datos del plan seleccionado.
     """
 
-    plan = {
-        'Plan' : elegir_plan()
-    }
+    #Si se cancela el ingreso de datos vuelve a pedir el plan, no cancela el alta
+    while True:
+        plan_elegido = elegir_plan()
 
-    if plan['Plan'] == 'Familiar':
-        plan.update(plan_familiar(cuit, lista_u))
+        if plan_elegido != 'Familiar':
+            return {'Plan': plan_elegido}
 
-    return plan
+        datos_plan_familiar = plan_familiar(lista_u)
+        if datos_plan_familiar is not None:
+            return datos_plan_familiar
+
+        print(Fore.YELLOW + 'Volviendo a la seleccion de planes')
+        esperar()
 
 
 
@@ -340,7 +350,10 @@ def alta_usuario():
         }
 
         #Ingreso Plan de Usuario
-        diccionario_usuario.update(pedir_plan(diccionario_usuario['CUIT'], lista_u))
+        datos_plan = pedir_plan(lista_u)
+        if datos_plan is None:
+            return
+        diccionario_usuario.update(datos_plan)
 
 
 
@@ -447,7 +460,7 @@ def buscar_usuarios(cuit,admin=False):
     Returns:
         tuple: (ubicacion en lista, diccionario del usuario) | (None, None)
     """
-    with open(RUTA_ARCHIVO,"r") as Archivo:
+    with open(RUTA_ARCHIVO, "r", encoding="utf-8") as Archivo:
         lista_u = json.load(Archivo)
     if admin:
         for indice, usuario in enumerate(lista_u):
@@ -586,7 +599,12 @@ def convertir_integrantes_a_plan_individual(usuario, lista_u):
     usuario['Familia'] = []
 
 def modificar_plan_usuario(usuario, lista_u):
-    """Cambia el plan y actualiza las relaciones familiares involucradas."""
+    """Cambia el plan y actualiza las relaciones familiares involucradas.
+
+    Args:
+        usuario (dict): Usuario cuyo plan se va a modificar.
+        lista_u (list): Lista completa de usuarios afiliados.
+    """
     plan_anterior = usuario['Plan']
     plan_seleccionado = elegir_plan()
 
@@ -595,7 +613,11 @@ def modificar_plan_usuario(usuario, lista_u):
             print(Fore.YELLOW + 'El usuario ya pertenece a un plan familiar')
             return
 
-        datos_plan_familiar = plan_familiar(usuario['CUIT'], lista_u)
+        datos_plan_familiar = plan_familiar(lista_u)
+        if datos_plan_familiar is None:
+            print(Fore.YELLOW + 'No se modifico el plan del usuario')
+            return
+
         usuario.update(datos_plan_familiar)
 
         if 'Dueño' in datos_plan_familiar:
@@ -613,10 +635,11 @@ def modificar_plan_usuario(usuario, lista_u):
     usuario['Plan'] = plan_seleccionado
 
 def modificar_usuario(admin=False):
-    """Eleccion de que usuario y que key modificar
+    """Permite elegir un usuario y modificar uno de sus datos permitidos.
 
     Args:
-        admin (bool, optional): _description_. Defaults to False.
+        admin (bool, optional): Permite modificar también estados
+            administrativos. Defaults to False.
     """
     lista_u = auth.abrir_archivo(RUTA_ARCHIVO)
     indice = validar_busqueda_usuario(lista_u)

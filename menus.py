@@ -148,7 +148,7 @@ def mostrar_menu_login():
 def mostrar_menu_afiliados(cuit):
     opcion = ""
 
-    while opcion != "6":
+    while opcion != "5":
         print()
         print("=" * 40)
         time.sleep(0.1)
@@ -160,13 +160,11 @@ def mostrar_menu_afiliados(cuit):
         time.sleep(0.1)
         print(Fore.GREEN + "2. Ver cobertura.")
         time.sleep(0.1)
-        print(Fore.GREEN + "3. Seleccionar / Cambiar plan. DESHABILITADO")
+        print(Fore.GREEN + "3. Turnos. DESHABILITADO")
         time.sleep(0.1)
-        print(Fore.GREEN + "4. Turnos. DESHABILITADO")
+        print(Fore.RED + "4. Darse de baja")
         time.sleep(0.1)
-        print(Fore.RED + "5. Darse de baja")
-        time.sleep(0.1)
-        print(Fore.RED + "6. Volver.")
+        print(Fore.RED + "5. Volver.")
         time.sleep(0.1)
         print("=" * 40)
 
@@ -188,23 +186,17 @@ def mostrar_menu_afiliados(cuit):
 
         elif opcion == "3":
             os.system("cls")
-            print(Fore.YELLOW + "\nSeleccionar / Cambiar plan")
-            print("Funcion deshabilitada")
-            input("\nPresione ENTER para volver...")
-
-        elif opcion == "4":
-            os.system("cls")
             print(Fore.YELLOW + "\nVer mis turnos")
             input("\nPresione ENTER para volver...")
 
-        elif opcion == "5":
+        elif opcion == "4":
             os.system("cls")
             print(Fore.YELLOW + "\nProcesando solicitud de baja...")
             time.sleep(1)
             usuarios.baja_usuario(cuit)
             input(Fore.YELLOW + "\nPresione ENTER para continuar...")
 
-        elif opcion == "6":
+        elif opcion == "5":
             os.system("cls")
             print(Fore.YELLOW + "\nVolviendo al menu anterior...")
             time.sleep(1)
