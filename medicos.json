@@ -16,5 +16,14 @@
         "matricula": "1234567",
         "contraseña": "123456789",
         "estado_socio": 1
+    },
+    {
+        "nombre": "Maro",
+        "apellido": "asda",
+        "CUIT": 20424733432,
+        "email": "CABELLO@HOT.COM",
+        "matricula": "23123",
+        "contraseña": "1234",
+        "estado_socio": 0
     }
 ]

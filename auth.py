@@ -164,7 +164,7 @@ def abrir_archivo(ruta):
         _type_: Contenido del archivo, generalmente lista de diccionarios
     """
     try:
-        with open(ruta, "r") as Archivo:
+        with open(ruta, "r", encoding="utf-8") as Archivo:
             return json.load(Archivo)
     except Exception as a:
         print(f'Error "{a}" al abrir el archivo, reiniciar y verificar su integridad')
@@ -192,12 +192,15 @@ def cargar_archivo(datos, ruta):
         exit
 
 
-def iniciar_sesion_medicos(Medicos):
+def iniciar_sesion_medicos():
 
     print()
     print("===================================")
     consola.print(Panel("   INICIAR SESION AFILIADO", border_style= "green", width=44))
     print("===================================")
+
+    RUTA_ARCHIVO = os.path.join(os.path.dirname(__file__),"medicos.json")
+    Medicos = abrir_archivo(RUTA_ARCHIVO)
 
     cuit = input(Fore.YELLOW + "Ingrese su CUIT: ")
 
@@ -211,13 +214,16 @@ def iniciar_sesion_medicos(Medicos):
     cuit_limpio = int(cuit_limpio)
 
     medico_encontrado = None
-
+    
     # Busqueda secuencial
     for medico in Medicos:
         if medico["CUIT"] == cuit_limpio:
             medico_encontrado = medico
             break
-
+    
+    if medico_encontrado["estado_socio"] == 0:
+        print("Usuario se encuentra dado de baja")
+        return (None)
     if medico_encontrado == None:
         print("Medico no encontrado")
         return None
@@ -227,6 +233,8 @@ def iniciar_sesion_medicos(Medicos):
     while intentos > 0:
 
         password = input(Fore.YELLOW + "Ingrese su contraseña: ")
+        print(medico_encontrado)
+        print(type(medico_encontrado))
 
         if password == medico_encontrado["contraseña"]:
 

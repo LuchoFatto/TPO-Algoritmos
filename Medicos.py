@@ -1,11 +1,20 @@
 import validaciones
 import usuarios
+import os
 import json
 import re
 import auth
-import base_datos
 
 # Afiliados / médicos
+def bucle_validacion(mensaje, mensaje_error, validador):
+    dato = input(mensaje)
+    flag = validador(dato)
+
+    while flag == False:
+        dato = input(mensaje_error)
+        flag = validador(dato)
+    return dato
+
 def alta_medico():
 
     medico_nombre = validaciones.bucle_medico("Ingrese su nombre: ", "SOLO LETRAS - Ingrese su nombre: ", validaciones.validador_solo_letras) #verifica solo letras sin limite de caracteres
@@ -14,24 +23,23 @@ def alta_medico():
 
     medico_cuit = validar_cuit_medicos()
 
-    medico_matricula = input("Ingrese su NRO de matricula: ")
-    flag_matricula = validaciones.validador_solo_numeros(medico_matricula)
-    while flag_matricula == False:
-        medico_matricula = input("SOLO NUMEROS SIN GUIONES - Ingrese su NRO de matricula: ")
-        flag_matricula = validaciones.validador_solo_numeros(medico_matricula)
+    medico_matricula = validaciones.bucle_validacion(
+        "Ingrese su NRO de matricula: ",
+        "SOLO NUMEROS SIN GUIONES - Ingrese su NRO de matricula: ",
+        validaciones.validador_solo_numeros
+    )
 
-    medico_email = input("Ingrese su email: ")
-    flag_email = validaciones.validar_email(medico_email)
-    while flag_email == False:
-        medico_email = input("ERROR - Ingrese su email correctamente: ")
-        flag_email = validaciones.validar_email(medico_email)
+    medico_email = validaciones.bucle_validacion(
+        "Ingrese su email: ",
+        "ERROR - Ingrese su email correctamente: ",
+        validaciones.validar_email
+    )
 
-    medico_contraseña = input("Contraseña: ")
-    flag_contraseña = validaciones.validador_solo_numeros(medico_contraseña)
-    while flag_contraseña == False:
-        medico_contraseña = input("ERROR: ingrese una contraseña de solo numero: ")
-        flag_contraseña = validaciones.validador_solo_numeros(medico_contraseña)
-
+    medico_contraseña = validaciones.bucle_validacion(
+        "Contraseña: ",
+        "ERROR: ingrese una contraseña de solo numero: ",
+        validaciones.validador_solo_numeros
+    )
     medico = {
         "nombre":medico_nombre,
         "apellido":medico_apellido,
@@ -45,8 +53,6 @@ def alta_medico():
     print(medico)
     return(medico)
 
-    #usuarios.append({"nombre":medico_nombre, "apellido":medico_apellido, "cuit":medico_cuit, "email":medico_email,"matricula":medico_matricula, "contraseña":medico_contraseña})
-    #imprimir_lista_medicos(usuarios)
 
 def generarArchivo(medico, ruta_archivo):
     print("""Agregar un médico al archivo JSON""")
@@ -79,6 +85,10 @@ def validar_cuit_medicos():
     Returns:
         int: CUIT Validado y no repetido ingresado por el Usuario
     """
+
+    RUTA_ARCHIVO = os.path.join(os.path.dirname(__file__),"medicos.json")
+    Medicos = auth.abrir_archivo(RUTA_ARCHIVO)
+
     Flag = True
     while Flag:
         cuit = input('Ingrese el CUIT\n>> ')
@@ -87,8 +97,8 @@ def validar_cuit_medicos():
             input('Ingrese Enter para reintentar')
             print('\n\n')
         else:
-            cuit = usuarios.limpiar_nro(cuit)
-            for i in base_datos.lista_usuarios:
+            cuit = auth.limpiar_nro(cuit)
+            for i in Medicos:
                 if i['CUIT'] == cuit:
                     print('El CUIT ingresado ya existe')
                     input('Ingrese Enter para reintentar')
@@ -98,39 +108,77 @@ def validar_cuit_medicos():
                 Flag = usuarios.verificar_decision(cuit)
     return cuit
 
-def modificar_medico(usuarios):
-    matricula_medico_eliminar = input("Para modificar un medico ingrese el numero de matricula: ")
-    flag = None
-    for user in usuarios:
-        if user["rol"] == "medico" and user["matricula"] == str(matricula_medico_eliminar):
-            opcion = input("que desea modificar: 1) mail - 2) contraseña")
+def modificar_medico():
+
+    cuit_medico_modificar = input("Para modificar sus datos ingrese su CUIT: ")
+
+    RUTA_ARCHIVO = os.path.join(os.path.dirname(__file__), "medicos.json")
+    medicos = auth.abrir_archivo(RUTA_ARCHIVO)
+
+    for medico in medicos:
+        print(medico["CUIT"])
+        if medico["CUIT"] == int(cuit_medico_modificar):
+            opcion = input("¿Qué desea modificar? 1) Mail - 2) Contraseña: ")
             if opcion == "1":
-                user["email"] = input("Ingrese el nuevo Email del Medico/a: ")#agregar validacion de email y letras
-                flag_email = validaciones.validar_email(user["email"])
-                while flag_email == False:
-                    user["email"] = input("Ingrese su mail correctamente: ")
-                    flag_email = validaciones.validar_email(user["email"])
+                medico["email"] = bucle_validacion(
+                    "Ingrese el nuevo email del médico/a: ",
+                    "Ingrese su mail correctamente: ",
+                    validaciones.validar_email)
 
-
-def eliminar_medico(usuarios):
-    print(usuarios)
-    cuit_medico_eliminar = input("Para darse de baja ingrese su NUMERO de CUIT: ")
-    for user in usuarios:
-        if user["cuit"] == int(cuit_medico_eliminar):
-            confirmacion = input("Confirmacion, desea eliminar? SI/NO:  ") #hay que agregar que preguntar para confirmar
-            if confirmacion == "SI":
-                user["estado_socio"] = 0
-                #usuarios.remove(user) Cambiamos el estado de 1 a 0 para no perder el dato del cliente
+            elif opcion == "2":
+                medico["contraseña"] = bucle_validacion(
+                    "Ingrese la nueva contraseña: ",
+                    "ERROR: ingrese una contraseña de solo números: ",
+                    validaciones.validador_solo_numeros)
             else:
-                pass #se vuelve al menu donde se eligio eliminar medico
+                print("Opción incorrecta")
+                return
+
+            # Guardar los cambios en el JSON
+            with open(RUTA_ARCHIVO, "w", encoding="utf-8") as archivo:
+                json.dump(medicos, archivo, indent=4, ensure_ascii=False)
+
+            print("Datos del médico modificados correctamente")
+            return
+
+    print("No se encontró ningún médico con ese CUIT")
+
+
+
+def dar_baja_medico():
+
+    RUTA_ARCHIVO = os.path.join(os.path.dirname(__file__), "medicos.json")
+    medicos = auth.abrir_archivo(RUTA_ARCHIVO)
+
+    cuit_medico_eliminar = int(input("Para darse de baja ingrese su NUMERO de CUIT: "))
+
+    for medico in medicos:
+        if medico["CUIT"] == cuit_medico_eliminar:
+            confirmacion = input("Confirmacion, desea eliminar? SI/NO: ")
+            if confirmacion == "SI":
+                medico["estado_socio"] = 0
+                # Guardar los cambios en el JSON
+                with open(RUTA_ARCHIVO, "w", encoding="utf-8") as archivo:
+                    json.dump(medicos, archivo, indent=4, ensure_ascii=False)
+                print("Médico dado de baja correctamente")
+            else:
+                print("Operación cancelada")
+            return
+
+    print("No se encontró ningún médico con ese CUIT")
             
 
-def imprimir_lista_medicos(usuarios):
-    for user in usuarios:        
-        print("\nNombre: {0}".format(user["nombre"],))
-        print("Apellido: {0}".format(user["apellido"]))
-        print("CUIT: {0}".format(user["cuit"]))
-        print("Email: {0}".format(user["email"]))
-        print("Matricula: {0}".format(user["matricula"]))
-        print("Contraseña: {0}".format(user["contraseña"]))
-        print("Estado del Socio: {0}".format(user["estado_socio"]))
+def imprimir_lista_medicos():
+
+    RUTA_ARCHIVO = os.path.join(os.path.dirname(__file__), "medicos.json")
+
+    medicos = auth.abrir_archivo(RUTA_ARCHIVO)
+
+    for medico in medicos:
+        print("\nNombre: {0}".format(medico["nombre"]))
+        print("Apellido: {0}".format(medico["apellido"]))
+        print("CUIT: {0}".format(medico["CUIT"]))
+        print("Email: {0}".format(medico["email"]))
+        print("Matricula: {0}".format(medico["matricula"]))
+        print("Contraseña: {0}".format(medico["contraseña"]))
+        print("Estado del Socio: {0}".format(medico["estado_socio"]))

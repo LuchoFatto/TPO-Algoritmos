@@ -104,14 +104,13 @@ def mostrar_menu_login():
 
         elif opcion == "2":
             os.system("cls")
-            if auth.iniciar_sesion_medicos(base_datos.Medicos):
+            if auth.iniciar_sesion_medicos():
                 os.system("cls")
                 print(Fore.YELLOW + "\nAcceso autorizado...")
                 time.sleep(1)
                 mostrar_menu_medico()
             else:
                 return
-            # mostrar_menu_medico()
 
         elif opcion == "3":
             os.system("cls")
@@ -193,7 +192,6 @@ def mostrar_menu_afiliados(cuit):
         elif opcion == "4":
             os.system("cls")
             print(Fore.YELLOW + "\nVer mis turnos")
-            print("Funcion deshabilitada")
             input("\nPresione ENTER para volver...")
 
         elif opcion == "5":
@@ -226,9 +224,9 @@ def mostrar_menu_medico():
         time.sleep(0.1)
         print(Fore.GREEN + "1. Darse de alta")
         time.sleep(0.1)
-        print(Fore.RED + "2. Darse de baja")
+        print(Fore.RED + "2. Modificar Medico")
         time.sleep(0.1)
-        print(Fore.GREEN + "3. Modificar Medico")
+        print(Fore.GREEN + "3. Darse de baja")
         time.sleep(0.1)
         print("4. Imprimir lista de medicos")
         time.sleep(0.1)
@@ -247,28 +245,30 @@ def mostrar_menu_medico():
 
             rutaDirectorio = os.path.dirname(__file__)
             rutaArchivo = os.path.join(rutaDirectorio,"medicos.json")
-
             Medicos.generarArchivo(medico, rutaArchivo)
-
-            input("\nPresione ENTER para continuar...")
+            
+            input(Fore.YELLOW + "\nPresione ENTER para continuar...")
 
         elif opcion == "2":
+            # MODIFICAR DATOS MAIL Y CONTRASEÑA #
+            os.system("cls")
+            print("\nModificar Mail o Contraseña")
+            Medicos.modificar_medico()
+            input("\nPresione ENTER para volver...")
+
+        elif opcion == "3":
+            # DAR DE BAJA #
             os.system("cls")
             print(Fore.YELLOW + "\nCargando solicitud de baja...")
             time.sleep(1)
-            Medicos.eliminar_medico(base_datos.Medicos)
-            input(Fore.YELLOW + "\nPresione ENTER para continuar...")
-
-        elif opcion == "3":
-            os.system("cls")
-            print("\nModificar Medico")
-            input("\nPresione ENTER para volver...")
+            Medicos.dar_baja_medico()
+            input(Fore.YELLOW + "\nPresione ENTER para continuar...")  
 
         elif opcion == "4":
             os.system("cls")
             print("\nImprimir lista de medicos")
             time.sleep(1)
-            Medicos.imprimir_lista_medicos(base_datos.Medicos)
+            Medicos.imprimir_lista_medicos()
             input("\nPresione ENTER para continuar...")
 
         elif opcion == "5":
@@ -382,14 +382,14 @@ def mostrar_menu_admin():
             os.system("cls")
             print(Fore.YELLOW + "\nCargando lista de medicos...")
             time.sleep(1)
-            Medicos.imprimir_lista_medicos(base_datos.Medicos)
+            Medicos.imprimir_lista_medicos()
             input(Fore.YELLOW + "\nPresione ENTER para continuar...")
 
         elif opcion == "6":
             os.system("cls")
             print(Fore.YELLOW + "\nCargando lista de farmacias...")
             time.sleep(1)
-            Farmacias.imprimir_lista_farmacias(base_datos.Farmacias)
+            Farmacias.imprimir_lista_farmacias(base_datos.Farmacias) #retirar base datos y poner 
             input(Fore.YELLOW +"\nPresione ENTER para continuar...")
 
         elif opcion == "7":
