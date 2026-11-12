@@ -27,25 +27,31 @@ def bucle_validacion(mensaje, mensaje_error, validador):
 
 def alta_medico():
 
-    medico_nombre = validaciones.bucle_medico(Fore.YELLOW + "Ingrese su nombre: ", "SOLO LETRAS - Ingrese su nombre: ", validaciones.validador_solo_letras) #verifica solo letras sin limite de caracteres
+    medico_nombre = bucle_validacion(Fore.YELLOW + 
+        "Ingrese su nombre: ", 
+        "SOLO LETRAS - Ingrese su nombre: ", 
+        validaciones.validador_solo_letras) #verifica solo letras sin limite de caracteres
 
-    medico_apellido = validaciones.bucle_medico(Fore.YELLOW + "ingrse su apellido: ", "SOLO LETRAS - Ingrese su apellido: ", validaciones.validador_solo_letras)
+    medico_apellido = bucle_validacion(Fore.YELLOW + 
+        "Ingrese su apellido: ", 
+        "SOLO LETRAS - Ingrese su apellido: ", 
+        validaciones.validador_solo_letras)
 
     medico_cuit = validar_cuit_medicos()
 
-    medico_matricula = validaciones.bucle_validacion(
+    medico_matricula = bucle_validacion(
         "Ingrese su NRO de matricula: ",
         "SOLO NUMEROS SIN GUIONES - Ingrese su NRO de matricula: ",
         validaciones.validador_solo_numeros
     )
 
-    medico_email = validaciones.bucle_validacion(
+    medico_email = bucle_validacion(
         "Ingrese su email: ",
         "ERROR - Ingrese su email correctamente: ",
         validaciones.validar_email
     )
 
-    medico_contraseña = validaciones.bucle_validacion(
+    medico_contraseña = bucle_validacion(
         "Contraseña: ",
         "ERROR: ingrese una contraseña de solo numero: ",
         validaciones.validador_solo_numeros

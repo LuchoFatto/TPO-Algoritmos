@@ -196,7 +196,7 @@ def iniciar_sesion_medicos():
 
     print()
     print("===================================")
-    consola.print(Panel("   INICIAR SESION AFILIADO", border_style= "green", width=44))
+    consola.print(Panel("   INICIAR SESION MEDICOS", border_style= "green", width=44))
     print("===================================")
 
     RUTA_ARCHIVO = os.path.join(os.path.dirname(__file__),"medicos.json")

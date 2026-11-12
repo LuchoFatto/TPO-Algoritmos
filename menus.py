@@ -6,6 +6,7 @@ import Farmacias
 import auth
 import time
 import os
+import turnos
 
 from colorama import Fore, Style, init
 from tabulate import tabulate
@@ -241,8 +242,8 @@ def mostrar_menu_medico():
             print(Fore.YELLOW + "\nCargando alta de medico...")
             time.sleep(1)
 
+            turnos.creacion_csv()
             medico = Medicos.alta_medico()
-
             rutaDirectorio = os.path.dirname(__file__)
             rutaArchivo = os.path.join(rutaDirectorio,"medicos.json")
             Medicos.generarArchivo(medico, rutaArchivo)
