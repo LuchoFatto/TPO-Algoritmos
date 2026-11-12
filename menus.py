@@ -340,7 +340,7 @@ def mostrar_menu_farmacia(farmacia):
 def mostrar_menu_admin():
     opcion = ""
 
-    while opcion != "10":
+    while opcion != "11":
         print()
         print("=" * 40)
         time.sleep(0.1)
@@ -364,9 +364,11 @@ def mostrar_menu_admin():
         time.sleep(0.1)
         print(Fore.RED + "8. Dar de baja farmacia")
         time.sleep(0.1)
-        print(Fore.BLUE + "9. Ver historial - DESHABILITADO")
+        print(Fore.GREEN + "9. Modificar usuario")
         time.sleep(0.1)
-        print(Fore.RED + "10. Volver")
+        print(Fore.BLUE + "10. Ver historial - DESHABILITADO")
+        time.sleep(0.1)
+        print(Fore.RED + "11. Volver")
         time.sleep(0.1)
         print("=" * 40)
 
@@ -433,10 +435,17 @@ def mostrar_menu_admin():
 
         elif opcion == "9":
             os.system("cls")
+            print(Fore.YELLOW + "\nCargando modificación de usuario...")
+            time.sleep(1)
+            usuarios.modificar_usuario(admin=True)
+            input(Fore.YELLOW + "\nPresione ENTER para continuar...")
+
+        elif opcion == "10":
+            os.system("cls")
             print("\nFuncion deshabilitada para la entrega del 40%")
             input("\nPresione ENTER para volver...")
 
-        elif opcion == "10":
+        elif opcion == "11":
             os.system("cls")
             print(Fore.YELLOW + "\nVolviendo al menu anterior...")
             time.sleep(1)

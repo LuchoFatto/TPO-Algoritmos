@@ -78,7 +78,7 @@ def usuario_pago():
                     esperar()
                     input(Fore.YELLOW + 'Ingrese Enter para volver')
                     os.system('cls')
-                return indice,usuarios
+                return indice, usuario
         else:
             print(Fore.YELLOW + 'Ingrese un CUIT valido')
             esperar()
