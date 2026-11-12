@@ -103,7 +103,7 @@ def pedir_opcion(mensaje, maximo):
             resultado = int(opcion)
             opcion_valida = True
         else:
-            print(f"{Fore.RED}✖ Opción inválida. Ingrese un número entre 0 y {maximo}.")
+            print(f"{Fore.RED} Opción inválida. Ingrese un número entre 0 y {maximo}.")
             time.sleep(1)
 
     return resultado
@@ -143,7 +143,7 @@ def elegir_especialidad():
             flag = False
         else:
             print(
-                f"{Fore.YELLOW}⚠ Debe elegir una opción entre 1 y {len(especialidades)}."
+                f"{Fore.YELLOW} Debe elegir una opción entre 1 y {len(especialidades)}."
             )
             time.sleep(1.5)
 
@@ -309,7 +309,7 @@ def seleccionar_turno(disponibles, especialidad):
                     hora_elegida = medico_actual["libres"][opcion_hora - 1]
                     continuar = False
                 else:
-                    print(f"{Fore.CYAN}↺ Volviendo al listado de médicos...")
+                    print(f"{Fore.CYAN} Volviendo al listado de médicos...")
                     time.sleep(0.8)
 
     return cuit_medico, nombre_medico, hora_elegida
@@ -410,7 +410,7 @@ def pedir_turno(cuit):
 
         os.system("cls")
         comprobante = (
-            f"[bold green]✔ TURNO CONFIRMADO EXITOSAMENTE[/bold green]\n\n"
+            f"[bold green] TURNO CONFIRMADO EXITOSAMENTE[/bold green]\n\n"
             f"[bold white]Especialidad:[/bold white] {especialidad}\n"
             f"[bold white]Profesional:[/bold white]  {nombre_medico} (CUIT: {cuit_medico})\n"
             f"[bold white]Horario:[/bold white]      [bold yellow]{hora_elegida} hs[/bold yellow]\n"
