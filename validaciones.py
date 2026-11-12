@@ -1,26 +1,20 @@
-import re
+import auth
 
 def validador_solo_letras(texto):
-    for caracter in texto:
-        codigo = ord(caracter)
-        if (codigo < 64) or (90 < codigo < 97) or (codigo > 122):
-            return False
-    return True
+    """Reutiliza la validacion de letras definida en auth.py."""
+    return auth.validacion_letras(texto)
 
 def validador_solo_numeros(numero):
-    for caracter in numero:
-        codigo = ord(caracter)
-        if (codigo < 48 or codigo > 57):
-            return False   
-    return True
+    """Valida que el dato tenga solamente numeros y no este vacio."""
+    return bool(numero) and numero.isdigit()
 
 def validar_email(email):
-    patron_email = re.compile(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
-    return bool(re.match(patron_email, email))
+    """Reutiliza la validacion de email definida en auth.py."""
+    return auth.validar_email(email)
 
 def validar_direccion(direccion):
-    patron_direccion = re.compile(r"^[a-zA-Z0-9À-ÿñÑ.°]+(?:\s+[a-zA-Z0-9À-ÿñÑ.°]+)*\s+\d+\s*[a-zA-Z]?$", re.IGNORECASE)
-    return bool(re.match(patron_direccion, direccion))
+    """Reutiliza la validacion de direccion definida en auth.py."""
+    return auth.validar_direccion(direccion)
 
 def bucle_medico(mensaje, mensaje_error, funcion_validadora):
     dato = input(mensaje)
@@ -29,21 +23,3 @@ def bucle_medico(mensaje, mensaje_error, funcion_validadora):
         dato = input(mensaje_error)
         flag = funcion_validadora(dato)
     return dato
-
-
-"""
-func viejas
-
-def validar_mail(texto):
-    flag_texto = validador_solo_letras(texto)
-    flag = None
-    for caracter in texto:
-        codigo = ord(caracter)
-        if codigo == 64:
-            flag = True
-    if flag == True and flag_texto == True:
-        return True
-    else:
-        return False
-
-"""

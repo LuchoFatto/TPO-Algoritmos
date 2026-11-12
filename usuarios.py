@@ -706,7 +706,10 @@ def elegir_key(dic,admin=False):
     lista_keys = [key for key in dic.keys() if key not in campos_no_modificables]
     if admin:
         for indice, clave_usuario in enumerate(lista_keys):
-            valor_actual = '********' if clave_usuario.lower() in ('password', 'contraseña') else dic[clave_usuario]
+            if clave_usuario == 'Password':
+                valor_actual = '********'
+            else:
+                valor_actual = dic[clave_usuario]
             print(Fore.YELLOW + f'[{indice+1}] {clave_usuario} | Valor actual {valor_actual}')
             esperar()
         print(Fore.YELLOW + 'Ingrese la caracteristica a modificar')
@@ -731,7 +734,10 @@ def elegir_key(dic,admin=False):
         no_admin = {'CUIT', 'Deudor', 'Activo'}
         lista_keys = [key for key in lista_keys if key not in no_admin]
         for indice, clave_usuario in enumerate(lista_keys):
-            valor_actual = '********' if clave_usuario.lower() in ('password', 'contraseña') else dic[clave_usuario]
+            if clave_usuario == 'Password':
+                valor_actual = '********'
+            else:
+                valor_actual = dic[clave_usuario]
             print(Fore.YELLOW + f'[{indice+1}] {clave_usuario} | Valor actual {valor_actual}')
             esperar()
         print(Fore.YELLOW + 'Ingrese la caracteristica a modificar')
