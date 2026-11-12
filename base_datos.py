@@ -75,7 +75,7 @@ Medicos = [
     {
         "nombre": "Nicolas", 
         "apellido": "Martinez",
-        "cuit": 20424733432, 
+        "CUIT": 20424733432, 
         "email": "nicolasmartinez@gmail.com", 
         "matricula": 123456,
         "contraseña": "tateti",
@@ -84,7 +84,7 @@ Medicos = [
     {
         "nombre": "Tomas", 
         "apellido": "Gonzales", 
-        "cuit": 123456,
+        "CUIT": 20424733452,
         "email": "ngonza@gmail.com", 
         "matricula": "123456",
         "contraseña": "asfalto",
