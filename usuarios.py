@@ -554,14 +554,18 @@ def validar_busqueda_usuario(lista_u):
                     os.system('cls')
                     return indice
 
-def modificar_usuario(admin=False):
+def modificar_usuario(admin=False,cuit=0):
     """Eleccion de que usuario y que key modificar
 
     Args:
         admin (bool, optional): _description_. Defaults to False.
     """
     lista_u = auth.abrir_archivo(RUTA_ARCHIVO)
-    indice = validar_busqueda_usuario(lista_u)
+    if cuit != 0:
+        indice = validar_busqueda_usuario(lista_u)
+    else:
+        indice,_ = buscar_usuarios(cuit)
+        
     if indice is None:
         return
 

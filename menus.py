@@ -158,7 +158,7 @@ def mostrar_menu_afiliados(cuit):
         time.sleep(0.1)
         print(Fore.GREEN + "2. Ver cobertura.")
         time.sleep(0.1)
-        print(Fore.GREEN + "3. Seleccionar / Cambiar plan. DESHABILITADO")
+        print(Fore.GREEN + "3. Modificar Datos Personales")
         time.sleep(0.1)
         print(Fore.GREEN + "4. Turnos. DESHABILITADO")
         time.sleep(0.1)
@@ -186,8 +186,8 @@ def mostrar_menu_afiliados(cuit):
 
         elif opcion == "3":
             os.system("cls")
-            print(Fore.YELLOW + "\nSeleccionar / Cambiar plan")
-            print("Funcion deshabilitada")
+            print(Fore.YELLOW + "\nModificar Datos Personales")
+            usuarios.modificar_usuario(False,cuit)
             input("\nPresione ENTER para volver...")
 
         elif opcion == "4":
