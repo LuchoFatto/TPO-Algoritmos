@@ -70,28 +70,6 @@ lista_usuarios = [
     }
 ]
 
-#lista de todos los medicos
-Medicos = [
-    {
-        "nombre": "Nicolas", 
-        "apellido": "Martinez",
-        "CUIT": 20424733432, 
-        "email": "nicolasmartinez@gmail.com", 
-        "matricula": 123456,
-        "contraseña": "tateti",
-        "estado_socio": 1
-    },
-    {
-        "nombre": "Tomas", 
-        "apellido": "Gonzales", 
-        "CUIT": 20424733452,
-        "email": "ngonza@gmail.com", 
-        "matricula": "123456",
-        "contraseña": "asfalto",
-        "estado_socio": 1
-    }
-]
-
 #lista de todos las farmacias
 Farmacias = [
     {

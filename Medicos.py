@@ -4,6 +4,7 @@ import os
 import json
 import re
 import auth
+import turnos
 
 from colorama import Fore, Style, init
 from tabulate import tabulate
@@ -58,6 +59,7 @@ def alta_medico():
         "estado_socio": 1
         }
 
+    turnos.agregarMedicoTurnos(medico["CUIT"])
     return(medico)
 
 
@@ -83,7 +85,7 @@ def generarArchivo(medico, ruta_archivo):
         print("Médico agregado con éxito")
 
     except Exception as e:
-        print(e)
+        print(e)        
 
 
 def validar_cuit_medicos():
@@ -98,21 +100,28 @@ def validar_cuit_medicos():
 
     Flag = True
     while Flag:
-        cuit = input('Ingrese el CUIT\n>> ')
-        if not auth.validar_cuit(cuit):
-            print('Ingrese correctamente el CUIT')
-            input('Ingrese Enter para reintentar')
-            print('\n\n')
-        else:
-            cuit = auth.limpiar_nro(cuit)
-            for i in Medicos:
-                if i['CUIT'] == cuit:
-                    print('El CUIT ingresado ya existe')
-                    input('Ingrese Enter para reintentar')
-                    cuit = None
-                    break
-            if cuit != None:
-                Flag = usuarios.verificar_decision(cuit)
+        try:
+            cuit = input('Ingrese el CUIT\n>> ')
+
+            if not auth.validar_cuit(cuit):
+                print('Ingrese correctamente el CUIT')
+                input('Ingrese Enter para reintentar')
+                print('\n\n')
+            else:
+                cuit = auth.limpiar_nro(cuit)
+
+                for i in Medicos:
+                    if i['CUIT'] == cuit:
+                        print('El CUIT ingresado ya existe')
+                        input('Ingrese Enter para reintentar')
+                        cuit = None
+                        break
+                if cuit != None:
+                    Flag = usuarios.verificar_decision(cuit)
+
+        except Exception as e:
+            print(type(e))
+            print('Ocurrió un error. Intente nuevamente.')
     return cuit
 
 def modificar_medico():
