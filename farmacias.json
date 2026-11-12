@@ -1,0 +1,29 @@
+[
+    {
+        "nombre": "Farmacity",
+        "CUIT": 30712345678,
+        "email": "farmacity@ejemplo.com",
+        "direccion": "Alvear 1234",
+        "telefono": "1122334455",
+        "contraseña": "Farmacity123!",
+        "estado_farmacia": 1
+    },
+    {
+        "nombre": "Farmaplus",
+        "CUIT": 30787654321,
+        "email": "farmaplus@ejemplo.com",
+        "direccion": "Mitre 4213",
+        "telefono": "1144556677",
+        "contraseña": "Farmaplus123!",
+        "estado_farmacia": 1
+    },
+    {
+        "nombre": "Farmacia Arg",
+        "CUIT": 30787654366,
+        "email": "farmaciaarg@ejemplo.com",
+        "direccion": "Rocha 1324",
+        "telefono": 1145671234,
+        "contraseña": "FarmaciaArg123!",
+        "estado_farmacia": 0
+    }
+]
