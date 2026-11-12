@@ -19,14 +19,14 @@ consola = Console()
 
 def alta_medico():
 
-    medico_nombre = validaciones.bucle_medico(Fore.YELLOW + 
-        "Ingrese su nombre: ", 
-        "SOLO LETRAS - Ingrese su nombre: ", 
+    medico_nombre = validaciones.bucle_medico(Fore.YELLOW +
+        "Ingrese su nombre: ",
+        "SOLO LETRAS - Ingrese su nombre: ",
         validaciones.validador_solo_letras) #verifica solo letras sin limite de caracteres
 
-    medico_apellido = validaciones.bucle_medico(Fore.YELLOW + 
-        "Ingrese su apellido: ", 
-        "SOLO LETRAS - Ingrese su apellido: ", 
+    medico_apellido = validaciones.bucle_medico(Fore.YELLOW +
+        "Ingrese su apellido: ",
+        "SOLO LETRAS - Ingrese su apellido: ",
         validaciones.validador_solo_letras)
 
     medico_cuit = validar_cuit_medicos()
@@ -58,7 +58,6 @@ def alta_medico():
         "estado_socio": 1
         }
 
-    print(medico)
     return(medico)
 
 
@@ -120,12 +119,17 @@ def modificar_medico():
 
     cuit_medico_modificar = input("Para modificar sus datos ingrese su CUIT: ")
 
+    if not auth.validar_cuit(cuit_medico_modificar):
+        print("El CUIT ingresado no es válido")
+        return
+
+    cuit_medico_modificar = auth.limpiar_nro(cuit_medico_modificar)
+
     RUTA_ARCHIVO = os.path.join(os.path.dirname(__file__), "medicos.json")
     medicos = auth.abrir_archivo(RUTA_ARCHIVO)
 
     for medico in medicos:
-        print(medico["CUIT"])
-        if medico["CUIT"] == int(cuit_medico_modificar):
+        if medico["CUIT"] == cuit_medico_modificar:
             opcion = input("¿Qué desea modificar? 1) Mail - 2) Contraseña: ")
             if opcion == "1":
                 medico["email"] = validaciones.bucle_medico(
@@ -153,12 +157,21 @@ def modificar_medico():
 
 
 
-def dar_baja_medico():
+def dar_baja_medico(cuit_medico=None):
 
     RUTA_ARCHIVO = os.path.join(os.path.dirname(__file__), "medicos.json")
     medicos = auth.abrir_archivo(RUTA_ARCHIVO)
 
-    cuit_medico_eliminar = int(input("Para darse de baja ingrese su NUMERO de CUIT: "))
+    if cuit_medico is None:
+        cuit_medico_eliminar = input("Para darse de baja ingrese su NUMERO de CUIT: ")
+    else:
+        cuit_medico_eliminar = str(cuit_medico)
+
+    if not auth.validar_cuit(cuit_medico_eliminar):
+        print("El CUIT ingresado no es válido")
+        return
+
+    cuit_medico_eliminar = auth.limpiar_nro(cuit_medico_eliminar)
 
     for medico in medicos:
         if medico["CUIT"] == cuit_medico_eliminar:
@@ -188,5 +201,4 @@ def imprimir_lista_medicos():
         print("CUIT: {0}".format(medico["CUIT"]))
         print("Email: {0}".format(medico["email"]))
         print("Matricula: {0}".format(medico["matricula"]))
-        print("Contraseña: {0}".format(medico["contraseña"]))
         print("Estado del Socio: {0}".format(medico["estado_socio"]))
