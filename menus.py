@@ -446,7 +446,7 @@ def mostrar_menu_admin():
             os.system("cls")
             print(Fore.YELLOW + "\nCargando modificación de médico...")
             time.sleep(1)
-            Medicos.modificar_medico()
+            Medicos.modificar_medico(admin=True)
             input(Fore.YELLOW + "\nPresione ENTER para continuar...")
 
         elif opcion == "13":

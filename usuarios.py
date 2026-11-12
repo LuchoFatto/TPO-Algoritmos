@@ -728,8 +728,20 @@ def modificar_usuario(admin=False):
                 esperar()
                 modificar[key] = not modificar[key]
 
-        if not verificar_decision((Fore.YELLOW + f'la modificacion de {key}. Desea modificar otro dato?')):
-            Flag = False
+        print(Fore.YELLOW + f'La modificación de {key} fue realizada.')
+        print(Fore.YELLOW + '¿Desea modificar otro dato?')
+        print(Fore.YELLOW + '[1] Sí, modificar otro dato')
+        print(Fore.YELLOW + '[2] No, finalizar modificación')
+
+        while True:
+            opcion_continuar = input('>> ')
+            if opcion_continuar == '1':
+                break
+            elif opcion_continuar == '2':
+                Flag = False
+                break
+            else:
+                print(Fore.YELLOW + 'Ingrese 1 para continuar o 2 para finalizar')
 
         os.system('cls')
 
@@ -754,35 +766,12 @@ def elegir_key(dic,admin=False):
     """
     campos_no_modificables = {'Historial', 'Familia', 'Dueño'}
     lista_keys = [key for key in dic.keys() if key not in campos_no_modificables]
-    if admin:
-        for indice, clave_usuario in enumerate(lista_keys):
-            if clave_usuario == 'Password':
-                valor_actual = '********'
-            else:
-                valor_actual = dic[clave_usuario]
-            print(Fore.YELLOW + f'[{indice+1}] {clave_usuario} | Valor actual {valor_actual}')
-            esperar()
-        print(Fore.YELLOW + 'Ingrese la caracteristica a modificar')
-        esperar()
-        Flag = True
-        while Flag:
-            try:
-                eleccion = int(input('>> '))-1
-                if 0 <= eleccion < len(lista_keys):
-                    return lista_keys[eleccion]
-                else:
-                    print(Fore.YELLOW + 'Elija una opcion dentro del rango dado')
-                    esperar()
-                    input(Fore.YELLOW + 'Presione Enter para reintentar')
-                    os.system('cls')
-            except Exception as a:
-                print(Fore.YELLOW + f'Error {a}, Ingrese nuevamente')
-                esperar()
-                input(Fore.YELLOW + 'Presione Enter para reintentar')
-                os.system('cls')
-    else:
+
+    if not admin:
         no_admin = {'CUIT', 'Deudor', 'Activo'}
         lista_keys = [key for key in lista_keys if key not in no_admin]
+
+    while True:
         for indice, clave_usuario in enumerate(lista_keys):
             if clave_usuario == 'Password':
                 valor_actual = '********'
@@ -792,22 +781,16 @@ def elegir_key(dic,admin=False):
             esperar()
         print(Fore.YELLOW + 'Ingrese la caracteristica a modificar')
         esperar()
-        Flag = True
-        while Flag:
-            try:
-                eleccion = int(input('>> '))-1
-                if 0 <= eleccion < len(lista_keys):
-                    return lista_keys[eleccion]
-                else:
-                    print(Fore.YELLOW + 'Elija una opcion dentro del rango dado')
-                    esperar()
-                    input(Fore.YELLOW + 'Presione Enter para reintentar')
-                    os.system('cls')
-            except Exception as a:
-                print(Fore.YELLOW + f'Error {a}, Ingrese nuevamente')
-                esperar()
-                input(Fore.YELLOW + 'Presione Enter para reintentar')
-                os.system('cls')
+        try:
+            eleccion = int(input('>> ')) - 1
+        except ValueError:
+            print(Fore.YELLOW + 'Ingrese un numero valido')
+            continue
+
+        if 0 <= eleccion < len(lista_keys):
+            return lista_keys[eleccion]
+
+        print(Fore.YELLOW + 'Elija una opcion dentro del rango dado')
 
 
 

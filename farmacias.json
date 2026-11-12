@@ -25,5 +25,14 @@
         "telefono": 1145671234,
         "contraseña": "FarmaciaArg123!",
         "estado_farmacia": 0
+    },
+    {
+        "nombre": "Miguelito Farm",
+        "CUIT": 20434294078,
+        "email": "miguelito.farm@gmail.com",
+        "direccion": "JJ 23",
+        "telefono": 1165473892,
+        "contraseña": "HolaMiguel!1",
+        "estado_farmacia": 1
     }
 ]

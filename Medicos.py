@@ -133,7 +133,7 @@ def validar_cuit_medicos():
             print('Ocurrió un error. Intente nuevamente.')
     return cuit
 
-def modificar_medico():
+def modificar_medico(admin=False):
 
     cuit_medico_modificar = input("Para modificar sus datos ingrese su CUIT: ")
 
@@ -148,7 +148,12 @@ def modificar_medico():
 
     for medico in medicos:
         if medico["CUIT"] == cuit_medico_modificar:
-            opcion = input("¿Qué desea modificar? 1) Mail - 2) Contraseña: ")
+            if admin:
+                print("¿Qué desea modificar? 1) Mail - 2) Contraseña - 3) Estado")
+            else:
+                print("¿Qué desea modificar? 1) Mail - 2) Contraseña")
+
+            opcion = input("Seleccione una opción: ")
             if opcion == "1":
                 medico["email"] = validaciones.bucle_medico(
                     "Ingrese el nuevo email del médico/a: ",
@@ -160,6 +165,12 @@ def modificar_medico():
                     "Ingrese la nueva contraseña: ",
                     "ERROR: ingrese una contraseña de solo números: ",
                     validaciones.validador_solo_numeros)
+            elif opcion == "3" and admin:
+                nuevo_estado = input("Ingrese el nuevo estado: 1) Activo - 0) Inactivo: ")
+                while nuevo_estado not in ("0", "1"):
+                    print("Ingrese solamente 1 para activo o 0 para inactivo")
+                    nuevo_estado = input("Ingrese el nuevo estado: 1) Activo - 0) Inactivo: ")
+                medico["estado_socio"] = int(nuevo_estado)
             else:
                 print("Opción incorrecta")
                 return

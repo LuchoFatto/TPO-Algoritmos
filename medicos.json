@@ -68,5 +68,15 @@
         "contraseña": "5468",
         "estado_socio": 1,
         "especialidad": "Pediatría"
+    },
+    {
+        "nombre": "Pepe",
+        "apellido": "Guardiola",
+        "CUIT": 20434294097,
+        "email": "TOMAS@TOMAS.toma",
+        "matricula": "1234567",
+        "contraseña": "12345",
+        "estado_socio": 1,
+        "especialidad": "Pediatria"
     }
 ]

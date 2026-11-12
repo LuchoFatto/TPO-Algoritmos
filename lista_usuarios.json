@@ -87,5 +87,23 @@
         "Deudor": true,
         "Activo": true,
         "Plan": "Basico"
+    },
+    {
+        "Nombre": "Luciano",
+        "Apellido": "Pepe",
+        "CUIT": 20434294091,
+        "Telefono": 1145672345,
+        "Email": "nose@gmail.com",
+        "Password": "Aguante20!",
+        "Historial": [
+            [
+                "Pepe Guardiola",
+                "11:00"
+            ]
+        ],
+        "Deudor": false,
+        "Activo": true,
+        "Plan": "Familiar Dueño",
+        "Familia": []
     }
 ]
